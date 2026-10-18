@@ -12,7 +12,7 @@ window.HYGIES_CONFIG = {
 
   /* Supabase dashboard -> Settings -> API */
   SUPABASE_URL: "https://saysntwvjkpwjmrxcode.supabase.co",
-  SUPABASE_KEY: "YOUR-PUBLISHABLE-OR-ANON-KEY",
+  SUPABASE_KEY: "sb_publishable_rndD5brTYbNOY32ralpKcw_B8ZmZRg2",
 
   /* Contact details / delivery rules. The shop's own web address is detected
      automatically, so there is no need to type it here. */
