@@ -45,6 +45,5 @@ window.HYGIES_CONFIG = {
       details: [["Account title", "[ACCOUNT TITLE]"], ["Easypaisa number", "[03XX XXXXXXX]"]] },
     { id: "JAZZCASH", label: "JazzCash", type: "manual",
       note: "Send the total, then enter the transaction ID below.",
-      details: [["Account title", "Samina Kauser"], ["JazzCash number", "0300 7375474"]] }
-  ]
+      details: [["Account title", "Samina Kauser"], ["JazzCash number", "0322 7375474"]] }  ]
 };
