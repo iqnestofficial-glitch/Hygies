@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hygies Admin</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" href="images/products/logo-leaf-mark.png" type="image/x-icon">
+    <style>
+        :root { --green:#79B933; --dark:#4c8a1f; --ink:#1e1e1e; --muted:#717171; --line:#e8ece1; --bg:#fafdf5; }
+        * { box-sizing:border-box; }
+        body { margin:0; background:var(--bg); font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; color:#2c3e50; font-size:14px; }
+        .top-bar { background:var(--green); height:6px; }
+        header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 20px; background:#fff; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+        header img { height:36px; display:block; }
+        header h1 { font-size:16px; margin:0; font-weight:800; }
+        header a { color:var(--dark); font-weight:700; text-decoration:none; }
+        main { max-width:1100px; margin:0 auto; padding:18px 16px 70px; }
+        .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+        .tab { background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:9px 16px; font-weight:700; cursor:pointer; font-size:13.5px; color:#2c3e50; }
+        .tab.active { background:var(--green); border-color:var(--green); color:#10260a; }
+        .panel { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:14px; }
+        .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+        input, select, textarea { font:inherit; padding:9px 11px; border:1.5px solid #dfe5d6; border-radius:8px; background:#fff; min-width:0; }
+        input:focus, select:focus { outline:2px solid #d7ebbd; border-color:var(--green); }
+        button.btn { font:inherit; font-weight:700; border:none; border-radius:8px; padding:9px 16px; cursor:pointer; background:var(--ink); color:#fff; }
+        button.btn:hover { background:#6BC464; }
+        button.btn.line { background:#fff; color:var(--dark); border:1.5px solid var(--green); }
+        button.btn.line:hover { background:#eef7e4; }
+        button.btn.danger { background:#fff; color:#a23b2a; border:1.5px solid #e6b3aa; }
+        button.btn.danger:hover { background:#fdecea; }
+        button.btn[disabled] { opacity:.55; cursor:wait; }
+        .pill { display:inline-block; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:700; background:#eef7e4; color:#3d6e17; }
+        .pill.warn { background:#fff4d6; color:#8a6100; }
+        .pill.bad { background:#fdecea; color:#a23b2a; }
+        .pill.grey { background:#eee; color:#555; }
+        .order { border:1px solid var(--line); border-radius:10px; margin-bottom:10px; background:#fff; }
+        .order-head { display:flex; gap:12px; justify-content:space-between; align-items:center; padding:12px 14px; cursor:pointer; flex-wrap:wrap; }
+        .order-head:hover { background:#fafdf5; }
+        .order-body { display:none; padding:4px 14px 16px; border-top:1px solid var(--line); }
+        .order.open .order-body { display:block; }
+        .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:12px; }
+        .kv { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px dashed #eee; }
+        .kv span:first-child { color:var(--muted); }
+        .item { display:flex; gap:10px; align-items:center; padding:5px 0; }
+        .item img { width:46px; height:36px; object-fit:cover; border-radius:5px; border:1px solid #ddd; }
+        table { border-collapse:collapse; width:100%; }
+        th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+        th { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+        .muted { color:var(--muted); }
+        .hidden { display:none !important; }
+        #gate { text-align:center; padding:80px 20px; color:var(--muted); }
+        #toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:11px 18px; border-radius:8px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s; z-index:50; }
+        #toast.show { opacity:1; }
+        .switch { position:relative; width:46px; height:26px; display:inline-block; }
+        .switch input { opacity:0; width:0; height:0; }
+        .slider { position:absolute; inset:0; background:#ccc; border-radius:26px; cursor:pointer; transition:.2s; }
+        .slider:before { content:""; position:absolute; height:20px; width:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s; }
+        .switch input:checked + .slider { background:var(--green); }
+        .switch input:checked + .slider:before { transform:translateX(20px); }
+        .stars { color:var(--green); letter-spacing:1px; }
+    </style>
+</head>
+<body>
+<div class="top-bar"></div>
+<header>
+    <div class="row" style="gap:14px;">
+        <a href="index.html"><img src="images/products/logo-color.webp" alt="Hygies"></a>
+        <h1>Admin dashboard</h1>
+    </div>
+    <div class="row"><span id="who" class="muted"></span><a href="index.html">← Back to site</a></div>
+</header>
+
+<main>
+    <div id="gate">Checking your account...</div>
+
+    <div id="app" class="hidden">
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-tab="orders">Orders <span id="ordersBadge" class="pill warn hidden"></span></button>
+            <button class="tab" data-tab="stock">Stock</button>
+            <button class="tab" data-tab="coupons">Discount codes</button>
+            <button class="tab" data-tab="reviews">Reviews</button>
+            <button class="tab" data-tab="prices">Prices</button>
+            <button class="tab" data-tab="signups">Sign-ups</button>
+        </div>
+
+        <!-- ORDERS -->
+        <section id="tab-orders">
+            <div class="panel row">
+                <input id="orderSearch" type="search" placeholder="Search order #, name, phone, email" style="flex:1; min-width:220px;">
+                <select id="orderFilter">
+                    <option value="">All statuses</option>
+                    <option>Processing</option><option>Packed</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option>
+                </select>
+                <select id="payFilter">
+                    <option value="">All payments</option>
+                    <option>Awaiting payment check</option><option>Paid</option><option>Pay on delivery</option>
+                </select>
+                <button class="btn line" id="exportOrdersBtn">Export CSV</button>
+                <button class="btn line" id="reloadOrdersBtn">Refresh</button>
+            </div>
+            <div id="ordersList"><div class="muted">Loading orders...</div></div>
+        </section>
+
+        <!-- STOCK -->
+        <section id="tab-stock" class="hidden">
+            <div class="panel">
+                <p class="muted" style="margin-top:0;">Switch a product off and its page shows "Out of stock" with a "notify me" form instead of the Add to cart button.</p>
+                <table><thead><tr><th>Product</th><th>In stock</th><th>Alerts waiting</th></tr></thead><tbody id="stockRows"></tbody></table>
+            </div>
+        </section>
+
+        <!-- COUPONS -->
+        <section id="tab-coupons" class="hidden">
+            <div class="panel">
+                <h3 style="margin-top:0;">Create / update a code</h3>
+                <form id="couponForm" class="row">
+                    <input id="cCode" placeholder="CODE (e.g. HYGIES35)" required maxlength="30" style="text-transform:uppercase; width:190px;">
+                    <input id="cPercent" type="number" min="1" max="90" placeholder="% off" required style="width:100px;">
+                    <input id="cApplies" placeholder="Only for items containing… (e.g. teeth)" style="flex:1; min-width:220px;">
+                    <input id="cMin" type="number" min="0" placeholder="Min. spend Rs" style="width:140px;">
+                    <input id="cExpiry" type="date" title="Expiry date (optional)">
+                    <button class="btn" type="submit">Save code</button>
+                    <button class="btn line" type="button" id="cPreset">Fill 35% oral-care example</button>
+                </form>
+                <p class="muted" style="margin-bottom:0;">Leave "Only for items containing…" empty to discount the whole cart. Several words can be separated by commas.</p>
+            </div>
+            <div class="panel"><table><thead><tr><th>Code</th><th>Discount</th><th>Applies to</th><th>Min. spend</th><th>Expires</th><th>Active</th><th></th></tr></thead><tbody id="couponRows"></tbody></table></div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section id="tab-reviews" class="hidden">
+            <div class="panel"><table><thead><tr><th>Product</th><th>Rating</th><th>Review</th><th>By</th><th></th></tr></thead><tbody id="reviewRows"></tbody></table></div>
+        </section>
+
+        <!-- PRICES -->
+        <section id="tab-prices" class="hidden">
+            <div class="panel">
+                <p class="muted" style="margin-top:0;">The server prices every order from this list. <strong>If you change a price on a product page, change it here too</strong> &mdash; otherwise checkout will refuse the order and show the correct total. Names are lower case; a blank pack size is the price on the shop listing cards.</p>
+                <table><thead><tr><th>Product name</th><th>Pack size</th><th>Price (Rs)</th><th></th></tr></thead><tbody id="priceRows"></tbody></table>
+                <form id="priceForm" class="row" style="margin-top:14px;">
+                    <label>Name <input id="prName" required placeholder="flu &amp; fever tea" style="width:230px;"></label>
+                    <label>Pack size <input id="prWeight" placeholder="250gm (blank = listing)" style="width:170px;"></label>
+                    <label>Price <input id="prPrice" type="number" min="1" required style="width:100px;"></label>
+                    <button class="btn" type="submit">Add / update</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SIGN-UPS -->
+        <section id="tab-signups" class="hidden">
+            <div class="panel">
+                <div class="row" style="justify-content:space-between;"><h3 style="margin:0;">Newsletter / WhatsApp list</h3><button class="btn line" id="exportSubsBtn">Export CSV</button></div>
+                <table><thead><tr><th>Contact</th><th>Joined</th></tr></thead><tbody id="subRows"></tbody></table>
+            </div>
+            <div class="panel">
+                <h3 style="margin-top:0;">Back-in-stock requests</h3>
+                <table><thead><tr><th>Product</th><th>Contact</th><th>Requested</th><th></th></tr></thead><tbody id="alertRows"></tbody></table>
+            </div>
+        </section>
+    </div>
+</main>
+<div id="toast"></div>
+
+<script src="config.js"></script>
+<script type="module">
+// app/lib/hygies-supabase.js
+import { createClient } from "./supabase.js";
+
+// app/products.json
+var products_default = [
+  {
+    key: "product",
+    slug: "flu-fever-tea",
+    name: "Flu & Fever Tea",
+    listPrice: 1200,
+    fullTitle: "Flu & Fever Tea | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Flu & Fever Tea is made with 100% pure organic Materials without any added preservatives to cure your Flu & Fever in just less than 3-4 days without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 600 (Rs 100 Off)",
+        price: 600,
+        crossed: 800,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,200 (Rs 300 Off)",
+        price: 1200,
+        crossed: 1500,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,400 (Rs 800 Off And 250gm Jar Free)",
+        price: 2400,
+        crossed: 3200,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic herbal tea blend to help soothe the symptoms of flu and fever. Delivered across Pakistan.",
+    ldDesc: "A 100% organic herbal tea blend to help soothe the symptoms of flu and fever.",
+    related: [
+      "product2",
+      "product3",
+      "product4"
+    ],
+    pageTitle: "Flu & Fever Tea | Hygies",
+    pri: "images/products/flu-fever-tea-pack-angle-sm.webp",
+    sec: "images/products/flu-fever-tea-pack-white-sm.webp",
+    gallery: [
+      "images/products/flu-fever-tea-pack-white.webp",
+      "images/products/flu-fever-tea-pack-angle.webp",
+      "images/products/flu-fever-tea-lifestyle-plantation.webp",
+      "images/products/flu-fever-tea-wide.webp"
+    ]
+  },
+  {
+    key: "product2",
+    slug: "disturbed-stomach-tea",
+    name: "Disturbed Stomach Tea",
+    listPrice: 1e3,
+    fullTitle: "Disturbed Stomach Tea | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Disturbed Stomach Tea Powder is made with 100% pure organic Materials without any added preservatives to cure your Unstable Stomach in just less than 1-2 days without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 500 (Rs 100 Off)",
+        price: 500,
+        crossed: 600,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,000 (Rs 300 Off)",
+        price: 1e3,
+        crossed: 1300,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,200 (Rs 800 Off And 250gm Jar Free)",
+        price: 2200,
+        crossed: 3e3,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic herbal tea to help settle a disturbed stomach. Delivered across Pakistan.",
+    ldDesc: "A 100% organic herbal tea to help settle a disturbed stomach.",
+    related: [
+      "product3",
+      "product4",
+      "product5"
+    ],
+    pageTitle: "Disturbed Stomach Tea | Hygies",
+    pri: "images/products/stomach-tea-pack-white-sm.webp",
+    sec: "images/products/stomach-tea-pack-white-sm.webp",
+    gallery: [
+      "images/products/stomach-tea-pack-white.webp"
+    ]
+  },
+  {
+    key: "product3",
+    slug: "sliming-tea",
+    name: "Sliming Tea",
+    listPrice: 1500,
+    fullTitle: "Sliming Tea | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Sliming Tea is made with 100% pure organic Materials without any added preservatives to make you slim, expect results in less than 1 month without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 750 (Rs 100 Off)",
+        price: 750,
+        crossed: 850,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,500 (Rs 300 Off)",
+        price: 1500,
+        crossed: 1800,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,700 (Rs 800 Off And 250gm Jar Free)",
+        price: 2700,
+        crossed: 3500,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic herbal slimming tea for a healthy weight routine. Delivered across Pakistan.",
+    ldDesc: "A 100% organic herbal slimming tea for a healthy weight routine.",
+    related: [
+      "product4",
+      "product5",
+      "product6"
+    ],
+    pageTitle: "Sliming Tea | Hygies",
+    pri: "images/products/slimming-tea-pack-angle-sm.webp",
+    sec: "images/products/slimming-tea-pack-white-sm.webp",
+    gallery: [
+      "images/products/slimming-tea-pack-white.webp",
+      "images/products/slimming-tea-pack-angle.webp",
+      "images/products/slimming-tea-lifestyle-moss.webp"
+    ]
+  },
+  {
+    key: "product4",
+    slug: "sliming-powder",
+    name: "Sliming Powder",
+    listPrice: 1200,
+    fullTitle: "Sliming Powder | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Sliming Powder is made with 100% pure organic Materials without any added preservatives to make you slim, expect results in less than 1 month without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 750 (Rs 100 Off)",
+        price: 750,
+        crossed: 850,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,500 (Rs 300 Off)",
+        price: 1500,
+        crossed: 1800,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,700 (Rs 800 Off And 250gm Jar Free)",
+        price: 2700,
+        crossed: 3500,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic slimming powder to support a healthy weight routine. Delivered across Pakistan.",
+    ldDesc: "A 100% organic slimming powder to support a healthy weight routine.",
+    related: [
+      "product5",
+      "product6",
+      "productoralcare1"
+    ],
+    pageTitle: "Sliming Powder | Hygies",
+    pri: "images/products/slimming-powder-pack-green-sm.webp",
+    sec: "images/products/slimming-powder-pack-white-sm.webp",
+    gallery: [
+      "images/products/slimming-powder-pack-white.webp",
+      "images/products/slimming-powder-pack-green.webp",
+      "images/products/slimming-powder-lifestyle-garden.webp",
+      "images/products/slimming-powder-wide.webp"
+    ]
+  },
+  {
+    key: "product5",
+    slug: "detox-powder",
+    name: "Detox Powder",
+    listPrice: 1e3,
+    fullTitle: "Detox Powder | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Detox Powder is made with 100% pure organic Materials without any added preservatives to Detox your circulatory system in just less than 3-4 days without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 500 (Rs 100 Off)",
+        price: 500,
+        crossed: 600,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,000 (Rs 300 Off)",
+        price: 1e3,
+        crossed: 1300,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,200 (Rs 800 Off And 250gm Jar Free)",
+        price: 2200,
+        crossed: 3e3,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic detox powder blend for daily wellness. Delivered across Pakistan.",
+    ldDesc: "A 100% organic detox powder blend for daily wellness.",
+    related: [
+      "product6",
+      "productoralcare1",
+      "productoralcare2"
+    ],
+    pageTitle: "Detox Powder | Hygies",
+    pri: "images/products/detox-powder-pack-green-sm.webp",
+    sec: "images/products/detox-powder-pack-white-sm.webp",
+    gallery: [
+      "images/products/detox-powder-pack-white.webp",
+      "images/products/detox-powder-pack-green.webp",
+      "images/products/detox-powder-lifestyle-forest.webp",
+      "images/products/detox-powder-wide.webp"
+    ]
+  },
+  {
+    key: "product6",
+    slug: "glowing-powder",
+    name: "Glowing Powder",
+    listPrice: 1500,
+    fullTitle: "Glowing Powder | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Glowing Powder is made with 100% pure organic Materials without any added preservatives to add a natural glow to the body in just 2-3 weeks without any side Effects.",
+    blocks: [
+      {
+        weight: "250gm",
+        label: "250gm - Rs 750 (Rs 100 Off)",
+        price: 750,
+        crossed: 850,
+        full: false
+      },
+      {
+        weight: "500gm",
+        label: "500gm - Rs 1,500 (Rs 300 Off)",
+        price: 1500,
+        crossed: 1800,
+        full: false
+      },
+      {
+        weight: "1kg",
+        label: "1kg - Rs 2,700 (Rs 800 Off And 250gm Jar Free)",
+        price: 2700,
+        crossed: 3500,
+        full: true
+      }
+    ],
+    metaDesc: "A 100% organic powder blend to support glowing skin from within. Delivered across Pakistan.",
+    ldDesc: "A 100% organic powder blend to support glowing skin from within.",
+    related: [
+      "productoralcare1",
+      "productoralcare2",
+      "productoralcare3"
+    ],
+    pageTitle: "Glowing Powder | Hygies",
+    pri: "images/products/glowing-powder-pack-green-sm.webp",
+    sec: "images/products/glowing-powder-pack-white-sm.webp",
+    gallery: [
+      "images/products/glowing-powder-pack-white.webp",
+      "images/products/glowing-powder-pack-green.webp",
+      "images/products/glowing-powder-lifestyle-apothecary.webp",
+      "images/products/glowing-powder-lifestyle-meadow.webp"
+    ]
+  },
+  {
+    key: "productoralcare1",
+    slug: "teeth-whitening-powder",
+    name: "Teeth Whitening Powder",
+    listPrice: 1400,
+    fullTitle: "Teeth Whitening Powder | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Teeth Whitening Powder is made with 100% pure organic Materials without any side affects to Whiten your Teeth.",
+    blocks: [
+      {
+        weight: "25gm",
+        label: "25gm - Rs 700 (Rs 100 Off)",
+        price: 700,
+        crossed: 800,
+        full: false
+      },
+      {
+        weight: "50gm",
+        label: "50gm - Rs 1,400 (Rs 300 Off)",
+        price: 1400,
+        crossed: 1700,
+        full: false
+      },
+      {
+        weight: "100gm",
+        label: "100gm - Rs 2,800 (Rs 800 Off)",
+        price: 2800,
+        crossed: 3600,
+        full: true
+      }
+    ],
+    metaDesc: "A natural, 100% organic teeth-whitening powder. Delivered across Pakistan.",
+    ldDesc: "A natural, 100% organic teeth-whitening powder.",
+    related: [
+      "productoralcare2",
+      "productoralcare3",
+      "productoralcare4"
+    ],
+    pageTitle: "Teeth Whitening Powder | Hygies",
+    pri: "images/products/oralcare-whitening-front-sm.webp",
+    sec: "images/products/oralcare-whitening-top-sm.webp",
+    gallery: [
+      "images/products/oralcare-whitening-front.webp",
+      "images/products/oralcare-whitening-top.webp"
+    ]
+  },
+  {
+    key: "productoralcare2",
+    slug: "teeth-whitening-mint",
+    name: "Teeth Whitening Powder Mint Flavor",
+    listPrice: 1400,
+    fullTitle: "Teeth Whitening Powder Mint Flavor | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Teeth Whitening Powder is made with 100% pure organic Materials without any side affects to Whiten your Teeth now in a NEW Refreshing Mint Flavor.",
+    blocks: [
+      {
+        weight: "25gm",
+        label: "25gm - Rs 700 (Rs 100 Off)",
+        price: 700,
+        crossed: 800,
+        full: false
+      },
+      {
+        weight: "50gm",
+        label: "50gm - Rs 1,400 (Rs 300 Off)",
+        price: 1400,
+        crossed: 1700,
+        full: false
+      },
+      {
+        weight: "100gm",
+        label: "100gm - Rs 2,800 (Rs 800 Off)",
+        price: 2800,
+        crossed: 3600,
+        full: true
+      }
+    ],
+    metaDesc: "Natural teeth-whitening powder with a fresh mint flavour. Delivered across Pakistan.",
+    ldDesc: "Natural teeth-whitening powder with a fresh mint flavour.",
+    related: [
+      "productoralcare3",
+      "productoralcare4",
+      "product"
+    ],
+    pageTitle: "Teeth Whitening Powder - Mint Flavor | Hygies",
+    pri: "images/products/oralcare-mint-front-sm.webp",
+    sec: "images/products/oralcare-mint-top-sm.webp",
+    gallery: [
+      "images/products/oralcare-mint-front.webp",
+      "images/products/oralcare-mint-top.webp"
+    ]
+  },
+  {
+    key: "productoralcare3",
+    slug: "teeth-whitening-clove",
+    name: "Teeth Whitening Powder Clove Flavor",
+    listPrice: 1400,
+    fullTitle: "Teeth Whitening Powder Clove Flavor | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Teeth Whitening Powder is made with 100% pure organic Materials without any side affects to Whiten your Teeth now in a NEW Refreshing Clove Flavor.",
+    blocks: [
+      {
+        weight: "25gm",
+        label: "25gm - Rs 700 (Rs 100 Off)",
+        price: 700,
+        crossed: 800,
+        full: false
+      },
+      {
+        weight: "50gm",
+        label: "50gm - Rs 1,400 (Rs 300 Off)",
+        price: 1400,
+        crossed: 1700,
+        full: false
+      },
+      {
+        weight: "100gm",
+        label: "100gm - Rs 2,800 (Rs 800 Off)",
+        price: 2800,
+        crossed: 3600,
+        full: true
+      }
+    ],
+    metaDesc: "Natural teeth-whitening powder with a warming clove flavour. Delivered across Pakistan.",
+    ldDesc: "Natural teeth-whitening powder with a warming clove flavour.",
+    related: [
+      "productoralcare4",
+      "product",
+      "product2"
+    ],
+    pageTitle: "Teeth Whitening Powder - Clove Flavor | Hygies",
+    pri: "images/products/oralcare-clove-front-sm.webp",
+    sec: "images/products/oralcare-clove-front-sm.webp",
+    gallery: [
+      "images/products/oralcare-clove-front.webp"
+    ]
+  },
+  {
+    key: "productoralcare4",
+    slug: "teeth-whitening-charcoal",
+    name: "Teeth Whitening Powder Charcoal Flavor",
+    listPrice: 1500,
+    fullTitle: "Teeth Whitening Powder Charcoal Flavor | 100% Organic | the most Organic in Pakistan",
+    desc: "The Hygies Teeth Whitening Powder is made with 100% pure organic Materials without any side affects with the Charcoal Flavor it helps Whiten your teeth upto 20% faster.",
+    blocks: [
+      {
+        weight: "25gm",
+        label: "25gm - Rs 800 (Rs 100 Off)",
+        price: 800,
+        crossed: 900,
+        full: false
+      },
+      {
+        weight: "50gm",
+        label: "50gm - Rs 1,500 (Rs 300 Off)",
+        price: 1500,
+        crossed: 1800,
+        full: false
+      },
+      {
+        weight: "100gm",
+        label: "100gm - Rs 2,900 (Rs 800 Off)",
+        price: 2900,
+        crossed: 3700,
+        full: true
+      }
+    ],
+    metaDesc: "Natural activated-charcoal teeth-whitening powder. Delivered across Pakistan.",
+    ldDesc: "Natural activated-charcoal teeth-whitening powder.",
+    related: [
+      "product",
+      "product2",
+      "product3"
+    ],
+    pageTitle: "Teeth Whitening Powder - Charcoal Flavor | Hygies",
+    pri: "images/products/oralcare-charcoal-front-sm.webp",
+    sec: "images/products/oralcare-charcoal-top-sm.webp",
+    gallery: [
+      "images/products/oralcare-charcoal-front.webp",
+      "images/products/oralcare-charcoal-top.webp"
+    ]
+  }
+];
+
+// app/lib/hygies-config.js
+var C = typeof window !== "undefined" && window.HYGIES_CONFIG || {};
+var SUPABASE_URL = C.SUPABASE_URL || "https://YOUR-PROJECT.supabase.co";
+var SUPABASE_KEY = C.SUPABASE_KEY || "YOUR-PUBLISHABLE-OR-ANON-KEY";
+var SITE = Object.assign({
+  name: "Hygies",
+  baseUrl: location.origin + location.pathname.replace(/[^/]*$/, "").replace(/\/$/, ""),
+  phoneDisplay: "0300 9236520",
+  phoneIntl: "923009236520",
+  email: "iqnestofficial@gmail.com",
+  freeShippingFrom: 1e4,
+  shippingFee: 250,
+  deliveryEstimate: "3-5 business days"
+}, C.SITE || {});
+var ADMIN_EMAILS = (C.ADMIN_EMAILS || ["iqnestofficial@gmail.com"]).map((e) => String(e).toLowerCase());
+var PAYMENT_METHODS = C.PAYMENT_METHODS || [
+  { id: "COD", label: "Cash on Delivery", type: "cod", note: "Pay the courier when your parcel arrives." }
+];
+var SHORT = {
+  product: "Flu & Fever Tea",
+  product2: "Disturbed Stomach Tea",
+  product3: "Sliming Tea",
+  product4: "Sliming Powder",
+  product5: "Detox Powder",
+  product6: "Glowing Powder",
+  productoralcare1: "Teeth Whitening Powder",
+  productoralcare2: "Teeth Whitening Powder (Mint)",
+  productoralcare3: "Teeth Whitening Powder (Clove)",
+  productoralcare4: "Teeth Whitening Powder (Charcoal)"
+};
+var PRODUCTS = products_default.map((p) => ({ key: p.key, name: SHORT[p.key] || p.name, page: "#/product/" + p.slug, slug: p.slug }));
+
+// app/scope.js
+var scope = null;
+function track(disposer) {
+  if (scope && typeof disposer === "function") scope.push(disposer);
+  return disposer;
+}
+
+// app/lib/hygies-supabase.js
+var ARRIVAL = (function() {
+  const h = location.hash || "", s = location.search || "";
+  return {
+    fromLink: /(^#|&)(access_token|refresh_token|error_description)=/.test(h),
+    recovery: /type=recovery/.test(h) || /[?&]reset=1(&|$)/.test(s)
+  };
+})();
+var isConfigured = !/YOUR-/.test(SUPABASE_URL) && !/YOUR-/.test(SUPABASE_KEY);
+if (!isConfigured) {
+  console.error("Hygies: set SUPABASE_URL and SUPABASE_KEY in config.js (see SETUP.md).");
+}
+var sb = createClient(
+  isConfigured ? SUPABASE_URL : "https://placeholder.supabase.co",
+  isConfigured ? SUPABASE_KEY : "placeholder-key",
+  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+);
+function toUser(u) {
+  if (!u) return null;
+  const m = u.user_metadata || {};
+  return {
+    uid: u.id,
+    email: u.email || "",
+    displayName: m.full_name || m.name || "",
+    photoURL: m.avatar_url || m.picture || "",
+    emailVerified: !!u.email_confirmed_at
+  };
+}
+var current = null;
+var isReady = false;
+var listeners = /* @__PURE__ */ new Set();
+var ready = sb.auth.getSession().then(function(r) {
+  current = toUser(r && r.data && r.data.session && r.data.session.user);
+  isReady = true;
+  return current;
+}).catch(function() {
+  isReady = true;
+  return null;
+});
+sb.auth.onAuthStateChange(function(event, session) {
+  current = toUser(session && session.user);
+  if (!isReady) return;
+  listeners.forEach(function(l) {
+    setTimeout(function() {
+      if (listeners.has(l)) l.cb(current, event);
+    }, 0);
+  });
+});
+function onAuth(cb) {
+  const l = { cb };
+  listeners.add(l);
+  ready.then(function() {
+    setTimeout(function() {
+      if (listeners.has(l)) cb(current);
+    }, 0);
+  });
+  const off = function() {
+    listeners.delete(l);
+  };
+  track(off);
+  return off;
+}
+function stamp(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return { toDate: function() {
+    return d;
+  }, seconds: Math.floor(d.getTime() / 1e3) };
+}
+function cleanError(err) {
+  const m = String(err && err.message || err || "Something went wrong.");
+  return m.replace(/^[A-Z_]{4,}:\s*/, "");
+}
+
+// app/lib/hygies-orders.js
+function mapOrder(r) {
+  if (!r) return null;
+  return {
+    id: r.id,
+    uid: r.user_id,
+    items: r.items || [],
+    shipping: r.shipping || {},
+    paymentMethod: r.payment_method,
+    paymentStatus: r.payment_status,
+    paymentRef: r.payment_ref || "",
+    couponCode: r.coupon_code || "",
+    discount: r.discount || 0,
+    subtotal: r.subtotal,
+    shippingFee: r.shipping_fee,
+    total: r.total,
+    trackingNumber: r.tracking_number,
+    courierName: r.courier_name || "",
+    courierTracking: r.courier_tracking || "",
+    status: r.status,
+    createdAt: stamp(r.created_at),
+    updatedAt: stamp(r.updated_at)
+  };
+}
+var EMAILJS_SERVICE_ID = "service_y5qu9a9";
+var EMAILJS_TEMPLATE_ID = "template_1lxa8ok";
+var EMAILJS_PUBLIC_KEY = "rQ0ED48B73FCxF4h5";
+function toAbsoluteUrl(path) {
+  if (!path) return "";
+  if (path.indexOf("http") === 0) return path;
+  return SITE.baseUrl + "/" + encodeURI(path.replace(/^\/+/, ""));
+}
+function rs(n) {
+  return "Rs " + Number(n || 0).toLocaleString();
+}
+function sendEmailJs(templateParams) {
+  return fetch("https://api.emailjs.com/api/v1.0/email/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      service_id: EMAILJS_SERVICE_ID,
+      template_id: EMAILJS_TEMPLATE_ID,
+      user_id: EMAILJS_PUBLIC_KEY,
+      template_params: templateParams
+    })
+  }).catch(function(error) {
+    console.error("Could not send email:", error.message);
+  });
+}
+function baseEmailParams(order) {
+  const s = order.shipping;
+  return {
+    customer_name: s.firstName,
+    order_number: order.trackingNumber,
+    items: order.items.map(function(item) {
+      return {
+        image_url: toAbsoluteUrl(item.img),
+        title: item.title,
+        qty: item.quantity,
+        price: rs(item.price),
+        line_total: rs(item.price * item.quantity)
+      };
+    }),
+    subtotal: rs(order.subtotal),
+    discount_line: order.discount > 0 ? "- " + rs(order.discount) + (order.couponCode ? " (" + order.couponCode + ")" : "") : "",
+    shipping_fee: order.shippingFee === 0 ? "FREE" : rs(order.shippingFee),
+    total: rs(order.total),
+    payment_line: paymentLine(order),
+    delivery_estimate: SITE.deliveryEstimate,
+    ship_name: s.firstName + " " + s.lastName,
+    ship_street: s.street,
+    ship_city_country: s.city + ", " + s.country,
+    ship_phone: s.phone,
+    courier_line: "",
+    footer_note: "Questions? WhatsApp or call us on " + SITE.phoneDisplay + "."
+  };
+}
+function paymentLine(order) {
+  if (order.paymentMethod === "COD") return "Cash on delivery \u2014 pay the courier " + rs(order.total) + ".";
+  const ref = order.paymentRef ? " (ref: " + order.paymentRef + ")" : "";
+  return "Paid by " + order.paymentMethod.toLowerCase() + ref + " \u2014 we will confirm the payment shortly.";
+}
+function sendShippedEmail(order, orderId) {
+  const p = baseEmailParams(order);
+  p.to_email = order.shipping.email;
+  p.headline = "Your order is on its way";
+  p.intro_text = "Good news \u2014 your Hygies order has been handed to the courier. Expect it within " + SITE.deliveryEstimate + " of ordering.";
+  p.courier_line = order.courierTracking ? (order.courierName || "Courier") + " tracking number: " + order.courierTracking : "";
+  p.button1_label = "Track order";
+  p.button1_url = SITE.baseUrl + "/#/track?order=" + orderId;
+  p.button2_label = "Contact us";
+  p.button2_url = "https://wa.me/" + SITE.phoneIntl;
+  p.confirm_url = p.button1_url;
+  p.track_url = p.button2_url;
+  return sendEmailJs(p);
+}
+
+// app/lib/hygies-util.js
+function esc(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, function(c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+function safeImg(src) {
+  const s = String(src || "");
+  if (/^(https?:\/\/|images\/|\.\/|\/)/i.test(s) && s.indexOf("javascript:") === -1) return esc(s);
+  return "";
+}
+function money(n) {
+  return "Rs " + Number(n || 0).toLocaleString();
+}
+var PAYMENT_LABELS = {
+  COD: "Cash on Delivery",
+  BANK: "Bank Transfer",
+  EASYPAISA: "Easypaisa",
+  JAZZCASH: "JazzCash",
+  CARD: "Card (legacy)"
+};
+var ORDER_STATUSES = ["Processing", "Packed", "Shipped", "Delivered", "Cancelled"];
+function formatDateTime(ts) {
+  if (!ts || !ts.toDate) return "";
+  return ts.toDate().toLocaleString(void 0, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+// app/admin_entry.js
+var $ = (id) => document.getElementById(id);
+var orders = [];
+var stockMap = {};
+var alerts = [];
+var subscribers = [];
+function toast(text) {
+  const t = $("toast");
+  t.textContent = text;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2400);
+}
+onAuth(async (user) => {
+  const gate = $("gate");
+  if (!user) {
+    gate.innerHTML = 'Please <a href="index.html#/auth?next=admin.html" style="color:#4c8a1f;font-weight:700;">sign in</a> with the shop owner account to open the dashboard.';
+    return;
+  }
+  $("who").textContent = user.email;
+  const { data: isAdmin } = await sb.rpc("is_admin");
+  if (!isAdmin) {
+    gate.textContent = "This account (" + user.email + ") is not an admin account, or its email isn't confirmed yet.";
+    return;
+  }
+  gate.classList.add("hidden");
+  $("app").classList.remove("hidden");
+  loadOrders();
+});
+async function must(promise) {
+  const { data, error } = await promise;
+  if (error) throw new Error(cleanError(error));
+  return data;
+}
+$("tabs").addEventListener("click", (e) => {
+  const b = e.target.closest(".tab");
+  if (!b) return;
+  document.querySelectorAll(".tab").forEach((t2) => t2.classList.toggle("active", t2 === b));
+  ["orders", "stock", "coupons", "reviews", "prices", "signups"].forEach((n) => $("tab-" + n).classList.toggle("hidden", n !== b.dataset.tab));
+  const t = b.dataset.tab;
+  if (t === "stock") loadStock();
+  if (t === "coupons") loadCoupons();
+  if (t === "reviews") loadReviews();
+  if (t === "prices") loadPrices();
+  if (t === "signups") loadSignups();
+});
+async function loadOrders() {
+  $("ordersList").innerHTML = '<div class="muted">Loading orders...</div>';
+  try {
+    const rows = await must(sb.from("orders").select("*").order("created_at", { ascending: false }).limit(200));
+    orders = rows.map(mapOrder);
+    renderOrders();
+  } catch (e) {
+    console.error(e);
+    $("ordersList").innerHTML = '<div class="panel" style="color:#a23b2a;">Could not load orders: ' + esc(e.message) + ". Make sure supabase/schema.sql has been run and you are signed in with the admin account.</div>";
+  }
+}
+function statusPill(s) {
+  const cls = s === "Delivered" ? "" : s === "Cancelled" ? "bad" : s === "Processing" ? "warn" : "grey";
+  return '<span class="pill ' + cls + '">' + esc(s) + "</span>";
+}
+function payPill(p) {
+  const cls = p === "Paid" ? "" : p === "Awaiting payment check" ? "warn" : "grey";
+  return '<span class="pill ' + cls + '">' + esc(p || "Pay on delivery") + "</span>";
+}
+function filteredOrders() {
+  const q = $("orderSearch").value.trim().toLowerCase();
+  const st = $("orderFilter").value;
+  const pf = $("payFilter").value;
+  return orders.filter((o) => {
+    if (st && o.status !== st) return false;
+    if (pf && (o.paymentStatus || "Pay on delivery") !== pf) return false;
+    if (!q) return true;
+    const s = o.shipping || {};
+    return [o.trackingNumber, s.firstName, s.lastName, s.phone, s.email, o.courierTracking].join(" ").toLowerCase().indexOf(q) !== -1;
+  });
+}
+function renderOrders() {
+  const open = orders.filter((o) => o.status === "Processing").length;
+  const badge = $("ordersBadge");
+  badge.textContent = open + " new";
+  badge.classList.toggle("hidden", open === 0);
+  const list = filteredOrders();
+  if (!list.length) {
+    $("ordersList").innerHTML = '<div class="panel muted">No orders match.</div>';
+    return;
+  }
+  $("ordersList").innerHTML = list.map((o) => {
+    const s = o.shipping || {};
+    const items = (o.items || []).map(
+      (it) => '<div class="item"><img src="' + safeImg(it.img) + '" alt=""><div style="flex:1;"><strong>' + esc(it.title) + '</strong><div class="muted">Qty ' + esc(it.quantity) + " \xD7 " + money(it.price) + "</div></div><strong>" + money(it.price * it.quantity) + "</strong></div>"
+    ).join("");
+    const opts = ORDER_STATUSES.map((x) => "<option" + (x === o.status ? " selected" : "") + ">" + x + "</option>").join("");
+    const payOpts = ["Pay on delivery", "Awaiting payment check", "Paid"].map((x) => "<option" + (x === (o.paymentStatus || "Pay on delivery") ? " selected" : "") + ">" + x + "</option>").join("");
+    const wa = "https://wa.me/" + String(s.phone || "").replace(/\D/g, "").replace(/^0/, "92");
+    return '<div class="order" data-id="' + esc(o.id) + '"><div class="order-head" data-toggle><div><strong>#' + esc(o.trackingNumber) + '</strong> <span class="muted">\xB7 ' + esc(formatDateTime(o.createdAt)) + "</span><div>" + esc(s.firstName) + " " + esc(s.lastName) + " \xB7 " + esc(s.city) + '</div></div><div class="row">' + payPill(o.paymentStatus) + statusPill(o.status || "Processing") + "<strong>" + money(o.total) + '</strong></div></div><div class="order-body"><div class="grid2"><div><h4 style="margin:0 0 6px;">Items</h4>' + items + '</div><div><h4 style="margin:0 0 6px;">Customer</h4><div class="kv"><span>Name</span><span>' + esc(s.firstName) + " " + esc(s.lastName) + '</span></div><div class="kv"><span>Phone</span><span><a href="tel:' + esc(s.phone) + '">' + esc(s.phone) + '</a> \xB7 <a href="' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a></span></div><div class="kv"><span>Email</span><span>' + esc(s.email) + '</span></div><div class="kv"><span>Address</span><span style="text-align:right;">' + esc(s.street) + ", " + esc(s.city) + '</span></div><div class="kv"><span>Account</span><span>' + (o.uid ? "Signed in" : "Guest") + '</span></div><h4 style="margin:12px 0 6px;">Payment</h4><div class="kv"><span>Method</span><span>' + esc(PAYMENT_LABELS[o.paymentMethod] || o.paymentMethod) + "</span></div>" + (o.paymentRef ? '<div class="kv"><span>Reference</span><strong>' + esc(o.paymentRef) + "</strong></div>" : "") + '<div class="kv"><span>Subtotal</span><span>' + money(o.subtotal) + "</span></div>" + (o.discount > 0 ? '<div class="kv"><span>Discount ' + esc(o.couponCode || "") + "</span><span>- " + money(o.discount) + "</span></div>" : "") + '<div class="kv"><span>Shipping</span><span>' + (o.shippingFee ? money(o.shippingFee) : "FREE") + '</span></div><div class="kv"><strong>Total</strong><strong>' + money(o.total) + '</strong></div></div></div><div class="panel" style="margin:14px 0 0; background:#fafdf5;"><div class="row"><label>Status <select data-f="status">' + opts + '</select></label><label>Payment <select data-f="payment">' + payOpts + '</select></label><label>Courier <input data-f="courier" value="' + esc(o.courierName || "TCS") + '" style="width:110px;"></label><label>Courier tracking # <input data-f="ctrack" value="' + esc(o.courierTracking || "") + '" style="width:170px;"></label></div><div class="row" style="margin-top:10px;"><label><input type="checkbox" data-f="email" checked> Email customer when marked Shipped</label><button class="btn" data-save>Save changes</button></div></div></div></div>';
+  }).join("");
+}
+$("ordersList").addEventListener("click", async (e) => {
+  const orderEl = e.target.closest(".order");
+  if (!orderEl) return;
+  if (e.target.closest("[data-toggle]")) {
+    orderEl.classList.toggle("open");
+    return;
+  }
+  const btn = e.target.closest("[data-save]");
+  if (!btn) return;
+  const order = orders.find((o) => o.id === orderEl.dataset.id);
+  if (!order) return;
+  const val = (f) => orderEl.querySelector('[data-f="' + f + '"]');
+  const newStatus = val("status").value;
+  const update = {
+    status: newStatus,
+    paymentStatus: val("payment").value,
+    courierName: val("courier").value.trim(),
+    courierTracking: val("ctrack").value.trim()
+  };
+  if (newStatus === "Shipped" && !update.courierTracking) {
+    if (!confirm("No courier tracking number entered. Mark as Shipped anyway?")) return;
+  }
+  btn.disabled = true;
+  try {
+    await must(sb.from("orders").update({
+      status: update.status,
+      payment_status: update.paymentStatus,
+      courier_name: update.courierName,
+      courier_tracking: update.courierTracking
+    }).eq("id", order.id).select("id"));
+    const justShipped = newStatus === "Shipped" && order.status !== "Shipped";
+    Object.assign(order, update);
+    if (justShipped && val("email").checked && order.shipping && order.shipping.email) {
+      await sendShippedEmail(order, order.id);
+      toast("Saved \xB7 shipping email sent");
+    } else {
+      toast("Saved");
+    }
+    const wasOpen = orderEl.classList.contains("open");
+    renderOrders();
+    if (wasOpen) {
+      const again = $("ordersList").querySelector('[data-id="' + order.id + '"]');
+      if (again) again.classList.add("open");
+    }
+  } catch (err) {
+    console.error(err);
+    toast("Could not save: " + err.message);
+    btn.disabled = false;
+  }
+});
+["orderSearch", "orderFilter", "payFilter"].forEach((id) => $(id).addEventListener("input", renderOrders));
+$("reloadOrdersBtn").addEventListener("click", loadOrders);
+function csvCell(v) {
+  return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
+}
+function downloadCsv(name, rows) {
+  const blob = new Blob([rows.map((r) => r.map(csvCell).join(",")).join("\n")], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2e3);
+}
+$("exportOrdersBtn").addEventListener("click", () => {
+  const rows = [["Order", "Date", "Status", "Payment", "Payment status", "Ref", "Name", "Phone", "Email", "Address", "City", "Items", "Subtotal", "Discount", "Shipping", "Total", "Courier", "Courier tracking"]];
+  filteredOrders().forEach((o) => {
+    const s = o.shipping || {};
+    rows.push([
+      o.trackingNumber,
+      formatDateTime(o.createdAt),
+      o.status,
+      o.paymentMethod,
+      o.paymentStatus,
+      o.paymentRef,
+      s.firstName + " " + s.lastName,
+      s.phone,
+      s.email,
+      s.street,
+      s.city,
+      (o.items || []).map((i) => i.quantity + "x " + i.title).join("; "),
+      o.subtotal,
+      o.discount || 0,
+      o.shippingFee,
+      o.total,
+      o.courierName,
+      o.courierTracking
+    ]);
+  });
+  downloadCsv("hygies-orders.csv", rows);
+});
+function mapAlert(r) {
+  return { id: r.id, productKey: r.product_key, contact: r.contact, createdAt: stamp(r.created_at) };
+}
+async function loadStock() {
+  try {
+    const [pRows, aRows] = await Promise.all([must(sb.from("products").select("*")), must(sb.from("stock_alerts").select("*"))]);
+    stockMap = {};
+    pRows.forEach((r) => {
+      stockMap[r.key] = { inStock: r.in_stock };
+    });
+    alerts = aRows.map(mapAlert);
+  } catch (e) {
+    toast("Could not load stock: " + e.message);
+  }
+  $("stockRows").innerHTML = PRODUCTS.map((p) => {
+    const inStock = !(stockMap[p.key] && stockMap[p.key].inStock === false);
+    const waiting = alerts.filter((a) => a.productKey === p.key).length;
+    return '<tr><td><a href="index.html' + esc(p.page) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a></td><td><label class="switch"><input type="checkbox" data-stock="' + esc(p.key) + '"' + (inStock ? " checked" : "") + '><span class="slider"></span></label></td><td>' + (waiting ? '<span class="pill warn">' + waiting + " waiting</span>" : '<span class="muted">\u2014</span>') + "</td></tr>";
+  }).join("");
+}
+$("stockRows").addEventListener("change", async (e) => {
+  const key = e.target.dataset.stock;
+  if (!key) return;
+  try {
+    await must(sb.from("products").upsert({ key, in_stock: e.target.checked }, { onConflict: "key" }).select("key"));
+    toast(e.target.checked ? "Marked in stock" : "Marked out of stock");
+  } catch (err) {
+    toast("Could not save: " + err.message);
+    e.target.checked = !e.target.checked;
+  }
+});
+async function loadCoupons() {
+  try {
+    const rows = (await must(sb.from("coupons").select("*").order("created_at", { ascending: false }))).map((c) => ({
+      code: c.code,
+      percent: c.percent,
+      appliesTo: c.applies_to || [],
+      minSubtotal: c.min_subtotal,
+      active: c.active,
+      expiresAt: stamp(c.expires_at)
+    }));
+    $("couponRows").innerHTML = rows.length ? rows.map(
+      (c) => "<tr><td><strong>" + esc(c.code) + "</strong></td><td>" + esc(c.percent) + "%</td><td>" + esc((c.appliesTo || []).join(", ") || "Whole cart") + "</td><td>" + (c.minSubtotal ? money(c.minSubtotal) : "\u2014") + "</td><td>" + (c.expiresAt && c.expiresAt.toDate ? esc(c.expiresAt.toDate().toLocaleDateString()) : "\u2014") + '</td><td><label class="switch"><input type="checkbox" data-coupon-active="' + esc(c.code) + '"' + (c.active !== false ? " checked" : "") + '><span class="slider"></span></label></td><td><button class="btn danger" data-coupon-del="' + esc(c.code) + '">Delete</button></td></tr>'
+    ).join("") : '<tr><td colspan="7" class="muted">No codes yet.</td></tr>';
+  } catch (e) {
+    toast("Could not load codes: " + e.message);
+  }
+}
+$("couponForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const code = $("cCode").value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+  if (!code) return;
+  const applies = $("cApplies").value.split(",").map((x) => x.trim().toLowerCase()).filter(Boolean);
+  const data = {
+    code,
+    percent: Number($("cPercent").value),
+    applies_to: applies,
+    min_subtotal: Number($("cMin").value) || 0,
+    active: true,
+    expires_at: $("cExpiry").value ? (/* @__PURE__ */ new Date($("cExpiry").value + "T23:59:59")).toISOString() : null
+  };
+  try {
+    await must(sb.from("coupons").upsert(data, { onConflict: "code" }).select("code"));
+    toast("Code " + code + " saved");
+    $("couponForm").reset();
+    loadCoupons();
+  } catch (err) {
+    toast("Could not save: " + err.message);
+  }
+});
+$("cPreset").addEventListener("click", () => {
+  $("cCode").value = "HYGIES35";
+  $("cPercent").value = 35;
+  $("cApplies").value = "teeth";
+  $("cMin").value = "";
+});
+$("couponRows").addEventListener("change", async (e) => {
+  const code = e.target.dataset.couponActive;
+  if (!code) return;
+  try {
+    await must(sb.from("coupons").update({ active: e.target.checked }).eq("code", code).select("code"));
+    toast(e.target.checked ? "Code active" : "Code paused");
+  } catch (err) {
+    toast("Could not save: " + err.message);
+  }
+});
+$("couponRows").addEventListener("click", async (e) => {
+  const code = e.target.dataset.couponDel;
+  if (!code || !confirm("Delete code " + code + "?")) return;
+  try {
+    await must(sb.from("coupons").delete().eq("code", code).select("code"));
+    toast("Deleted");
+    loadCoupons();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+async function loadReviews() {
+  try {
+    const rows = (await must(sb.from("reviews").select("*"))).map((r) => ({
+      id: r.id,
+      productKey: r.product_key,
+      name: r.author,
+      rating: r.rating,
+      text: r.text,
+      createdAt: stamp(r.created_at)
+    }));
+    rows.sort((a, b) => (b.createdAt && b.createdAt.seconds || 0) - (a.createdAt && a.createdAt.seconds || 0));
+    $("reviewRows").innerHTML = rows.length ? rows.map((r) => {
+      const p = PRODUCTS.find((x) => x.key === r.productKey);
+      return "<tr><td>" + esc(p ? p.name : r.productKey) + '</td><td class="stars">' + "\u2605".repeat(r.rating || 0) + "\u2606".repeat(5 - (r.rating || 0)) + '</td><td style="max-width:420px;">' + esc(r.text) + "</td><td>" + esc(r.name || "Customer") + '</td><td><button class="btn danger" data-review-del="' + esc(r.id) + '">Remove</button></td></tr>';
+    }).join("") : '<tr><td colspan="5" class="muted">No reviews yet.</td></tr>';
+  } catch (e) {
+    toast("Could not load reviews: " + e.message);
+  }
+}
+$("reviewRows").addEventListener("click", async (e) => {
+  const id = e.target.dataset.reviewDel;
+  if (!id || !confirm("Remove this review?")) return;
+  try {
+    await must(sb.from("reviews").delete().eq("id", id).select("id"));
+    toast("Removed");
+    loadReviews();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+var priceList = [];
+async function loadPrices() {
+  try {
+    priceList = await must(sb.from("prices").select("*").order("name").order("weight"));
+  } catch (e) {
+    toast("Could not load prices: " + e.message);
+    return;
+  }
+  $("priceRows").innerHTML = priceList.map(
+    (r, i) => "<tr><td>" + esc(r.name) + "</td><td>" + (r.weight ? esc(r.weight) : '<span class="muted">listing card</span>') + '</td><td><input type="number" min="1" value="' + esc(r.price) + '" data-price-i="' + i + '" style="width:100px;"></td><td><button class="btn" data-price-save="' + i + '">Save</button> <button class="btn danger" data-price-del="' + i + '">Delete</button></td></tr>'
+  ).join("") || '<tr><td colspan="4" class="muted">No prices yet.</td></tr>';
+}
+$("priceRows").addEventListener("click", async (e) => {
+  const sv = e.target.dataset.priceSave, del = e.target.dataset.priceDel;
+  const i = sv != null ? sv : del;
+  if (i == null) return;
+  const r = priceList[i];
+  if (!r) return;
+  try {
+    if (del != null) {
+      if (!confirm("Delete this price? Orders containing it will be refused.")) return;
+      await must(sb.from("prices").delete().eq("name", r.name).eq("weight", r.weight).select("name"));
+      toast("Deleted");
+    } else {
+      const v = Number($("priceRows").querySelector('[data-price-i="' + i + '"]').value);
+      await must(sb.from("prices").update({ price: v }).eq("name", r.name).eq("weight", r.weight).select("name"));
+      toast("Price saved");
+    }
+    loadPrices();
+  } catch (err) {
+    toast("Could not save: " + err.message);
+  }
+});
+$("priceForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  try {
+    await must(sb.from("prices").upsert({
+      name: $("prName").value.trim().toLowerCase(),
+      weight: $("prWeight").value.trim().toLowerCase(),
+      price: Number($("prPrice").value)
+    }, { onConflict: "name,weight" }).select("name"));
+    toast("Saved");
+    $("priceForm").reset();
+    loadPrices();
+  } catch (err) {
+    toast("Could not save: " + err.message);
+  }
+});
+async function loadSignups() {
+  try {
+    const [sRows, aRows] = await Promise.all([must(sb.from("subscribers").select("*")), must(sb.from("stock_alerts").select("*"))]);
+    subscribers = sRows.map((r) => ({ id: r.id, contact: r.contact, source: r.source, createdAt: stamp(r.created_at) }));
+    alerts = aRows.map(mapAlert);
+  } catch (e) {
+    toast("Could not load: " + e.message);
+    return;
+  }
+  subscribers.sort((a, b) => (b.createdAt && b.createdAt.seconds || 0) - (a.createdAt && a.createdAt.seconds || 0));
+  $("subRows").innerHTML = subscribers.length ? subscribers.map((s) => "<tr><td>" + esc(s.contact) + "</td><td>" + esc(formatDateTime(s.createdAt)) + "</td></tr>").join("") : '<tr><td colspan="2" class="muted">No sign-ups yet.</td></tr>';
+  $("alertRows").innerHTML = alerts.length ? alerts.map((a) => {
+    const p = PRODUCTS.find((x) => x.key === a.productKey);
+    return "<tr><td>" + esc(p ? p.name : a.productKey) + "</td><td>" + esc(a.contact) + "</td><td>" + esc(formatDateTime(a.createdAt)) + '</td><td><button class="btn line" data-alert-done="' + esc(a.id) + '">Done</button></td></tr>';
+  }).join("") : '<tr><td colspan="4" class="muted">No requests.</td></tr>';
+}
+$("alertRows").addEventListener("click", async (e) => {
+  const id = e.target.dataset.alertDone;
+  if (!id) return;
+  try {
+    await must(sb.from("stock_alerts").delete().eq("id", id).select("id"));
+    toast("Cleared");
+    loadSignups();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+$("exportSubsBtn").addEventListener("click", () => downloadCsv("hygies-subscribers.csv", [["Contact", "Joined"]].concat(subscribers.map((s) => [s.contact, formatDateTime(s.createdAt)]))));
+
+</script>
+</body>
+</html>
