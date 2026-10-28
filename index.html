@@ -53,6 +53,77 @@ body.hy-bare .hy-symptom-fab { display: none; }
 .item.hy-reveal { visibility: visible; opacity: 0; transform: translateY(100px) scale(.9); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
 .item.hy-in { visibility: visible; opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .item.hy-reveal { transition: none; } }
+
+/* ===== Homepage ===== */
+@font-face { font-family: "Bricolage"; src: url("images/fonts/bricolage-grotesque.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+.hm { --ink: #123a1b; --lime: #79b933; --sun: #f2d21f; --bark: #6b4a2f; --paper: #f4f6ec; --mist: #e3edd0; background: var(--paper); color: var(--ink); font-family: Poppins, sans-serif; overflow: hidden; }
+.hm a, .hm a:hover { color: inherit; text-decoration: none; }
+.hm a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.hm-h1, .hm-h2, .hm-need, .hm-tin-name { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.03em; }
+.hm-hero { max-width: 1240px; margin: 0 auto; padding: 56px 28px 40px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 24px; align-items: center; }
+.hm-h1 { font-size: clamp(2.7rem, 6.2vw, 5.4rem); line-height: .96; margin: 0 0 22px; max-width: 11ch; }
+.hm-lede { font-size: 1.1rem; line-height: 1.6; max-width: 34ch; margin: 0 0 30px; color: var(--bark); }
+.hm-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.hm-btn { display: inline-block; padding: 15px 26px; border-radius: 999px; font-weight: 600; font-size: .95rem; border: 2px solid var(--ink); transition: background .2s, color .2s; }
+.hm .hm-btn-solid { background: var(--ink); color: #fff; }
+.hm .hm-btn-solid:hover { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+.hm .hm-btn-line:hover { background: var(--ink); color: #fff; }
+.hm-stage { position: relative; aspect-ratio: 1 / .9; border-bottom: 3px solid var(--ink); }
+.hm-box { position: absolute; width: 74%; bottom: -8%; mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent), linear-gradient(180deg, transparent, #000 8%, #000 88%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent), linear-gradient(180deg, transparent, #000 8%, #000 88%, transparent); mask-composite: intersect; animation: hmRise .9s cubic-bezier(.2, .8, .2, 1) both; }
+.hm-box-a { left: -14%; transform: rotate(-7deg) scale(.9); animation-delay: .05s; }
+.hm-box-c { right: -16%; transform: rotate(7deg) scale(.9); animation-delay: .17s; }
+.hm-box-b { left: 13%; width: 82%; animation-delay: .3s; }
+@keyframes hmRise { from { opacity: 0; translate: 0 60px; } to { opacity: 1; translate: 0 0; } }
+.hm-shelf, .hm-tins, .hm-ask { max-width: 1240px; margin: 0 auto; padding: 64px 28px 0; }
+.hm-h2 { font-size: clamp(1.9rem, 3.8vw, 3rem); line-height: 1; margin: 0 0 28px; }
+.hm-rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid rgba(18, 58, 27, .25); }
+.hm-rows li { border-top: 1px solid rgba(18, 58, 27, .25); }
+.hm-row { position: relative; display: grid; grid-template-columns: 62px 1fr auto 44px; align-items: center; gap: 0 22px; padding: 14px 18px; z-index: 0; }
+.hm-row::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--sun), var(--lime)); opacity: 0; transition: opacity .25s; z-index: -1; }
+.hm-row:hover::before, .hm-row:focus-visible::before { opacity: 1; }
+.hm-th { display: block; width: 46px; height: 80px; overflow: hidden; grid-row: 1 / 3; }
+.hm-th img { display: block; max-width: none; width: 115px; height: 93px; margin: -6px 0 0 -38px; mix-blend-mode: multiply; }
+.hm-thumb-sq { width: 62px; height: 62px; border-radius: 14px; align-self: center; background: #fff; }
+.hm-thumb-sq img { width: 100%; height: 100%; margin: 0; object-fit: cover; mix-blend-mode: normal; }
+.hm-need { font-size: clamp(1.6rem, 3.6vw, 2.9rem); line-height: 1.05; grid-column: 2; grid-row: 1; }
+.hm-prod { grid-column: 2; grid-row: 2; font-size: .92rem; color: var(--bark); }
+.hm-row:hover .hm-prod { color: var(--ink); }
+.hm-sub::before { content: "— "; }
+.hm-price { grid-column: 3; grid-row: 1 / 3; font-weight: 600; }
+.hm-go { grid-column: 4; grid-row: 1 / 3; width: 28px; height: 28px; opacity: .35; transition: transform .25s, opacity .25s; }
+.hm-row:hover .hm-go { opacity: 1; transform: translateX(6px); }
+.hm-tin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.hm-tin { display: block; }
+.hm-tin img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 22px; display: block; transition: transform .3s; }
+.hm-tin:hover img { transform: translateY(-6px); }
+.hm-tin-name { display: block; font-size: 1.5rem; margin-top: 12px; }
+.hm-tin-price { color: var(--bark); font-size: .92rem; }
+.hm-facts { max-width: 1240px; margin: 72px auto 0; padding: 0 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.hm-facts div { border-top: 3px solid var(--ink); padding-top: 14px; }
+.hm-facts strong { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+.hm-facts span { font-size: .9rem; line-height: 1.5; color: var(--bark); }
+.hm-ask { padding-bottom: 80px; }
+.hm-ask p { font-size: 1.1rem; max-width: 42ch; color: var(--bark); margin: 0 0 24px; }
+.hm-all { margin-left: 22px; font-weight: 600; text-decoration: underline !important; text-underline-offset: 5px; }
+@media (max-width: 860px) {
+  .hm-hero { grid-template-columns: 1fr; padding-top: 36px; }
+  .hm-stage { margin: 0 6% 18px; }
+  .hm-tin-grid { grid-template-columns: repeat(2, 1fr); }
+  .hm-facts { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .hm-row { grid-template-columns: 62px 1fr auto; padding: 12px 8px; gap: 0 14px; }
+  .hm-go { display: none; }
+  .hm-all { display: block; margin: 18px 0 0; }
+}
+@media (prefers-reduced-motion: reduce) { .hm-box { animation: none; } .hm-row::before, .hm-go, .hm-tin img { transition: none; } }
+/* policy pages: content fades up one block after another */
+@keyframes hyDocIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.doc > * { animation: hyDocIn .7s cubic-bezier(.22,1,.36,1) both; }
+.doc > :nth-child(2){ animation-delay: 0.07s; } .doc > :nth-child(3){ animation-delay: 0.14s; } .doc > :nth-child(4){ animation-delay: 0.21s; } .doc > :nth-child(5){ animation-delay: 0.28s; } .doc > :nth-child(6){ animation-delay: 0.35s; } .doc > :nth-child(7){ animation-delay: 0.42s; } .doc > :nth-child(8){ animation-delay: 0.49s; } .doc > :nth-child(9){ animation-delay: 0.56s; } .doc > :nth-child(10){ animation-delay: 0.63s; } .doc > :nth-child(11){ animation-delay: 0.70s; } .doc > :nth-child(12){ animation-delay: 0.77s; } .doc > :nth-child(13){ animation-delay: 0.84s; } .doc > :nth-child(14){ animation-delay: 0.91s; } .doc > :nth-child(15){ animation-delay: 0.98s; } .doc > :nth-child(16){ animation-delay: 1.05s; } .doc > :nth-child(17){ animation-delay: 1.12s; } .doc > :nth-child(18){ animation-delay: 1.19s; }
+.doc a { transition: color .2s ease; } .doc a:hover { color: #2f6a12; }
+.doc li { transition: transform .25s ease; } .doc li:hover { transform: translateX(6px); }
+@media (prefers-reduced-motion: reduce) { .doc > * { animation: none; } .doc li { transition: none; } }
 /* bottom-left row: Urdu toggle + leaf (symptom helper) side by side */
 #hyFloatRow { position: fixed; left: 14px; bottom: 14px; z-index: 2300; display: flex; align-items: center; gap: 10px; }
 /* free-delivery progress (cart + checkout) */
@@ -1020,48 +1091,47 @@ body.hy-bare #app { display: contents; }
      The address bar shows  index.html#/shop , #/product/sliming-tea ...
      ===================================================================== -->
 <!-- ===== PAGE: Home  (address: #/) ===== -->
-<template id="v-home"><section>
-<div class="slideshow">
-<div class="mySlides fade">
-<img src="images/products/slide-1.webp" width="1440" height="720" style="width:100%;height:auto"/>
-<div class="text">Flu &amp; Fever Tea</div>
+<template id="v-home"><div class="hm">
+<section class="hm-hero">
+<div class="hm-copy">
+<h1 class="hm-h1">Herbal teas for the days you feel off.</h1>
+<p class="hm-lede">Organic blends for flu and fever, an upset stomach and slimming. Pay cash on delivery.</p>
+<div class="hm-cta"><a class="hm-btn hm-btn-solid" href="#/teas">Shop herbal teas</a><a class="hm-btn hm-btn-line" href="https://wa.me/923009236520" rel="noopener" target="_blank">Order on WhatsApp</a></div>
 </div>
-<div class="mySlides fade">
-<img src="images/products/slide-2.webp" width="1440" height="720" style="width:100%;height:auto" loading="lazy" decoding="async"/>
-<div class="text">Disturbed Stomach Tea</div>
+<div class="hm-stage" aria-hidden="true">
+<img class="hm-box hm-box-a" src="images/products/stomach-tea-pack-white.webp" alt="" decoding="async"/>
+<img class="hm-box hm-box-c" src="images/products/slimming-tea-pack-white.webp" alt="" decoding="async"/>
+<img class="hm-box hm-box-b" src="images/products/flu-fever-tea-pack-white.webp" alt="" decoding="async"/>
 </div>
-<div class="mySlides fade">
-<img src="images/products/slide-3.webp" width="1440" height="720" style="width:100%;height:auto" loading="lazy" decoding="async"/>
-<div class="text">Sliming Powder</div>
-</div>
-<div class="mySlides fade">
-<img src="images/products/slide-4.webp" width="1440" height="720" style="width:100%;height:auto" loading="lazy" decoding="async"/>
-<div class="text">Detox Powder</div>
-</div>
-<div class="mySlides fade">
-<img src="images/products/slide-5.webp" width="1440" height="720" style="width:100%;height:auto" loading="lazy" decoding="async"/>
-<div class="text">Teeth Whitening Powder</div>
-</div>
-<div class="mySlides fade">
-<img src="images/products/slide-6.webp" width="1440" height="720" style="width:100%;height:auto" loading="lazy" decoding="async"/>
-<div class="text">Teeth Whitening Powder Charcoal</div>
-</div>
-<a class="prev" onclick="plusSlides(-1)">❮</a>
-<a class="next" onclick="plusSlides(1)">❯</a>
-</div>
-<div style="text-align:center">
-<span class="dot" onclick="currentSlide(1)"></span>
-<span class="dot" onclick="currentSlide(2)"></span>
-<span class="dot" onclick="currentSlide(3)"></span>
-<span class="dot" onclick="currentSlide(4)"></span>
-<span class="dot" onclick="currentSlide(5)"></span>
-<span class="dot" onclick="currentSlide(6)"></span>
-</div>
-</section><div class="container-fluid px-4">
-<div class="text-center"><div class="section-title">Product List</div></div>
-<div class="listProduct"><div class="item" data-id="product"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/flu-fever-tea"><img alt="Flu &amp; Fever Tea" class="primary" loading="lazy" src="images/products/flu-fever-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/flu-fever-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Flu &amp; Fever Tea</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/disturbed-stomach-tea"><img alt="Disturbed Stomach Tea" class="primary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Disturbed Stomach Tea</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-tea"><img alt="Sliming Tea" class="primary" loading="lazy" src="images/products/slimming-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Tea</h2><div class="price">Rs 1500</div></div></div></div>
-<div class="text-center"><div class="section-title">Oral Care Featured Product</div></div>
-<div class="listProduct mb-5"><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div></div>
+</section>
+<section class="hm-shelf">
+<h2 class="hm-h2">What do you need today?</h2>
+<ul class="hm-rows">
+<li><a class="hm-row" href="#/product/flu-fever-tea"><span class="hm-th hm-thumb"><img src="images/products/flu-fever-tea-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Flu &amp; fever</span><span class="hm-prod">Flu &amp; Fever Tea <span class="hm-sub">50 sachets</span></span><span class="hm-price">Rs 1200</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/disturbed-stomach-tea"><span class="hm-th hm-thumb"><img src="images/products/stomach-tea-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Upset stomach</span><span class="hm-prod">Disturbed Stomach Tea <span class="hm-sub">50 sachets</span></span><span class="hm-price">Rs 1000</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/sliming-tea"><span class="hm-th hm-thumb"><img src="images/products/slimming-tea-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Slimming tea</span><span class="hm-prod">Slimming Tea <span class="hm-sub">50 sachets</span></span><span class="hm-price">Rs 1500</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/sliming-powder"><span class="hm-th hm-thumb hm-thumb-sq"><img src="images/products/slimming-powder-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Slimming powder</span><span class="hm-prod">Slimming Powder</span><span class="hm-price">Rs 1200</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/detox-powder"><span class="hm-th hm-thumb hm-thumb-sq"><img src="images/products/detox-powder-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Detox</span><span class="hm-prod">Detox Powder</span><span class="hm-price">Rs 1000</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/glowing-powder"><span class="hm-th hm-thumb hm-thumb-sq"><img src="images/products/glowing-powder-pack-white-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Glow</span><span class="hm-prod">Glowing Powder</span><span class="hm-price">Rs 1500</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a class="hm-row" href="#/product/teeth-whitening-powder"><span class="hm-th hm-thumb hm-thumb-sq"><img src="images/products/oralcare-whitening-front-sm.webp" alt="" loading="lazy" decoding="async"/></span><span class="hm-need">Whiter teeth</span><span class="hm-prod">Teeth Whitening Powder <span class="hm-sub">4 flavours</span></span><span class="hm-price">Rs 1400</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+</ul>
+</section>
+<section class="hm-tins">
+<h2 class="hm-h2">Teeth whitening powder, four ways.</h2>
+<div class="hm-tin-grid"><a class="hm-tin" href="#/product/teeth-whitening-powder"><img src="images/products/oralcare-whitening-front-sm.webp" alt="Teeth whitening powder, Original" loading="lazy" decoding="async"/><span class="hm-tin-name">Original</span><span class="hm-tin-price">Rs 1400</span></a><a class="hm-tin" href="#/product/teeth-whitening-mint"><img src="images/products/oralcare-mint-front-sm.webp" alt="Teeth whitening powder, Mint" loading="lazy" decoding="async"/><span class="hm-tin-name">Mint</span><span class="hm-tin-price">Rs 1400</span></a><a class="hm-tin" href="#/product/teeth-whitening-clove"><img src="images/products/oralcare-clove-front-sm.webp" alt="Teeth whitening powder, Clove" loading="lazy" decoding="async"/><span class="hm-tin-name">Clove</span><span class="hm-tin-price">Rs 1400</span></a><a class="hm-tin" href="#/product/teeth-whitening-charcoal"><img src="images/products/oralcare-charcoal-front-sm.webp" alt="Teeth whitening powder, Charcoal" loading="lazy" decoding="async"/><span class="hm-tin-name">Charcoal</span><span class="hm-tin-price">Rs 1500</span></a></div>
+</section>
+<section class="hm-facts">
+<div><strong>Cash on delivery</strong><span>Pay the rider when your parcel arrives.</span></div>
+<div><strong>Free delivery</strong><span>On orders of Rs 10,000 or more.</span></div>
+<div><strong>3–5 days</strong><span>Usual delivery time across Pakistan.</span></div>
+<div><strong>Organic and vegan</strong><span>All our products are also gluten-free.</span></div>
+</section>
+<section class="hm-ask">
+<h2 class="hm-h2">Not sure which one to pick?</h2>
+<p>Tell us how you are feeling and we will point you to the right blend.</p>
+<a class="hm-btn hm-btn-solid" href="https://wa.me/923009236520" rel="noopener" target="_blank">Message us on WhatsApp</a>
+<a class="hm-all" href="#/shop">Or see every product</a>
+</section>
 </div></template>
 
 <!-- ===== PAGE: Shop  (address: #/shop) ===== -->
@@ -2607,6 +2677,17 @@ async function validateCoupon(rawCode, items) {
   }
   return { ok: true, coupon, message: "Code applied \u2014 you save " + rs(totals.discount) + "." };
 }
+// Talks to the "pay" function in Supabase (supabase/functions/pay). Needs the online-payment setup, see SETUP.md Part H.
+async function payCall(action, orderId) {
+  const r = await fetch(SUPABASE_URL + "/functions/v1/pay", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY },
+    body: JSON.stringify({ action, order_id: orderId })
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || "Payment service unavailable.");
+  return d;
+}
 async function createOrder({ items, shipping, paymentMethod, paymentRef, coupon, totals }) {
   const { data, error } = await sb.rpc("place_order", {
     p_items: items.map(function(it) {
@@ -2914,6 +2995,7 @@ var PAYMENT_LABELS = {
   BANK: "Bank Transfer",
   EASYPAISA: "Easypaisa",
   JAZZCASH: "JazzCash",
+  ONLINE: "Online payment (card / wallet)",
   CARD: "Card (legacy)"
 };
 function formatDate(ts) {
@@ -5191,6 +5273,17 @@ async function mount2(ctx) {
         }
       }
       localStorage.removeItem("hygies_cart");
+      if (method.type === "online") {
+        try {
+          const pay = await payCall("start", result.id);
+          if (pay.url) {
+            window.location.href = pay.url;
+            return;
+          }
+        } catch (e) {
+          console.error("Could not open the payment page:", e.message);
+        }
+      }
       window.location.href = "#/order-confirmed?order=" + result.id;
     } catch (error) {
       console.error("Order creation failed:", error.message);
@@ -5315,7 +5408,36 @@ async function mount4(ctx) {
     const s = order.shipping;
     document.getElementById("orderShippingDetails").innerHTML = "<strong>" + esc(s.firstName) + " " + esc(s.lastName) + "</strong><br>" + esc(s.street) + "<br>" + esc(s.city) + ", " + esc(s.country) + "<br>" + esc(s.phone) + "<br>" + esc(s.email);
     document.getElementById("orderPaymentMethod").textContent = PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod;
-    document.getElementById("orderPaymentStatus").textContent = order.paymentStatus || "Pay on delivery";
+    const payStatusEl = document.getElementById("orderPaymentStatus");
+    payStatusEl.textContent = order.paymentStatus || "Pay on delivery";
+    if (order.paymentMethod === "ONLINE" && order.paymentStatus !== "Paid") {
+      const payBtn = document.createElement("button");
+      payBtn.type = "button";
+      payBtn.className = "copy-btn";
+      payBtn.style.marginLeft = "10px";
+      payBtn.textContent = "Pay now";
+      payBtn.onclick = async function() {
+        payBtn.disabled = true;
+        try {
+          const r = await payCall("start", order.id);
+          if (r.url) window.location.href = r.url;
+          else if (r.paid) {
+            payStatusEl.textContent = "Paid";
+            payBtn.remove();
+          } else payBtn.disabled = false;
+        } catch (e) {
+          alert(e.message);
+          payBtn.disabled = false;
+        }
+      };
+      payStatusEl.after(payBtn);
+      payCall("verify", order.id).then(function(r) {
+        if (r.paid) {
+          payStatusEl.textContent = "Paid";
+          payBtn.remove();
+        }
+      }).catch(function() {});
+    }
     document.getElementById("orderSubtotal").textContent = money(order.subtotal);
     if (order.discount > 0) {
       document.getElementById("orderDiscountRow").style.display = "flex";
