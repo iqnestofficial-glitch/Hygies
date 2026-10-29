@@ -148,13 +148,13 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 .hm-rev-text { margin: 0 0 20px; font-size: 1.04rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
 .hm-rev-by { margin-top: auto; font-weight: 600; }
 .hm-rev-by small { display: block; font-weight: 400; color: var(--bark); }
-/* reviews strip: tilted like the ticker, cards drift sideways; second row runs the other way */
-.hm-rv { padding: 76px 0 28px; overflow: hidden; }
+/* reviews: a slanted window; rows slide straight across it, cards are cut by the diagonal edges */
+.hm-rv { padding: 76px 0 40px; }
 .hm-rv-head { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-.hm-rv-tilt { padding: 22px 0; display: grid; gap: 4px; }
-.hm-rv-row { overflow: hidden; position: relative; }
+.hm-rv-win { --sl: 70px; position: relative; overflow: hidden; background: var(--ink); clip-path: polygon(0 var(--sl), 100% 0, 100% calc(100% - var(--sl)), 0 100%); }
+.hm-rv-row { position: absolute; left: 0; right: 0; will-change: transform; }
 .hm-rv-track { display: flex; align-items: flex-start; gap: 18px; padding-right: 18px; width: max-content; will-change: transform; }
-.hm-rv-card { flex: none; translate: 0 var(--y, 0px); width: 320px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
+.hm-rv-card { flex: none; width: 320px; min-height: 200px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
 .hm-rv-top { display: flex; align-items: center; gap: 12px; }
 .hm-av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; font-size: 1.1rem; background: var(--lime); color: var(--ink); flex: none; }
 .hm-av.c1 { background: var(--sun); } .hm-av.c2 { background: var(--mist); } .hm-av.c3 { background: var(--ink); color: var(--sun); }
@@ -230,6 +230,8 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
   .hm-facts-in { grid-template-columns: repeat(2, 1fr); }
   .hm-ask-card { grid-template-columns: 1fr; padding: 40px 26px 0; }
   .hm-pano-h { top: 9vh; }
+  .hm-rv-win { --sl: 36px; }
+  .hm-rv-card { width: 270px; }
   .hm-ask-art { min-height: 230px; }
 }
 @media (max-width: 560px) {
@@ -1269,9 +1271,9 @@ body.hy-bare #app { display: contents; }
 </section>
 <section class="hm-rv" id="hmRv" hidden>
 <div class="hm-rv-head"><h2 class="hm-h2" data-rv="split">In our customers&#39; words</h2></div>
-<div class="hm-rv-tilt">
+<div class="hm-rv-win" id="hmRvWin">
 <div class="hm-rv-row"><div class="hm-rv-track" id="hmRvA"></div></div>
-<div class="hm-rv-row hm-rv-rev" id="hmRvRowB"><div class="hm-rv-track" id="hmRvB"></div></div>
+<div class="hm-rv-row" id="hmRvRowB"><div class="hm-rv-track" id="hmRvB"></div></div>
 </div>
 </section>
 <section class="hm-tins">
@@ -2088,6 +2090,7 @@ function render() {
   document.body.setAttribute("data-view", view2);
   document.body.classList.toggle("hy-bare", bare);
   app.innerHTML = tpl ? tpl.innerHTML : "";
+  stopTitleScroll();
   document.title = meta.title || "Hygies";
   setMeta(meta.title, meta.desc, meta.ld);
   const ctx = { view: view2, params, query, app, root: app, bare, meta, setMeta };
@@ -4908,48 +4911,63 @@ function fillStrip(hm, good) {
     const ci = (name.charCodeAt(0) || 0) % 4;
     return '<article class="hm-rv-card"' + (hide ? ' aria-hidden="true"' : "") + '><div class="hm-rv-top"><span class="hm-av c' + ci + '">' + esc2(name.charAt(0).toUpperCase()) + '</span><span class="hm-rv-name">' + esc2(name) + (p ? "<small>on " + esc2(p.name) + "</small>" : "") + '</span></div><div class="hm-rev-stars" role="img" aria-label="' + r.rating + ' out of 5">' + [1, 2, 3, 4, 5].map((n) => star(n <= r.rating)).join("") + "</div><p>" + esc2(r.text.trim()) + "</p></article>";
   };
-  const rowsData = good.length >= 4 ? [good.filter((_, i) => i % 2 === 0), good.filter((_, i) => i % 2 === 1)] : [good];
+  // two rows; with fewer than 4 reviews the second row shows the same ones in reverse order
+  const rowsData = good.length >= 4 ? [good.filter((_, i) => i % 2 === 0), good.filter((_, i) => i % 2 === 1)] : [good, good.slice().reverse()];
   ["hmRvA", "hmRvB"].forEach((id, k) => {
     const track = hm.querySelector("#" + id);
     const items = rowsData[k];
-    if (!items) { hm.querySelector("#hmRvRowB").hidden = true; return; }
-    const reps = Math.max(1, Math.ceil((innerWidth * 1.4) / (items.length * 338)));
+    const reps = Math.max(1, Math.ceil((innerWidth * 1.4) / (items.length * (CARD_W() + 18))));
     const one = Array.from({ length: reps }, () => items).flat();
-    // cards stay upright (rotated text goes soft); the row itself climbs 13px per card, about 2.2 degrees
-    const html = (hide, off) => one.map((r, i) => card(r, hide).replace("<article ", '<article style="--y:' + -13 * (i + off) + 'px" ')).join("");
-    track.innerHTML = html(false, 0) + html(true, one.length);
-    track.dataset.w = one.length * 338;
+    track.innerHTML = one.map((r) => card(r, false)).join("") + one.map((r) => card(r, true)).join("");
   });
   sec.hidden = false;
   startStrip(hm, sec);
 }
-// the strip moves in whole pixels so text stays sharp (sub-pixel movement blurs it)
+const CARD_W = () => (innerWidth <= 560 ? 270 : 320);
+// rows move in whole pixels so text stays sharp (sub-pixel movement blurs it) and slide straight across the slanted window
 function startStrip(hm, sec) {
-  const rows = [...sec.querySelectorAll(".hm-rv-row")].filter((r) => !r.hidden).map((row, k) => ({ row, track: row.firstElementChild, W: +row.firstElementChild.dataset.w, pos: 0, dir: k ? -1 : 1, hover: false }));
-  const SLOPE = 13 / 338, SPEED = 55;
-  let seen = false, last = 0;
+  const win = sec.querySelector("#hmRvWin");
+  const rows = [...sec.querySelectorAll(".hm-rv-row")].map((row, k) => ({ row, track: row.firstElementChild, W: 0, pos: 0, dir: k ? -1 : 1, hover: false }));
+  const SPEED = 55;
+  let seen = false, last = 0, p = 0.5;
   function layout() {
-    const rise = Math.ceil((innerWidth * 1.25) / 338) * 13 + 13;
-    rows.forEach((o) => {
-      o.track.style.marginTop = rise + "px";
-      o.row.style.height = rise + o.track.firstElementChild.offsetHeight + 24 + "px";
-    });
+    const sl = parseFloat(getComputedStyle(win).getPropertyValue("--sl")) || 70;
+    const ch = rows[0].track.firstElementChild.offsetHeight;
+    const top1 = 34;
+    const top2 = top1 + ch + 30;
+    // the bottom row is always cut by the lower edge: about 45% shows on the right, a bit more on the left, never the whole card
+    win.style.height = Math.round(top2 + ch * 0.45 + sl) + "px";
+    rows[0].row.style.top = top1 + "px";
+    rows[1].row.style.top = top2 + "px";
+    rows.forEach((o) => { o.W = o.track.scrollWidth / 2; });
   }
   layout();
   addEventListener("resize", layout);
   rows.forEach((o) => { o.row.addEventListener("pointerenter", () => { o.hover = true; }); o.row.addEventListener("pointerleave", () => { o.hover = false; }); });
   const place = (o) => {
     const x = o.dir > 0 ? o.pos : o.W - o.pos;
-    o.track.style.transform = "translate3d(" + -Math.round(x) + "px," + Math.round(x * SLOPE) + "px,0)";
+    o.track.style.transform = "translate3d(" + -Math.round(x) + "px,0,0)";
   };
-  rows.forEach(place);
+  // parallax: while the section crosses the screen the rows drift up and down at different rates
+  const drift = () => {
+    rows[0].row.style.transform = "translate3d(0," + Math.round((0.5 - p) * 70) + "px,0)";
+    rows[1].row.style.transform = "translate3d(0," + Math.round((p - 0.5) * 56) + "px,0)";
+  };
+  const measureP = () => {
+    const r = sec.getBoundingClientRect();
+    p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
+  };
+  measureP(); drift(); rows.forEach(place);
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   new IntersectionObserver((es) => { seen = es[0].isIntersecting; }).observe(sec);
   (function frame(t) {
     if (!sec.isConnected) { removeEventListener("resize", layout); return; }
     const dt = Math.min(0.05, (t - last) / 1000 || 0);
     last = t;
-    if (seen) rows.forEach((o) => { if (!o.hover) { o.pos = (o.pos + SPEED * dt) % o.W; place(o); } });
+    if (seen) {
+      measureP(); drift();
+      rows.forEach((o) => { if (!o.hover) { o.pos = (o.pos + SPEED * dt) % o.W; } place(o); });
+    }
     requestAnimationFrame(frame);
   })(0);
 }
@@ -6023,15 +6041,24 @@ function common(ctx) {
     init3DTiltedCards(root);
     initScrollAnimations(root);
   }
-  const text = ctx.meta.marquee;
-  if (text) {
-    const longText = text + text;
-    let i = 0;
-    setInterval(() => {
-      document.title = longText.substring(i, i + 20);
-      i = i + 1 >= text.length ? 0 : i + 1;
-    }, 250);
-  }
+  startTitleScroll(ctx.meta.marquee, ctx.view);
+}
+// browser-tab title slides sideways one letter at a time; one timer only, stopped on every page change
+var titleTimer = 0;
+function stopTitleScroll() {
+  clearInterval(titleTimer);
+  titleTimer = 0;
+}
+function startTitleScroll(text, viewId) {
+  stopTitleScroll();
+  if (!text || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const loop = text + text + text;
+  let i = 0;
+  titleTimer = setInterval(() => {
+    if (document.body.getAttribute("data-view") !== viewId) { stopTitleScroll(); return; }
+    document.title = loop.substring(i, i + 26);
+    i = (i + 1) % text.length;
+  }, 160);
 }
 function view(id, fn) {
   registerView(id, { mount: (ctx) => {
