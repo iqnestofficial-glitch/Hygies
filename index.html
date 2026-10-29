@@ -148,20 +148,25 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 .hm-rev-text { margin: 0 0 20px; font-size: 1.04rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
 .hm-rev-by { margin-top: auto; font-weight: 600; }
 .hm-rev-by small { display: block; font-weight: 400; color: var(--bark); }
-/* reviews: a slanted window; rows slide straight across it, cards are cut by the diagonal edges */
+/* reviews: a slanted window with three depth layers. Scrolling drives all of them at different speeds:
+   a huge outlined word far back, outer columns of cards slow and dim, inner columns fast and bright, moving in opposite directions */
 .hm-rv { padding: 76px 0 40px; }
 .hm-rv-head { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-.hm-rv-win { --sl: 70px; position: relative; overflow: hidden; background: var(--ink); clip-path: polygon(0 var(--sl), 100% 0, 100% calc(100% - var(--sl)), 0 100%); }
-.hm-rv-row { position: absolute; left: 0; right: 0; will-change: transform; }
-.hm-rv-track { display: flex; align-items: flex-start; gap: 18px; padding-right: 18px; width: max-content; will-change: transform; }
-.hm-rv-card { flex: none; width: 320px; min-height: 200px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
+.hm-rv-win { --sl: 70px; position: relative; overflow: hidden; height: 720px; background: var(--ink); clip-path: polygon(0 var(--sl), 100% 0, 100% calc(100% - var(--sl)), 0 100%); }
+.hm-rv-bg { position: absolute; left: 0; top: 50%; translate: 0 -50%; white-space: nowrap; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.04em; font-size: clamp(9rem, 22vw, 20rem); line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(121, 185, 51, .28); will-change: transform; pointer-events: none; user-select: none; }
+.hm-rv-cols { position: absolute; inset: 0; display: flex; justify-content: center; gap: 22px; padding: 0 20px; }
+.hm-rv-col { position: relative; flex: none; width: 290px; }
+.hm-rv-col:nth-child(1), .hm-rv-col:nth-child(4) { opacity: .62; }
+.hm-rv-col:nth-child(2), .hm-rv-col:nth-child(3) { width: 320px; }
+.hm-rv-stack { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; gap: 22px; padding-bottom: 22px; will-change: transform; }
+.hm-rv-card { background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(0, 0, 0, .28); display: flex; flex-direction: column; gap: 12px; }
 .hm-rv-top { display: flex; align-items: center; gap: 12px; }
 .hm-av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; font-size: 1.1rem; background: var(--lime); color: var(--ink); flex: none; }
 .hm-av.c1 { background: var(--sun); } .hm-av.c2 { background: var(--mist); } .hm-av.c3 { background: var(--ink); color: var(--sun); }
 .hm-rv-name { font-weight: 600; line-height: 1.2; }
 .hm-rv-name small { display: block; font-weight: 400; font-size: .8rem; color: var(--bark); }
 .hm-rv-card .hm-rev-stars { margin: 0; }
-.hm-rv-card p { margin: 0; font-size: .95rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.hm-rv-card p { margin: 0; font-size: .95rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
 /* tins */
 .hm-tin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .hm-tin { display: block; }
@@ -214,6 +219,7 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 .hm.js .hm-fact.in > * { opacity: 1; translate: 0 0; }
 .hm.js .hm-ask-card { clip-path: inset(10% 7% 10% 7% round 90px); opacity: 0; transition: clip-path 1.2s cubic-bezier(.2, .8, .2, 1), opacity .6s ease; }
 .hm.js .hm-ask-card.in { clip-path: inset(0 0 0 0 round 40px); opacity: 1; }
+@media (max-width: 900px) { .hm-rv-col:nth-child(4) { display: none; } .hm-rv-col:nth-child(3) { opacity: .62; } }
 @media (max-width: 860px) {
   .hm-hero { grid-template-columns: 1fr; padding-top: 36px; }
   .hm-stage { margin: 0 6% 18px; }
@@ -230,8 +236,12 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
   .hm-facts-in { grid-template-columns: repeat(2, 1fr); }
   .hm-ask-card { grid-template-columns: 1fr; padding: 40px 26px 0; }
   .hm-pano-h { top: 9vh; }
-  .hm-rv-win { --sl: 36px; }
-  .hm-rv-card { width: 270px; }
+  .hm-rv-win { --sl: 36px; height: 600px; }
+  .hm-rv-col, .hm-rv-col:nth-child(2), .hm-rv-col:nth-child(3) { width: calc(50vw - 30px); }
+  .hm-rv-col:nth-child(n+3) { display: none; }
+  .hm-rv-col:nth-child(1) { opacity: .62; }
+  .hm-rv-cols { gap: 14px; }
+  .hm-rv-card { padding: 16px; } .hm-rv-card p { font-size: .88rem; -webkit-line-clamp: 8; }
   .hm-ask-art { min-height: 230px; }
 }
 @media (max-width: 560px) {
@@ -1272,8 +1282,8 @@ body.hy-bare #app { display: contents; }
 <section class="hm-rv" id="hmRv" hidden>
 <div class="hm-rv-head"><h2 class="hm-h2" data-rv="split">In our customers&#39; words</h2></div>
 <div class="hm-rv-win" id="hmRvWin">
-<div class="hm-rv-row"><div class="hm-rv-track" id="hmRvA"></div></div>
-<div class="hm-rv-row" id="hmRvRowB"><div class="hm-rv-track" id="hmRvB"></div></div>
+<div class="hm-rv-bg" id="hmRvBg" aria-hidden="true"><span>kind words &nbsp; kind words &nbsp; kind words &nbsp; kind words &nbsp; </span></div>
+<div class="hm-rv-cols" id="hmRvCols"></div>
 </div>
 </section>
 <section class="hm-tins">
@@ -4911,52 +4921,51 @@ function fillStrip(hm, good) {
     const ci = (name.charCodeAt(0) || 0) % 4;
     return '<article class="hm-rv-card"' + (hide ? ' aria-hidden="true"' : "") + '><div class="hm-rv-top"><span class="hm-av c' + ci + '">' + esc2(name.charAt(0).toUpperCase()) + '</span><span class="hm-rv-name">' + esc2(name) + (p ? "<small>on " + esc2(p.name) + "</small>" : "") + '</span></div><div class="hm-rev-stars" role="img" aria-label="' + r.rating + ' out of 5">' + [1, 2, 3, 4, 5].map((n) => star(n <= r.rating)).join("") + "</div><p>" + esc2(r.text.trim()) + "</p></article>";
   };
-  // two rows; with fewer than 4 reviews the second row shows the same ones in reverse order
-  const rowsData = good.length >= 4 ? [good.filter((_, i) => i % 2 === 0), good.filter((_, i) => i % 2 === 1)] : [good, good.slice().reverse()];
-  ["hmRvA", "hmRvB"].forEach((id, k) => {
-    const track = hm.querySelector("#" + id);
-    const items = rowsData[k];
-    const reps = Math.max(1, Math.ceil((innerWidth * 1.4) / (items.length * (CARD_W() + 18))));
-    const one = Array.from({ length: reps }, () => items).flat();
-    track.innerHTML = one.map((r) => card(r, false)).join("") + one.map((r) => card(r, true)).join("");
-  });
+  // four columns; each takes the reviews in a different order so neighbours rarely show the same card
+  const cols = hm.querySelector("#hmRvCols");
+  const n = good.length;
+  const perCol = Math.max(5, Math.ceil(1100 / 200));
+  cols.innerHTML = [0, 1, 2, 3].map((c) => {
+    const items = Array.from({ length: perCol }, (_, i) => good[(i + c * 2 + (c % 2 ? Math.floor(n / 2) : 0)) % n]);
+    return '<div class="hm-rv-col"><div class="hm-rv-stack">' + items.map((r) => card(r, false)).join("") + items.map((r) => card(r, true)).join("") + "</div></div>";
+  }).join("");
   sec.hidden = false;
   startStrip(hm, sec);
 }
-const CARD_W = () => (innerWidth <= 560 ? 270 : 320);
-// scroll parallax: the rows are driven by scrolling, not by a timer. Scroll down and the top row slides left
-// while the bottom row slides right, at different speeds; scroll up and they run back. Whole pixels keep the text sharp.
+// scroll parallax: every column is driven by the scrollbar, not a timer. Whole pixels keep the text sharp.
 function startStrip(hm, sec) {
   const win = sec.querySelector("#hmRvWin");
-  const rows = [...sec.querySelectorAll(".hm-rv-row")].map((row, k) => ({ row, track: row.firstElementChild, W: 1, cur: 0, dir: k ? -1 : 1, k: k ? 0.7 : 1.1 }));
-  let seen = false;
+  const bg = sec.querySelector("#hmRvBg");
+  const SP = [0.35, -0.6, 0.85, -0.45];   // px per scrolled px; the sign is the direction
+  const PH = [0, 170, 60, 240];           // starting offsets so the columns do not line up
+  const cols = [...sec.querySelectorAll(".hm-rv-stack")].map((stack, i) => ({ stack, H: 1, cur: 0, k: SP[i], ph: PH[i] }));
+  let seen = false, bgW = 1;
   function layout() {
-    const sl = parseFloat(getComputedStyle(win).getPropertyValue("--sl")) || 70;
-    const ch = rows[0].track.firstElementChild.offsetHeight;
-    const top1 = 34;
-    const top2 = top1 + ch + 30;
-    // the bottom row is always cut by the lower edge: about 45% shows on the right, a bit more on the left, never the whole card
-    win.style.height = Math.round(top2 + ch * 0.45 + sl) + "px";
-    rows[0].row.style.top = top1 + "px";
-    rows[1].row.style.top = top2 + "px";
-    rows.forEach((o) => { o.W = o.track.scrollWidth / 2; });
+    cols.forEach((o) => { o.H = o.stack.scrollHeight / 2; });
+    bgW = bg.firstElementChild.offsetWidth / 2;
   }
   layout();
   addEventListener("resize", layout);
-  const place = (o, target) => {
-    o.cur += (target - o.cur) * 0.14;
-    if (Math.abs(target - o.cur) < 0.4) o.cur = target;
-    const m = ((o.cur % o.W) + o.W) % o.W;
-    const tx = o.dir > 0 ? -m : m - o.W;
-    o.track.style.transform = "translate3d(" + Math.round(tx) + "px,0,0)";
+  const target = (o) => scrollY * o.k + o.ph;
+  const place = (o, t) => {
+    o.cur += (t - o.cur) * 0.14;
+    if (Math.abs(t - o.cur) < 0.4) o.cur = t;
+    const m = ((o.cur % o.H) + o.H) % o.H;
+    o.stack.style.transform = "translate3d(0," + Math.round(o.k > 0 ? -m : m - o.H) + "px,0)";
   };
-  rows.forEach((o) => place(o, scrollY * o.k));
-  rows.forEach((o) => { o.cur = scrollY * o.k; });
+  let bgCur = 0;
+  const placeBg = (t) => {
+    bgCur += (t - bgCur) * 0.14;
+    bg.style.transform = "translate3d(" + -Math.round(((bgCur % bgW) + bgW) % bgW) + "px,0,0)";
+  };
+  cols.forEach((o) => { o.cur = target(o); place(o, target(o)); });
+  bgCur = scrollY * 0.3; placeBg(bgCur);
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   new IntersectionObserver((es) => { seen = es[0].isIntersecting; }).observe(sec);
   (function frame() {
     if (!sec.isConnected) { removeEventListener("resize", layout); return; }
-    rows.forEach((o) => { if (seen) place(o, scrollY * o.k); else o.cur = scrollY * o.k; });
+    cols.forEach((o) => { if (seen) place(o, target(o)); else o.cur = target(o); });
+    if (seen) placeBg(scrollY * 0.3);
     requestAnimationFrame(frame);
   })();
 }
