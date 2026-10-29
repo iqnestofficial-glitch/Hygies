@@ -152,7 +152,8 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
    a huge outlined word far back, outer columns of cards slow and dim, inner columns fast and bright, moving in opposite directions */
 .hm-rv { padding: 76px 0 40px; }
 .hm-rv-head { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-.hm-rv-win { --sl: 50px; position: relative; height: 430px; background: var(--ink); clip-path: polygon(0 var(--sl), 100% 0, 100% calc(100% - var(--sl)), 0 100%); }
+/* the window is a leaf: two opposite corners are fully round, the other two sharp; the round corners swell as it reaches the middle of the screen */
+.hm-rv-win { position: relative; height: 430px; margin: 0 2.5vw; background: var(--ink); clip-path: inset(0 round 215px 0 215px 0); }
 .hm-rv-fix { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; }
 .hm-rv-bg { position: absolute; left: 0; top: 50%; translate: 0 -50%; white-space: nowrap; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.04em; font-size: clamp(9rem, 22vw, 20rem); line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(121, 185, 51, .28); will-change: transform; pointer-events: none; user-select: none; }
 .hm-rv-cols { position: absolute; inset: 0; display: flex; justify-content: center; gap: 22px; padding: 0 20px; }
@@ -237,7 +238,7 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
   .hm-facts-in { grid-template-columns: repeat(2, 1fr); }
   .hm-ask-card { grid-template-columns: 1fr; padding: 40px 26px 0; }
   .hm-pano-h { top: 9vh; }
-  .hm-rv-win { --sl: 30px; height: 380px; }
+  .hm-rv-win { height: 380px; margin: 0 14px; clip-path: inset(0 round 190px 0 190px 0); }
   .hm-rv-col, .hm-rv-col:nth-child(2), .hm-rv-col:nth-child(3) { width: calc(50vw - 30px); }
   .hm-rv-col:nth-child(n+3) { display: none; }
   .hm-rv-col:nth-child(1) { opacity: .62; }
@@ -4949,6 +4950,13 @@ function startStrip(hm, sec) {
   }
   layout();
   addEventListener("resize", layout);
+  const win = sec.querySelector("#hmRvWin");
+  const leaf = () => {
+    const r = win.getBoundingClientRect();
+    const q = 1 - Math.min(1, Math.abs((r.top + r.height / 2) / innerHeight - 0.5) * 2);
+    const R = Math.round(70 + (r.height / 2 - 70) * q);
+    win.style.clipPath = "inset(0 round " + R + "px 0 " + R + "px 0)";
+  };
   const draw = () => {
     cols.forEach((o) => {
       const m = ((o.pos % o.H) + o.H) % o.H;
@@ -4966,6 +4974,7 @@ function startStrip(hm, sec) {
     if (seen) {
       cols.forEach((o) => { o.pos += Math.abs(o.v) * dt; });
       bgPos += 22 * dt;
+      leaf();
       draw();
     }
     requestAnimationFrame(frame);
