@@ -151,12 +151,10 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 /* reviews strip: tilted like the ticker, cards drift sideways; second row runs the other way */
 .hm-rv { padding: 76px 0 28px; overflow: hidden; }
 .hm-rv-head { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-.hm-rv-tilt { rotate: -2.2deg; margin: 0 -6%; padding: 22px 0; display: grid; gap: 18px; }
-.hm-rv-row { overflow: hidden; padding: 8px 0 14px; }
-.hm-rv-track { display: flex; gap: 18px; padding-right: 18px; width: max-content; animation: hmTick var(--dur, 60s) linear infinite; }
-.hm-rv-rev .hm-rv-track { animation-direction: reverse; }
-.hm-rv-row:hover .hm-rv-track { animation-play-state: paused; }
-.hm-rv-card { flex: none; width: 320px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
+.hm-rv-tilt { padding: 22px 0; display: grid; gap: 4px; }
+.hm-rv-row { overflow: hidden; position: relative; }
+.hm-rv-track { display: flex; align-items: flex-start; gap: 18px; padding-right: 18px; width: max-content; will-change: transform; }
+.hm-rv-card { flex: none; translate: 0 var(--y, 0px); width: 320px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
 .hm-rv-top { display: flex; align-items: center; gap: 12px; }
 .hm-av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; font-size: 1.1rem; background: var(--lime); color: var(--ink); flex: none; }
 .hm-av.c1 { background: var(--sun); } .hm-av.c2 { background: var(--mist); } .hm-av.c3 { background: var(--ink); color: var(--sun); }
@@ -243,7 +241,6 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 @media (prefers-reduced-motion: reduce) {
   .hm-box { bottom: 0 !important; } .hm-stage { opacity: 1; }
   .hm-band-track, .hm-pk.on, .hm-fl, .hm-pulse { animation: none; }
-  .hm-rv-track { animation: none; } .hm-rv-row { overflow-x: auto; }
   .hm-pano-stick { position: static; height: auto; }
   .hm-pano-win { position: relative; clip-path: none; padding: 40px 0; border-radius: 36px; margin: 0 2vw; }
   .hm-pano-h { position: static; padding: 0 6vw 24px; }
@@ -4918,10 +4915,43 @@ function fillStrip(hm, good) {
     if (!items) { hm.querySelector("#hmRvRowB").hidden = true; return; }
     const reps = Math.max(1, Math.ceil((innerWidth * 1.4) / (items.length * 338)));
     const one = Array.from({ length: reps }, () => items).flat();
-    track.innerHTML = one.map((r) => card(r, false)).join("") + one.map((r) => card(r, true)).join("");
-    track.style.setProperty("--dur", Math.round((one.length * 338) / 55) + "s");
+    // cards stay upright (rotated text goes soft); the row itself climbs 13px per card, about 2.2 degrees
+    const html = (hide, off) => one.map((r, i) => card(r, hide).replace("<article ", '<article style="--y:' + -13 * (i + off) + 'px" ')).join("");
+    track.innerHTML = html(false, 0) + html(true, one.length);
+    track.dataset.w = one.length * 338;
   });
   sec.hidden = false;
+  startStrip(hm, sec);
+}
+// the strip moves in whole pixels so text stays sharp (sub-pixel movement blurs it)
+function startStrip(hm, sec) {
+  const rows = [...sec.querySelectorAll(".hm-rv-row")].filter((r) => !r.hidden).map((row, k) => ({ row, track: row.firstElementChild, W: +row.firstElementChild.dataset.w, pos: 0, dir: k ? -1 : 1, hover: false }));
+  const SLOPE = 13 / 338, SPEED = 55;
+  let seen = false, last = 0;
+  function layout() {
+    const rise = Math.ceil((innerWidth * 1.25) / 338) * 13 + 13;
+    rows.forEach((o) => {
+      o.track.style.marginTop = rise + "px";
+      o.row.style.height = rise + o.track.firstElementChild.offsetHeight + 24 + "px";
+    });
+  }
+  layout();
+  addEventListener("resize", layout);
+  rows.forEach((o) => { o.row.addEventListener("pointerenter", () => { o.hover = true; }); o.row.addEventListener("pointerleave", () => { o.hover = false; }); });
+  const place = (o) => {
+    const x = o.dir > 0 ? o.pos : o.W - o.pos;
+    o.track.style.transform = "translate3d(" + -Math.round(x) + "px," + Math.round(x * SLOPE) + "px,0)";
+  };
+  rows.forEach(place);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  new IntersectionObserver((es) => { seen = es[0].isIntersecting; }).observe(sec);
+  (function frame(t) {
+    if (!sec.isConnected) { removeEventListener("resize", layout); return; }
+    const dt = Math.min(0.05, (t - last) / 1000 || 0);
+    last = t;
+    if (seen) rows.forEach((o) => { if (!o.hover) { o.pos = (o.pos + SPEED * dt) % o.W; place(o); } });
+    requestAnimationFrame(frame);
+  })(0);
 }
 async function loadPano(hm) {
   const pano = hm.querySelector("#hmPano");
