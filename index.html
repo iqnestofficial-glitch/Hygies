@@ -148,6 +148,22 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 .hm-rev-text { margin: 0 0 20px; font-size: 1.04rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
 .hm-rev-by { margin-top: auto; font-weight: 600; }
 .hm-rev-by small { display: block; font-weight: 400; color: var(--bark); }
+/* reviews strip: tilted like the ticker, cards drift sideways; second row runs the other way */
+.hm-rv { padding: 76px 0 28px; overflow: hidden; }
+.hm-rv-head { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+.hm-rv-tilt { rotate: -2.2deg; margin: 0 -6%; padding: 22px 0; display: grid; gap: 18px; }
+.hm-rv-row { overflow: hidden; padding: 8px 0 14px; }
+.hm-rv-track { display: flex; gap: 18px; padding-right: 18px; width: max-content; animation: hmTick var(--dur, 60s) linear infinite; }
+.hm-rv-rev .hm-rv-track { animation-direction: reverse; }
+.hm-rv-row:hover .hm-rv-track { animation-play-state: paused; }
+.hm-rv-card { flex: none; width: 320px; background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 6px 22px rgba(18, 58, 27, .1); display: flex; flex-direction: column; gap: 12px; }
+.hm-rv-top { display: flex; align-items: center; gap: 12px; }
+.hm-av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; font-size: 1.1rem; background: var(--lime); color: var(--ink); flex: none; }
+.hm-av.c1 { background: var(--sun); } .hm-av.c2 { background: var(--mist); } .hm-av.c3 { background: var(--ink); color: var(--sun); }
+.hm-rv-name { font-weight: 600; line-height: 1.2; }
+.hm-rv-name small { display: block; font-weight: 400; font-size: .8rem; color: var(--bark); }
+.hm-rv-card .hm-rev-stars { margin: 0; }
+.hm-rv-card p { margin: 0; font-size: .95rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 /* tins */
 .hm-tin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .hm-tin { display: block; }
@@ -227,6 +243,7 @@ body:has(.hm) footer.mt-5 { margin-top: 0 !important; }
 @media (prefers-reduced-motion: reduce) {
   .hm-box { bottom: 0 !important; } .hm-stage { opacity: 1; }
   .hm-band-track, .hm-pk.on, .hm-fl, .hm-pulse { animation: none; }
+  .hm-rv-track { animation: none; } .hm-rv-row { overflow-x: auto; }
   .hm-pano-stick { position: static; height: auto; }
   .hm-pano-win { position: relative; clip-path: none; padding: 40px 0; border-radius: 36px; margin: 0 2vw; }
   .hm-pano-h { position: static; padding: 0 6vw 24px; }
@@ -1251,6 +1268,13 @@ body.hy-bare #app { display: contents; }
 </span>
 <span class="hm-cap"><span class="hm-cap-name" id="hmCapName">Flu &amp; fever</span><span class="hm-cap-price" id="hmCapPrice">Rs 1200</span></span>
 </a>
+</div>
+</section>
+<section class="hm-rv" id="hmRv" hidden>
+<div class="hm-rv-head"><h2 class="hm-h2" data-rv="split">In our customers&#39; words</h2></div>
+<div class="hm-rv-tilt">
+<div class="hm-rv-row"><div class="hm-rv-track" id="hmRvA"></div></div>
+<div class="hm-rv-row hm-rv-rev" id="hmRvRowB"><div class="hm-rv-track" id="hmRvB"></div></div>
 </div>
 </section>
 <section class="hm-tins">
@@ -4877,13 +4901,36 @@ function esc2(s) {
 }
 // reviews window: shows real 4 and 5 star reviews from the database; stays hidden until there are at least 3
 const HM_PANO = { ready: false };
+function fillStrip(hm, good) {
+  const sec = hm.querySelector("#hmRv");
+  if (!sec || !good.length) return;
+  const star = (on) => '<svg viewBox="0 0 24 24" class="' + (on ? "" : "off") + '"><path d="M12 2l3 6.9 7.5.7-5.7 5 1.7 7.4L12 18l-6.5 4 1.7-7.4-5.7-5 7.5-.7z"/></svg>';
+  const card = (r, hide) => {
+    const p = products_default.find((x) => x.key === r.product_key);
+    const name = (r.author || "Customer").trim();
+    const ci = (name.charCodeAt(0) || 0) % 4;
+    return '<article class="hm-rv-card"' + (hide ? ' aria-hidden="true"' : "") + '><div class="hm-rv-top"><span class="hm-av c' + ci + '">' + esc2(name.charAt(0).toUpperCase()) + '</span><span class="hm-rv-name">' + esc2(name) + (p ? "<small>on " + esc2(p.name) + "</small>" : "") + '</span></div><div class="hm-rev-stars" role="img" aria-label="' + r.rating + ' out of 5">' + [1, 2, 3, 4, 5].map((n) => star(n <= r.rating)).join("") + "</div><p>" + esc2(r.text.trim()) + "</p></article>";
+  };
+  const rowsData = good.length >= 4 ? [good.filter((_, i) => i % 2 === 0), good.filter((_, i) => i % 2 === 1)] : [good];
+  ["hmRvA", "hmRvB"].forEach((id, k) => {
+    const track = hm.querySelector("#" + id);
+    const items = rowsData[k];
+    if (!items) { hm.querySelector("#hmRvRowB").hidden = true; return; }
+    const reps = Math.max(1, Math.ceil((innerWidth * 1.4) / (items.length * 338)));
+    const one = Array.from({ length: reps }, () => items).flat();
+    track.innerHTML = one.map((r) => card(r, false)).join("") + one.map((r) => card(r, true)).join("");
+    track.style.setProperty("--dur", Math.round((one.length * 338) / 55) + "s");
+  });
+  sec.hidden = false;
+}
 async function loadPano(hm) {
   const pano = hm.querySelector("#hmPano");
   if (!pano) return;
   try {
     const { data, error } = await sb.from("reviews").select("*").gte("rating", 4).order("created_at", { ascending: false }).limit(12);
     if (error) throw error;
-    const good = (data || []).filter((r) => (r.text || "").trim().length >= 20);
+    const good = (data || []).filter((r) => (r.text || "").trim().length >= 10);
+    if (hm.isConnected) fillStrip(hm, good);
     if (good.length < 3 || !pano.isConnected) return;
     const star = (on) => '<svg viewBox="0 0 24 24" class="' + (on ? "" : "off") + '"><path d="M12 2l3 6.9 7.5.7-5.7 5 1.7 7.4L12 18l-6.5 4 1.7-7.4-5.7-5 7.5-.7z"/></svg>';
     hm.querySelector("#hmPanoTrack").innerHTML = good.map((r) => {
