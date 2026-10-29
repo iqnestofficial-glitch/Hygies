@@ -5360,15 +5360,28 @@ function mountProduct(ctx) {
     next.style.display = "none";
     thumbs.style.display = "none";
   }
-  tbtn.forEach((t, i) => t.addEventListener("click", () => { idx = i; show(); }));
-  prev.addEventListener("click", () => {
-    idx = (idx - 1 + p.gallery.length) % p.gallery.length;
-    show();
-  });
-  next.addEventListener("click", () => {
-    idx = (idx + 1) % p.gallery.length;
-    show();
-  });
+  // pictures also change by themselves every 4s; pointing at the gallery pauses, any click restarts the count
+  let auto = 0, hold = false;
+  const stopAuto = () => clearInterval(auto);
+  const startAuto = () => {
+    stopAuto();
+    if (p.gallery.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    auto = setInterval(() => {
+      if (!frame.isConnected) return stopAuto();
+      if (hold || document.hidden) return;
+      idx = (idx + 1) % p.gallery.length;
+      show();
+    }, 4000);
+  };
+  const gal = root.querySelector(".pd-gallery");
+  gal.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hold = true; });
+  gal.addEventListener("pointerleave", () => { hold = false; });
+  track(stopAuto);
+  const go2 = (n) => { idx = (n + p.gallery.length) % p.gallery.length; show(); startAuto(); };
+  tbtn.forEach((t, i) => t.addEventListener("click", () => go2(i)));
+  prev.addEventListener("click", () => go2(idx - 1));
+  next.addEventListener("click", () => go2(idx + 1));
+  startAuto();
   const info = hygiesResolveProduct(p.fullTitle);
   if (info) {
     root.querySelector("#pdCat").textContent = info.category;
