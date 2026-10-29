@@ -1072,6 +1072,94 @@ body.hy-bare #app { display: contents; }
 .hy-calc-output .hy-calc-days small{font-size: 13px; font-weight: 700; color: var(--hy-muted);}
 .hy-calc-output .hy-calc-note{font-size: 11.5px; color: var(--hy-muted); margin-top: 6px;}
 @media (max-width: 767px) {.hy-info-card{margin-bottom: 18px;}}
+
+/* ===== Product page ===== */
+body .sproduct.container{--pd-ink:#123a1b;--pd-lime:#79b933;--pd-mist:#e3edd0;width:100% !important;max-width:1180px !important;margin:28px auto 0 !important;background:transparent !important;padding-top:0 !important;text-align:left !important}
+body .sproduct .row{margin-top:0 !important;align-items:flex-start}
+body .sproduct .col-lg-6:first-child{padding:0 28px 0 12px !important;margin-bottom:24px}
+body .sproduct .col-lg-6:last-child{padding:4px 12px 0 28px !important}
+.pd-gallery{text-align:left}
+@media (min-width:992px){.pd-gallery{position:sticky;top:24px}}
+body .sproduct .pd-frame{position:relative;width:100% !important;margin:0 !important;aspect-ratio:5/4;overflow:hidden;border-radius:26px;background:#fff;border:1px solid #e3edd0;box-shadow:0 30px 50px -34px rgba(18,58,27,.45)}
+.pd-frame::before{content:"";position:absolute;inset:-30px;background:var(--bgimg) center/cover;filter:blur(26px) saturate(1.15);transition:opacity .25s ease}
+.pd-frame #MainImg{z-index:1;position:absolute;inset:0;width:100% !important;height:100% !important;object-fit:contain !important;transition:opacity .25s ease}
+.pd-frame #MainImg.swap{opacity:0}
+.pd-thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding:2px 2px 6px}
+.pd-frame .product-slider-arrow{z-index:2}
+.pd-thumb{flex:0 0 72px;height:72px;padding:0 !important;border:1.5px solid #e3edd0 !important;border-radius:14px !important;background:#fff !important;overflow:hidden;cursor:pointer;opacity:.7;transition:opacity .2s ease,border-color .2s ease,transform .2s ease}
+.pd-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pd-thumb:hover{opacity:1;transform:translateY(-2px)}
+.pd-thumb.on{opacity:1;border-color:#123a1b !important;box-shadow:0 0 0 3px rgba(121,185,51,.28)}
+.pd-cat{display:inline-block;margin:0 0 6px;padding:5px 13px;border-radius:99px;background:#e3edd0;color:#123a1b;font-size:13px;font-weight:600}
+.pd-cat:empty{display:none}
+body .sproduct .product-main-title{font-family:Bricolage,Poppins,sans-serif;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-size:clamp(1.7rem,3.2vw,2.5rem);color:#123a1b;padding:4px 0 8px !important}
+body .sproduct .price-row{margin-bottom:22px !important}
+body .sproduct .price-row .price{font-family:Bricolage,Poppins,sans-serif;font-size:2.1rem !important;font-weight:800 !important;letter-spacing:-.03em;color:#123a1b !important;line-height:1}
+body .sproduct .original-crossed-price{order:2}
+body .sproduct .original-crossed-price del{font-size:1.05rem;font-weight:500;color:#8a948a !important;opacity:1}
+body .sproduct .original-crossed-price{font-size:1.05rem !important;color:#8a948a !important}
+body .sproduct .price-row{flex-wrap:wrap;gap:6px 14px}
+.pd-save{order:3;padding:4px 11px;border-radius:99px;background:#f2d21f;color:#123a1b;font-size:13px;font-weight:700}
+.pd-save:empty{display:none}
+body .sproduct .size-heading .section-sub-label{font-family:Poppins,sans-serif;font-weight:600;color:#123a1b}
+body .weight-block{display:flex;flex-direction:column;gap:1px;border:1.5px solid #d9e4c6;border-radius:16px;padding:13px 16px;background:#fff;color:#2c3e50;text-align:left;font-family:Poppins,sans-serif;line-height:1.3;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease,background-color .2s ease}
+body .weight-block:hover{border-color:#79b933;transform:translateY(-2px)}
+body .weight-block.active{border:1.5px solid #123a1b !important;background:#f3f8e8 !important;color:#123a1b !important;padding:13px 16px;box-shadow:0 0 0 3px rgba(121,185,51,.28)}
+.weight-block .pd-bw{font-family:Bricolage,Poppins,sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.weight-block .pd-bp{font-size:14px;font-weight:600}
+.weight-block .pd-bo{font-size:12px;color:#4c8a1f;font-weight:600}
+body .weight-block.full-width-block{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding-left:16px}
+body .purchase-actions-row{height:54px !important}
+body .qty-stepper-box{border:1.5px solid #d9e4c6 !important;border-radius:16px !important;width:150px !important;background:#fff !important}
+body .stepper-btn{font-size:20px;color:#123a1b !important}
+body .stepper-btn:hover{background:#f3f8e8 !important}
+body .addcart-product-page-btn{border-radius:16px !important;background:#123a1b !important;letter-spacing:.5px !important;font-size:14px !important;transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease !important}
+body .addcart-product-page-btn:hover{background:#79b933 !important;transform:translateY(-2px);box-shadow:0 8px 20px -8px rgba(105,163,43,.7) !important}
+body .addcart-product-page-btn:active{transform:none}
+body .hy2-heart{border-radius:16px !important;border-color:#d9e4c6}
+.pd-trust{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px 22px}
+.pd-trust li{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;color:#2c3e50}
+.pd-trust svg{color:#4c8a1f;flex:none}
+/* details */
+body .pd-details{width:100%;max-width:1180px;margin:34px auto 12px;padding:0 12px;box-sizing:border-box;text-align:left}
+.pd-sub{margin:0 0 12px;font-size:15px;color:#4a5d4a;line-height:1.5}
+.pd-sub:empty{display:none}
+.pd-about{display:grid;grid-template-columns:1.35fr 1fr;gap:44px;padding:44px;border-radius:30px;background:#123a1b;color:#f4f6ec}
+.pd-h{font-family:Bricolage,Poppins,sans-serif;font-weight:800;letter-spacing:-.03em;font-size:clamp(1.8rem,3vw,2.4rem);line-height:1;margin:0 0 18px;color:#fff}
+.pd-about .product-description-body{display:block;font-size:1.04rem;line-height:1.8;color:rgba(244,246,236,.86);max-width:58ch;text-align:left}
+.pd-good{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.pd-good:empty{display:none}
+.pd-good span{padding:6px 14px;border-radius:99px;border:1px solid rgba(121,185,51,.55);background:rgba(121,185,51,.12);color:#e9f6cf;font-size:13px;text-transform:capitalize}
+.pd-good .pd-good-l{border:none;background:none;padding:6px 4px 6px 0;color:#f2d21f;font-weight:700;text-transform:none}
+.pd-facts{margin:0;align-self:center}
+.pd-facts>div{display:grid;grid-template-columns:90px 1fr;gap:14px;padding:15px 0;border-top:1px solid rgba(244,246,236,.16)}
+.pd-facts>div:first-child{border-top:none}
+.pd-facts dt{font-weight:600;color:#f2d21f;font-size:13.5px}
+.pd-facts dd{margin:0;font-size:14.5px;line-height:1.5;color:#f4f6ec}
+.pd-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.pd-pair .hy-info-card{border:none;border-radius:28px;padding:34px;box-shadow:0 24px 44px -34px rgba(18,58,27,.5);background:#fff}
+.pd-pair .hy-info-card-title{font-family:Bricolage,Poppins,sans-serif;text-transform:none;letter-spacing:-.02em;font-size:1.45rem;font-weight:800;color:#123a1b;margin-bottom:18px}
+.pd-pair .hy-badge-row{margin-bottom:6px}
+.pd-pair .hy-ingredient-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pd-pair .hy-ingredient-list li{border:none;padding:8px 14px 8px 12px;border-radius:99px;background:#f1f6e6;color:#123a1b;font-size:13.5px;font-weight:500;transition:background-color .2s ease,transform .2s ease}
+.pd-pair .hy-ingredient-list li:hover{background:#e3edd0;transform:translateY(-1px)}
+.pd-pair .hy-ingredient-search input{border-radius:14px;border:1.5px solid #d9e4c6;padding:11px 14px 11px 34px;font-size:13.5px}
+.pd-pair .hy-ingredient-search input:focus{border-color:#79b933;box-shadow:0 0 0 3px rgba(121,185,51,.2)}
+.pd-pair .hy-dosage-instructions{border-radius:18px;background:#f6f9ee;border:none;font-size:14px;line-height:1.7;padding:16px 18px;color:#2c3e50}
+.pd-pair .hy-calc-row label{text-transform:none;letter-spacing:0;font-size:13.5px;color:#2c3e50}
+.pd-pair .hy-calc-stepper{border:1.5px solid #d9e4c6;border-radius:14px}
+.pd-pair .hy-calc-output{border:none;border-radius:20px;background:#e3edd0;padding:22px 16px}
+.pd-pair .hy-calc-output .hy-calc-days{font-family:Bricolage,Poppins,sans-serif;font-size:3.2rem;letter-spacing:-.04em;color:#123a1b}
+.pd-pair .hy-calc-output .hy-calc-days small{font-family:Poppins,sans-serif;font-size:14px;color:#3d5a3a;letter-spacing:0}
+.pd-pair .hy-calc-output .hy-calc-note{font-size:12.5px;color:#3d5a3a}
+@media (max-width:991px){
+  body .sproduct .col-lg-6:first-child{padding:0 12px !important}
+  body .sproduct .col-lg-6:last-child{padding:8px 12px 0 !important}
+  .pd-about{grid-template-columns:1fr;gap:26px;padding:28px 22px;border-radius:24px}
+  .pd-pair{grid-template-columns:1fr}
+  .pd-pair .hy-info-card{padding:26px 22px;border-radius:24px}
+}
+@media (prefers-reduced-motion:reduce){.pd-frame #MainImg,.pd-thumb,body .weight-block,body .addcart-product-page-btn{transition:none !important}}
 </style>
 </head>
 <body>
@@ -1426,7 +1514,7 @@ body.hy-bare #app { display: contents; }
 <!-- ==========================================
            LEFT COLUMN: INTERACTIVE PRODUCT GALLERY
         ========================================== -->
-<div class="col-lg-6 col-md-12 col-12 text-center">
+<div class="col-lg-6 col-md-12 col-12 text-center"><div class="pd-gallery">
 <!-- Big Primary Showcase Image Box (Employs our sub-pixel overlay border patch) -->
 <div class="main-img-box" style="position: relative; width: 170%; margin-left: -60%; margin-top: 7%; aspect-ratio: 4/3; overflow: hidden; border-radius: 12px; background-color: #ffffff;">
 <img class="img-fluid w-100" id="MainImg" src="" style="position: absolute; top: 0; left: 0; width: 100.5% !important; height: 100% !important; object-fit: cover !important;" loading="lazy" decoding="async"/>
@@ -1462,16 +1550,20 @@ body.hy-bare #app { display: contents; }
                 .product-slider-arrow-left { left: 14px; }
                 .product-slider-arrow-right { right: 14px; }
             </style>
-</div>
+<div class="pd-thumbs" id="pdThumbs"></div>
+</div></div>
 <!-- ==========================================
            RIGHT COLUMN: YOUR CUSTOM CONTENT & PRICING
         ========================================== -->
 <div class="item col-lg-6 col-md-12 col-12" data-id="1">
+<div class="pd-cat" id="pdCat"></div>
 <h2 class="product-main-title py-2"></h2>
+<p class="pd-sub" id="pdSub"></p>
 <!-- Live Pricing Row (Synchronized to your active 250gm starting block) -->
 <div class="price-row d-flex align-items-center gap-3 mb-4">
 <h4 class="m-0 original-crossed-price"><del id="CrossedDisplay"></del></h4>
 <div class="price m-0" id="PriceDisplay"></div>
+<span class="pd-save" id="pdSave"></span>
 </div>
 <!-- Size Selection Title Header -->
 <div class="size-heading mb-2">
@@ -1489,18 +1581,21 @@ body.hy-bare #app { display: contents; }
 </div>
 <button class="addcart-product-page-btn ml-2" onclick="triggerProductPageAddToCart()">ADD TO CART</button>
 </div>
-<h4 class="mt-0 mb-0 details-heading-label">Product Details</h4>
-<span class="product-description-body"></span>
+<ul class="pd-trust" id="pdTrust"></ul>
 </div>
 </div>
-</section><section class="container hygies-product-extras my-4">
-<div class="row">
-<div class="col-lg-6 col-md-12 col-12 mb-4 d-flex">
+</section><section class="container pd-details hygies-product-extras">
+<div class="pd-about">
+<div class="pd-about-main">
+<h3 class="pd-h">Product Details</h3>
+<p class="product-description-body"></p>
+<div class="pd-good" id="pdGood"></div>
+</div>
+<dl class="pd-facts" id="pdFacts"></dl>
+</div>
+<div class="pd-pair">
 <div class="hy-info-card" id="hygiesAllergenCard"></div>
-</div>
-<div class="col-lg-6 col-md-12 col-12 mb-4 d-flex">
 <div class="hy-info-card" id="hygiesDosageCard"></div>
-</div>
 </div>
 </section><section class="my-5 pb-5" id="featured">
 <div class="container text-center mt-5 py-5">
@@ -4505,7 +4600,7 @@ function initProductDetailFeatures(root) {
   var ingredientItems = (product.ingredients || []).map(function(ing) {
     return '<li data-ing="' + escapeHtml(ing.toLowerCase()) + '">' + escapeHtml(ing) + "</li>";
   }).join("");
-  allergenCard.innerHTML = '<div class="hy-info-card-title">\u{1F50E} Allergen &amp; Ingredient Info</div>' + allergenBadges + '<div class="hy-ingredient-search" style="margin-top:14px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="hyIngredientSearch" placeholder="Search ingredients..."></div><ul class="hy-ingredient-list" id="hyIngredientList">' + ingredientItems + "</ul>";
+  allergenCard.innerHTML = '<div class="hy-info-card-title">What&#39;s inside</div>' + allergenBadges + '<div class="hy-ingredient-search" style="margin-top:14px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="hyIngredientSearch" placeholder="Search ingredients..."></div><ul class="hy-ingredient-list" id="hyIngredientList">' + ingredientItems + "</ul>";
   var ingSearch = root.querySelector("#hyIngredientSearch");
   var ingListItems = allergenCard.querySelectorAll("#hyIngredientList li");
   ingSearch.addEventListener("input", function() {
@@ -4532,7 +4627,7 @@ function initProductDetailFeatures(root) {
   var isTopical = d.mode === "topical";
   var periodLabel = isTopical ? "week" : "day";
   var unitLabelPlural = d.unit + (d.amountPerUse === 1 ? "" : "s");
-  dosageCard.innerHTML = '<div class="hy-info-card-title">\u{1F9EE} Usage &amp; Dosage Calculator</div><div class="hy-dosage-instructions">' + escapeHtml(d.instructions) + '</div><div class="hy-calc-row"><label>Amount per use (' + d.unit + ')</label><div class="hy-calc-stepper"><button type="button" id="hyAmountMinus">\u2212</button><input type="text" id="hyAmountInput" value="' + d.amountPerUse + '" readonly><button type="button" id="hyAmountPlus">+</button></div></div><div class="hy-calc-row"><label>Uses per ' + periodLabel + '</label><div class="hy-calc-stepper"><button type="button" id="hyUsesMinus">\u2212</button><input type="text" id="hyUsesInput" value="' + d.usesPerPeriod + '" readonly><button type="button" id="hyUsesPlus">+</button></div></div><div class="hy-calc-output" id="hyCalcOutput"></div>';
+  dosageCard.innerHTML = '<div class="hy-info-card-title">How to use it and how long it lasts</div><div class="hy-dosage-instructions">' + escapeHtml(d.instructions) + '</div><div class="hy-calc-row"><label>Amount per use (' + d.unit + ')</label><div class="hy-calc-stepper"><button type="button" id="hyAmountMinus">\u2212</button><input type="text" id="hyAmountInput" value="' + d.amountPerUse + '" readonly><button type="button" id="hyAmountPlus">+</button></div></div><div class="hy-calc-row"><label>Uses per ' + periodLabel + '</label><div class="hy-calc-stepper"><button type="button" id="hyUsesMinus">\u2212</button><input type="text" id="hyUsesInput" value="' + d.usesPerPeriod + '" readonly><button type="button" id="hyUsesPlus">+</button></div></div><div class="hy-calc-output" id="hyCalcOutput"></div>';
   var amountInput = root.querySelector("#hyAmountInput");
   var usesInput = root.querySelector("#hyUsesInput");
   var outputEl = root.querySelector("#hyCalcOutput");
@@ -4746,7 +4841,7 @@ async function addReviews(product) {
         ev.preventDefault();
         section.scrollIntoView({ behavior: "smooth" });
       });
-      title.insertAdjacentElement("afterend", line2);
+      (document.getElementById("pdSub") || title).insertAdjacentElement("afterend", line2);
     }
     const line = document.getElementById("hy2TitleRating");
     if (line) line.innerHTML = '<span class="hy2-stars">' + stars(avg) + "</span> " + avg.toFixed(1) + " (" + reviews.length + ")";
@@ -4942,7 +5037,7 @@ function startStrip(hm, sec) {
   const bg = sec.querySelector("#hmRvBg");
   const SP = [38, -52, 62, -44];          // px per second; the sign is the direction
   const PH = [0, 170, 60, 240];           // starting offsets so the columns do not line up
-  const cols = [...sec.querySelectorAll(".hm-rv-stack")].map((stack, i) => ({ stack, H: 1, pos: PH[i], v: SP[i] }));
+  const cols = [...sec.querySelectorAll(".hm-rv-stack")].map((stack, i) => ({ stack, H: 1, pos: PH[i], v: SP[i], f: 1, hover: false }));
   let bgW = 1, bgPos = 0, seen = false, last = 0;
   function layout() {
     cols.forEach((o) => { o.H = o.stack.scrollHeight / 2; });
@@ -4950,6 +5045,12 @@ function startStrip(hm, sec) {
   }
   layout();
   addEventListener("resize", layout);
+  // pointing at a column stops it (eases to a halt); it carries on when the pointer leaves
+  cols.forEach((o) => {
+    const col = o.stack.parentElement;
+    col.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") o.hover = true; });
+    col.addEventListener("pointerleave", () => { o.hover = false; });
+  });
   const win = sec.querySelector("#hmRvWin");
   // the leaf is drawn as a polygon so it can be turned on its side without rotating the wall inside it
   const TILT = (innerWidth <= 560 ? -5 : -4) * Math.PI / 180;
@@ -4985,7 +5086,7 @@ function startStrip(hm, sec) {
     const dt = Math.min(0.05, (t - last) / 1000 || 0);
     last = t;
     if (seen) {
-      cols.forEach((o) => { o.pos += Math.abs(o.v) * dt; });
+      cols.forEach((o) => { o.f += ((o.hover ? 0 : 1) - o.f) * Math.min(1, dt * 9); o.pos += Math.abs(o.v) * dt * o.f; });
       bgPos += 22 * dt;
       leaf();
       draw();
@@ -5181,7 +5282,13 @@ function listingCard(p) {
   return '<div class="item" data-id="' + p.key + '"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/' + p.slug + '"><img alt="' + esc2(p.name) + '" class="primary" src="' + p.pri + '" loading="lazy"><img alt="" class="secondary" src="' + p.sec + '" loading="lazy"></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>' + esc2(p.name) + '</h2><div class="price">Rs ' + p.listPrice + "</div></div></div>";
 }
 function blockHtml(b, extra) {
-  return '<div class="weight-block' + (extra || "") + '" data-weight="' + esc2(b.weight) + '" data-label="' + esc2(b.label) + '" data-price="' + b.price + '" data-crossed="' + b.crossed + '" onclick="selectWeightBlock(this)">' + esc2(b.label) + "</div>";
+  const m = /^.*? - (.*?)\s*\((.*)\)$/.exec(b.label);
+  const inner = m ? '<b class="pd-bw">' + esc2(b.weight) + '</b><span class="pd-bp">' + esc2(m[1]) + '</span><small class="pd-bo">' + esc2(m[2]) + "</small>" : esc2(b.label);
+  return '<div class="weight-block' + (extra || "") + '" data-weight="' + esc2(b.weight) + '" data-label="' + esc2(b.label) + '" data-price="' + b.price + '" data-crossed="' + b.crossed + '" onclick="selectWeightBlock(this)">' + inner + "</div>";
+}
+function pdSaving(price, crossed) {
+  const off = crossed - price;
+  return off > 0 ? "Save Rs " + off.toLocaleString() : "";
 }
 function productLd(p, base) {
   const prices = p.blocks.map((b) => b.price);
@@ -5211,7 +5318,9 @@ function mountProduct(ctx) {
   const root = ctx.root;
   const base = location.origin + location.pathname.replace(/[^/]*$/, "").replace(/\/$/, "");
   ctx.setMeta(p.pageTitle, p.metaDesc, productLd(p, base));
-  root.querySelector(".product-main-title").textContent = p.fullTitle;
+  const tparts = p.fullTitle.split(" | ");
+  root.querySelector(".product-main-title").textContent = tparts[0];
+  root.querySelector("#pdSub").textContent = tparts.slice(1).join(" \u00B7 ");
   root.querySelector(".product-description-body").textContent = p.desc;
   root.querySelector(".sproduct .item").setAttribute("data-id", p.key);
   root.querySelector(".sproduct .item").setAttribute("data-product-key", p.key);
@@ -5224,22 +5333,34 @@ function mountProduct(ctx) {
   const first = p.blocks[0];
   root.querySelector("#PriceDisplay").innerText = "Rs." + first.price.toLocaleString() + ".00";
   root.querySelector("#CrossedDisplay").innerText = "Rs." + first.crossed.toLocaleString() + ".00";
-  root.querySelector("#ActiveSizeLabel").innerText = first.label;
+  root.querySelector("#ActiveSizeLabel").innerText = first.weight;
+  root.querySelector("#pdSave").textContent = pdSaving(first.price, first.crossed);
   const main = root.querySelector("#MainImg");
   const frame = main.parentElement;
-  frame.style.cssText = "position:relative;width:100%;max-width:600px;margin:0 auto;aspect-ratio:4/3;overflow:hidden;border-radius:12px;background:#fff;";
-  main.style.cssText = "position:absolute;top:0;left:0;width:100%!important;height:100%!important;object-fit:contain!important;";
+  frame.removeAttribute("style");
+  frame.classList.add("pd-frame");
+  main.removeAttribute("style");
+  main.classList.remove("img-fluid", "w-100");
   let idx = 0;
+  const thumbs = root.querySelector("#pdThumbs");
+  thumbs.innerHTML = p.gallery.map((g, i) => '<button type="button" class="pd-thumb" aria-label="Show image ' + (i + 1) + '"><img src="' + g + '" alt="" loading="lazy" decoding="async"></button>').join("");
+  const tbtn = [...thumbs.children];
   const show = () => {
+    main.classList.add("swap");
+    main.onload = () => main.classList.remove("swap");
     main.src = p.gallery[idx];
+    frame.style.setProperty("--bgimg", 'url("' + p.gallery[idx] + '")');
     main.alt = p.name;
+    tbtn.forEach((t, i) => { t.classList.toggle("on", i === idx); t.setAttribute("aria-current", i === idx ? "true" : "false"); });
   };
   show();
   const prev = root.querySelector("#productSliderPrev"), next = root.querySelector("#productSliderNext");
   if (p.gallery.length < 2) {
     prev.style.display = "none";
     next.style.display = "none";
+    thumbs.style.display = "none";
   }
+  tbtn.forEach((t, i) => t.addEventListener("click", () => { idx = i; show(); }));
   prev.addEventListener("click", () => {
     idx = (idx - 1 + p.gallery.length) % p.gallery.length;
     show();
@@ -5248,6 +5369,28 @@ function mountProduct(ctx) {
     idx = (idx + 1) % p.gallery.length;
     show();
   });
+  const info = hygiesResolveProduct(p.fullTitle);
+  if (info) {
+    root.querySelector("#pdCat").textContent = info.category;
+    const sym = (info.symptoms || []).slice(0, 6);
+    root.querySelector("#pdGood").innerHTML = sym.length ? '<span class="pd-good-l">Good for</span>' + sym.map((x) => "<span>" + esc2(x) + "</span>").join("") : "";
+  }
+  const ICON = {
+    leaf: '<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19c2-4 5-7 9-9"/>',
+    cash: '<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>',
+    truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.7"/><circle cx="17.5" cy="17.5" r="1.7"/>'
+  };
+  const trust = [];
+  if (info && info.allergens && info.allergens.organic) trust.push(["leaf", "100% organic"]);
+  trust.push(["cash", "Cash on delivery"], ["truck", "Free shipping above Rs 10,000"]);
+  root.querySelector("#pdTrust").innerHTML = trust.map((t) => '<li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[t[0]] + "</svg>" + t[1] + "</li>").join("");
+  const facts = [
+    ["Type", info ? info.category : ""],
+    ["Sizes", p.blocks.map((b) => b.weight).join(", ")],
+    ["Payment", "Cash on delivery, bank transfer, Easypaisa, JazzCash"],
+    ["Delivery", "All over Pakistan. Free above Rs 10,000"]
+  ].filter((f) => f[1]);
+  root.querySelector("#pdFacts").innerHTML = facts.map((f) => "<div><dt>" + f[0] + "</dt><dd>" + esc2(f[1]) + "</dd></div>").join("");
   const lp = root.querySelector(".listProduct");
   lp.innerHTML = p.related.map((k) => listingCard(products_default.find((x) => x.key === k))).join("");
   mountProductExtras(p.key, root);
@@ -6032,7 +6175,8 @@ function selectWeightBlock(el) {
   el.classList.add("active");
   document.getElementById("PriceDisplay").innerText = "Rs." + parseInt(el.getAttribute("data-price"), 10).toLocaleString() + ".00";
   document.getElementById("CrossedDisplay").innerText = "Rs." + parseInt(el.getAttribute("data-crossed"), 10).toLocaleString() + ".00";
-  document.getElementById("ActiveSizeLabel").innerText = el.getAttribute("data-label");
+  document.getElementById("ActiveSizeLabel").innerText = el.getAttribute("data-weight");
+  document.getElementById("pdSave").textContent = pdSaving(parseInt(el.getAttribute("data-price"), 10), parseInt(el.getAttribute("data-crossed"), 10));
 }
 function triggerProductPageAddToCart() {
   const section = document.querySelector(".sproduct .item");
