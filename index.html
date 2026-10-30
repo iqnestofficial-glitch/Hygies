@@ -52,7 +52,12 @@ body.hy-bare .hy-symptom-fab { display: none; }
 /* cards slide up when scrolled into view */
 .item.hy-reveal { visibility: visible; opacity: 0; transform: translateY(100px) scale(.9); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
 .item.hy-in { visibility: visible; opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .item.hy-reveal { transition: none; } }
+.item.hy-reveal.hy-up { transform: translateY(-70px) scale(.94); }
+.hy-rs { opacity: 0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+.hy-rs.hy-up { transform: translateY(-34px); }
+.hy-rs.hy-in { opacity: 1; transform: none; }
+body .bl-card.hy-up { transform: translateY(-22px); }
+@media (prefers-reduced-motion: reduce) { .item.hy-reveal, .hy-rs { transition: none; } }
 
 /* order page action buttons: same look and motion as the other site buttons */
 .action-buttons a { display: flex; align-items: center; justify-content: center; min-height: 52px; line-height: 1.3; transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
@@ -266,7 +271,7 @@ body:has(.hm) footer.hy-ft { margin-top: 0 !important; }
 }
 /* policy pages: content fades up one block after another */
 @keyframes hyDocIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-.doc > * { animation: hyDocIn .7s cubic-bezier(.22,1,.36,1) both; }
+
 .doc > :nth-child(2){ animation-delay: 0.07s; } .doc > :nth-child(3){ animation-delay: 0.14s; } .doc > :nth-child(4){ animation-delay: 0.21s; } .doc > :nth-child(5){ animation-delay: 0.28s; } .doc > :nth-child(6){ animation-delay: 0.35s; } .doc > :nth-child(7){ animation-delay: 0.42s; } .doc > :nth-child(8){ animation-delay: 0.49s; } .doc > :nth-child(9){ animation-delay: 0.56s; } .doc > :nth-child(10){ animation-delay: 0.63s; } .doc > :nth-child(11){ animation-delay: 0.70s; } .doc > :nth-child(12){ animation-delay: 0.77s; } .doc > :nth-child(13){ animation-delay: 0.84s; } .doc > :nth-child(14){ animation-delay: 0.91s; } .doc > :nth-child(15){ animation-delay: 0.98s; } .doc > :nth-child(16){ animation-delay: 1.05s; } .doc > :nth-child(17){ animation-delay: 1.12s; } .doc > :nth-child(18){ animation-delay: 1.19s; }
 .doc a { transition: color .2s ease; } .doc a:hover { color: #2f6a12; }
 .doc li { transition: transform .25s ease; } .doc li:hover { transform: translateX(6px); }
@@ -1183,6 +1188,85 @@ body .blog-filter-pill.active{background:#123a1b;border-color:#123a1b;color:#fff
 body .blog-filter-pill:focus-visible,body .bl-card:focus-visible,body .bl-btn:focus-visible,body .bl-offer:focus-visible{outline:3px solid #79b933;outline-offset:3px}
 body .bl-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:13px;color:#6f7d6c}
 body .bl-tag{background:#e3edd0;color:#123a1b;font-weight:700;font-size:12.5px;padding:4px 11px;border-radius:999px}
+/* ===== Mobile menu ===== */
+body .mobile-nav-drawer{left:0;transform:translateX(-102%);visibility:hidden;width:min(86vw,340px);max-width:none;background:#f4f6ec;color:#123a1b;padding:0;display:flex;flex-direction:column;box-shadow:none;transition:transform .45s cubic-bezier(.22,1,.36,1),visibility 0s .45s;overflow-y:auto}
+body .mobile-nav-drawer.open{transform:none;visibility:visible;box-shadow:24px 0 60px -20px rgba(18,58,27,.45);transition:transform .45s cubic-bezier(.22,1,.36,1),visibility 0s}
+body .mobile-nav-drawer .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:18px 14px 10px 26px}
+body .mobile-nav-drawer .mn-title{font:800 1.05rem Bricolage,Poppins,sans-serif;letter-spacing:-.01em;color:#5b6b58}
+body .mobile-nav-drawer .drawer-closebtn{width:44px;height:44px;border:0;border-radius:50%;background:#e3edd0;color:#123a1b;font-size:26px;line-height:1;display:grid;place-items:center;padding:0;cursor:pointer}
+body .mobile-nav-drawer .drawer-closebtn:hover{background:#123a1b;color:#fff}
+body .mobile-nav-drawer>a{display:block;padding:12px 26px;margin:0;color:#123a1b;font:800 1.7rem/1.15 Bricolage,Poppins,sans-serif;text-transform:none;letter-spacing:-.025em;border-left:0;background:none;position:relative;opacity:0;transform:translateX(-16px);transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.36,1),color .2s}
+body .mobile-nav-drawer.open>a{opacity:1;transform:none;transition-delay:calc(var(--i,0)*45ms + 120ms)}
+body .mobile-nav-drawer>a:nth-of-type(1){--i:0}body .mobile-nav-drawer>a:nth-of-type(2){--i:1}body .mobile-nav-drawer>a:nth-of-type(3){--i:2}body .mobile-nav-drawer>a:nth-of-type(4){--i:3}body .mobile-nav-drawer>a:nth-of-type(5){--i:4}body .mobile-nav-drawer>a:nth-of-type(6){--i:5}body .mobile-nav-drawer>a:nth-of-type(7){--i:6}
+body .mobile-nav-drawer>a:hover,body .mobile-nav-drawer>a:focus-visible{color:#4c8a1f;background:none;border-left:0}
+body .mobile-nav-drawer>a[aria-current="page"]{color:#4c8a1f}
+body .mobile-nav-drawer>a[aria-current="page"]::before{content:"";position:absolute;left:10px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#79b933}
+body .mobile-nav-drawer a:focus-visible,body .mobile-nav-drawer .drawer-closebtn:focus-visible{outline:3px solid #79b933;outline-offset:-3px;border-radius:10px}
+body .mobile-nav-drawer .mn-foot{margin-top:auto;padding:20px 26px 28px;border-top:1.5px solid #dfe8cb;display:flex;flex-direction:column;gap:6px}
+body .mobile-nav-drawer .mn-foot a{display:block;padding:10px 0;font:600 15px Poppins,sans-serif;color:#123a1b;text-transform:none;letter-spacing:0;border:0;background:none}
+body .mobile-nav-drawer .mn-foot .mn-wa{margin-top:8px;padding:13px 18px;text-align:center;border-radius:999px;background:#123a1b;color:#fff;font-weight:600}
+body .mobile-nav-drawer .mn-foot .mn-wa:hover{background:#79b933;color:#0d2a14}
+body .mobile-nav-overlay{background:rgba(18,58,27,.45);transition:opacity .35s ease,visibility .35s}
+body.mn-lock{overflow:hidden}
+@media (max-width:991px){
+nav.custom-black-nav{display:none !important}
+body .mobile-menu-trigger{width:44px;height:44px;justify-content:center;border-radius:50%;margin:-8px 0}
+body .mobile-menu-trigger:focus-visible{outline:3px solid #79b933;outline-offset:-2px}
+}
+@media (prefers-reduced-motion:reduce){body .mobile-nav-drawer,body .mobile-nav-drawer>a{transition:none}}
+/* ===== Shop page ===== */
+.sh-head{max-width:1180px;margin:0 auto;padding:34px 20px 22px;text-align:left}
+.sh-h1{font-family:Bricolage,Poppins,sans-serif;font-weight:800;letter-spacing:-.04em;line-height:.98;color:#123a1b;font-size:clamp(2.4rem,5.2vw,4rem);margin:0 0 12px}
+.sh-lede{color:#5b6b58;font-size:1.05rem;line-height:1.6;max-width:52ch;margin:0}
+body .hy-filter-bar{max-width:1180px;background:transparent;border:0;border-radius:0;padding:0 20px;margin:0 auto 26px}
+body .hy-filter-bar .hy-filter-row{gap:8px;margin-bottom:12px}
+body .hy-filter-label{font-size:13px;font-weight:600;text-transform:none;letter-spacing:0;color:#5b6b58;margin-right:6px}
+body .hy-chip{font-size:13.5px;font-weight:600;padding:9px 17px;border:1.5px solid #cfdcb6;background:#fff;color:#123a1b;transition:background-color .2s,border-color .2s,color .2s}
+body .hy-chip:hover{border-color:#79b933;color:#123a1b}
+body .hy-chip.hy-chip-active{background:#123a1b;border-color:#123a1b;color:#fff}
+body .hy-inline-search{flex:1 1 240px}
+body .hy-inline-search input{padding:10px 16px 10px 40px;border:1.5px solid #cfdcb6;border-radius:999px;font-size:14px;background:#fff;color:#123a1b}
+body .hy-inline-search input:focus{border-color:#79b933;box-shadow:0 0 0 3px rgba(121,185,51,.2)}
+body .hy-inline-search i{left:16px}
+body .hy-sort{font:600 13.5px Poppins,sans-serif;color:#123a1b;border:1.5px solid #cfdcb6;border-radius:999px;background:#fff;padding:9px 14px;cursor:pointer}
+body .hy-sort:focus-visible,body .hy-chip:focus-visible{outline:3px solid #79b933;outline-offset:2px}
+body .hy-filter-count{font-size:13px;color:#5b6b58;margin-left:auto;white-space:nowrap}
+body .listProduct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 22px;max-width:1180px;margin:0 auto;padding:0 20px 56px}
+body .listProduct .item{background:transparent !important;border:0 !important;box-shadow:none !important;padding:0 !important}
+body .listProduct .tilted-card-inner{background:#fff;border:1.5px solid #e3ebd2;border-radius:26px;padding:12px 12px 16px;box-shadow:none;transition:border-color .25s,box-shadow .25s,transform .2s cubic-bezier(.25,1,.5,1)}
+body .listProduct .item:hover .tilted-card-inner{border-color:#79b933;box-shadow:0 18px 36px -22px rgba(18,58,27,.45)}
+body .listProduct .img-container{aspect-ratio:6/5;border-radius:18px;background:#e3edd0}
+body .listProduct .floating-action-container{top:auto;bottom:10px;right:10px}
+body .listProduct .addcart{width:auto !important;height:38px;padding:0 15px 0 13px;gap:6px;background:#123a1b !important;color:#fff !important;opacity:1;transform:none;box-shadow:0 8px 18px -8px rgba(18,58,27,.6);transition:background-color .2s,color .2s}
+body .listProduct .addcart span{opacity:1;margin:0;font-size:13px;text-transform:none;letter-spacing:0;font-weight:600}
+body .listProduct .addcart i{margin:0;font-size:12px}
+body .listProduct .addcart:hover{background:#79b933 !important;color:#0d2a14 !important}
+body .listProduct .addcart:focus-visible{outline:3px solid #79b933;outline-offset:2px}
+body .listProduct .item h2{font-family:Bricolage,Poppins,sans-serif;font-weight:800;font-size:1.2rem;line-height:1.15;letter-spacing:-.02em;color:#123a1b;margin:16px 4px 4px}
+body .listProduct .hy-badge-row{gap:2px 8px;margin:0 4px 8px}
+body .listProduct .hy-badge{background:none;border:0;padding:0;font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;color:#5b6b58}
+body .listProduct .hy-badge+.hy-badge::before{content:"\00b7";margin-right:8px}
+body .listProduct .item .price{font-family:Bricolage,Poppins,sans-serif;font-weight:800;font-size:1.2rem;color:#123a1b;margin:0 4px}
+@media (max-width:992px){body .listProduct{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:576px){
+.sh-head{padding:24px 16px 14px}
+.sh-lede{font-size:.95rem}
+body .hy-filter-bar{padding:0 16px;margin-bottom:18px}
+body .hy-filter-bar .hy-filter-row:first-child{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px}
+body .hy-filter-bar .hy-filter-row:first-child::-webkit-scrollbar{display:none}
+body .hy-filter-bar .hy-chip,body .hy-filter-label{flex:none}
+body .hy-inline-search{flex:1 1 100%;order:-1}
+body .hy-filter-count{margin-left:0}
+body .listProduct{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 16px 40px}
+body .listProduct .tilted-card-inner{border-radius:20px;padding:8px 8px 12px}
+body .listProduct .img-container{border-radius:14px}
+body .listProduct .item h2{font-size:.98rem;margin:12px 2px 3px}
+body .listProduct .item .price{font-size:1rem;margin:0 2px}
+body .listProduct .hy-badge-row{display:none}
+body .listProduct .addcart{height:34px;padding:0 11px}
+body .listProduct .addcart span{display:none}
+}
+@media (prefers-reduced-motion:reduce){body .listProduct .tilted-card-inner,body .listProduct .addcart,body .hy-chip{transition:none}}
 body .bl-codes{margin-top:6px;margin-bottom:34px}
 .bl-codes[hidden],.bl-code-note[hidden]{display:none}
 .bl-codes-h{font-family:Bricolage,Poppins,sans-serif;font-weight:800;color:#123a1b;letter-spacing:-.03em;font-size:1.7rem;line-height:1.1;margin:0 0 6px}
@@ -1383,7 +1467,8 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 </nav>
 </div><div class="mobile-nav-drawer" id="mobileNavDrawer">
 <div class="drawer-header">
-<span class="drawer-closebtn" id="mobileNavClose">×</span>
+<span class="mn-title">Menu</span>
+<button aria-label="Close menu" class="drawer-closebtn" id="mobileNavClose" type="button">×</button>
 </div>
 <a href="#/">Home</a>
 <a href="#/shop">Shop</a>
@@ -1392,6 +1477,7 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <a href="#/teas">Herbal Teas</a>
 <a href="#/powders">Organic Powders</a>
 <a href="#/contact">Contact</a>
+<div class="mn-foot"><a class="mn-sec" href="#/auth">Sign in or account</a><a class="mn-sec" href="#/track">Track your order</a><a class="mn-wa" href="https://wa.me/923009236520" rel="noopener" target="_blank">Chat on WhatsApp</a></div>
 </div><div class="mobile-nav-overlay" id="mobileNavOverlay"></div></div>
 <!-- ===== The current page is placed here ===== -->
 <main id="app"></main>
@@ -1571,25 +1657,25 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 
 <!-- ===== PAGE: Shop  (address: #/shop) ===== -->
 <template id="v-shop"><div class="container-fluid px-4">
-<div class="text-center"><div class="section-title">Product List</div></div>
+<section class="sh-head"><h1 class="sh-h1">Shop Hygies</h1><p class="sh-lede">Herbal teas, organic powders and teeth whitening powder. Pay cash on delivery, and delivery is free over Rs 10,000.</p></section>
 <div class="listProduct" data-filterable="true"><div class="item" data-id="product"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/flu-fever-tea"><img alt="Flu &amp; Fever Tea" class="primary" loading="lazy" src="images/products/flu-fever-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/flu-fever-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Flu &amp; Fever Tea</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/disturbed-stomach-tea"><img alt="Disturbed Stomach Tea" class="primary" loading="lazy" src="images/products/stomach-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Disturbed Stomach Tea</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-tea"><img alt="Sliming Tea" class="primary" loading="lazy" src="images/products/slimming-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Tea</h2><div class="price">Rs 1500</div></div></div><div class="item" data-id="product4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-powder"><img alt="Sliming Powder" class="primary" loading="lazy" src="images/products/slimming-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Powder</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product5"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/detox-powder"><img alt="Detox Powder" class="primary" loading="lazy" src="images/products/detox-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/detox-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Detox Powder</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product6"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/glowing-powder"><img alt="Glowing Powder" class="primary" loading="lazy" src="images/products/glowing-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/glowing-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Glowing Powder</h2><div class="price">Rs 1500</div></div></div><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
 <!-- ===== PAGE: Herbal Teas  (address: #/teas) ===== -->
 <template id="v-teas"><div class="container-fluid px-4">
-<div class="text-center"><div class="section-title">Product List</div></div>
+<section class="sh-head"><h1 class="sh-h1">Herbal Teas</h1><p class="sh-lede">Brewed the traditional way, in sachets made for everyday use.</p></section>
 <div class="listProduct" data-filterable="true"><div class="item" data-id="product"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/flu-fever-tea"><img alt="Flu &amp; Fever Tea" class="primary" loading="lazy" src="images/products/flu-fever-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/flu-fever-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Flu &amp; Fever Tea</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/disturbed-stomach-tea"><img alt="Disturbed Stomach Tea" class="primary" loading="lazy" src="images/products/stomach-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Disturbed Stomach Tea</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-tea"><img alt="Sliming Tea" class="primary" loading="lazy" src="images/products/slimming-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Tea</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
 <!-- ===== PAGE: Organic Powders  (address: #/powders) ===== -->
 <template id="v-powders"><div class="container-fluid px-4">
-<div class="text-center"><div class="section-title">Product List</div></div>
+<section class="sh-head"><h1 class="sh-h1">Organic Powders</h1><p class="sh-lede">Plant-based powders for detox, slimming and glowing skin.</p></section>
 <div class="listProduct" data-filterable="true"><div class="item" data-id="product4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-powder"><img alt="Sliming Powder" class="primary" loading="lazy" src="images/products/slimming-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Powder</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product5"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/detox-powder"><img alt="Detox Powder" class="primary" loading="lazy" src="images/products/detox-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/detox-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Detox Powder</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product6"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/glowing-powder"><img alt="Glowing Powder" class="primary" loading="lazy" src="images/products/glowing-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/glowing-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Glowing Powder</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
 <!-- ===== PAGE: Oral Care  (address: #/oral-care) ===== -->
 <template id="v-oral"><div class="container-fluid px-4">
-<div class="text-center"><div class="section-title">Product List</div></div>
+<section class="sh-head"><h1 class="sh-h1">Oral Care</h1><p class="sh-lede">Teeth whitening powder in four flavours.</p></section>
 <div class="listProduct" data-filterable="true"><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
@@ -3252,10 +3338,21 @@ function reloadCart() {
 function openMobileNav() {
   document.getElementById("mobileNavDrawer").classList.add("open");
   document.getElementById("mobileNavOverlay").classList.add("open");
+  document.body.classList.add("mn-lock");
+  const c = document.getElementById("mobileNavClose");
+  if (c) c.focus({ preventScroll: true });
 }
 function closeMobileNav() {
   document.getElementById("mobileNavDrawer").classList.remove("open");
   document.getElementById("mobileNavOverlay").classList.remove("open");
+  document.body.classList.remove("mn-lock");
+}
+function markMobileNav() {
+  const p = (location.hash.replace(/^#/, "").split("?")[0]) || "/";
+  document.querySelectorAll("#mobileNavDrawer>a").forEach((a) => {
+    if (a.getAttribute("href").slice(1) === p) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
 }
 function closeCart() {
   const s = document.getElementById("cartSidebar"), o = document.getElementById("cartOverlay");
@@ -3340,6 +3437,9 @@ function initChrome() {
   q("mobileNavClose") && q("mobileNavClose").addEventListener("click", closeMobileNav);
   q("mobileNavOverlay") && q("mobileNavOverlay").addEventListener("click", closeMobileNav);
   document.querySelectorAll("#mobileNavDrawer a").forEach((a) => a.addEventListener("click", closeMobileNav));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMobileNav(); });
+  window.addEventListener("hashchange", markMobileNav);
+  markMobileNav();
   q("cartIcon") && q("cartIcon").addEventListener("click", function(e) {
     e.preventDefault();
     toggleCart();
@@ -3381,26 +3481,38 @@ function init3DTiltedCards(root) {
     });
   });
 }
-function initScrollAnimations(root) {
-  const cards = [...root.querySelectorAll(".item")].filter((el) => !el.closest(".sproduct"));
-  if (!cards.length) return;
+// Scroll reveals replay: entering the screen plays it, leaving rewinds it (pushed further the way it left) so it plays again.
+function hyRevealWatch(els, inCls) {
+  if (!els.length) return;
   if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    cards.forEach((el) => el.classList.add("hy-in"));
+    els.forEach((el) => el.classList.add(inCls));
     return;
   }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
+      const el = e.target;
       if (e.isIntersecting) {
-        e.target.classList.add("hy-in");
-        io.unobserve(e.target);
+        el.classList.remove("hy-up");
+        el.classList.add(inCls);
+      } else {
+        const top = e.rootBounds ? e.rootBounds.top : 0;
+        el.classList.remove(inCls);
+        el.classList.toggle("hy-up", e.boundingClientRect.top < top);
       }
     });
-  }, { rootMargin: "0px 0px -15% 0px" });
-  cards.forEach((el) => {
-    el.classList.add("hy-reveal");
-    io.observe(el);
-  });
+  }, { rootMargin: "0px 0px -12% 0px" });
+  els.forEach((el) => io.observe(el));
   track(() => io.disconnect());
+}
+function initScrollAnimations(root) {
+  const cards = [...root.querySelectorAll(".item")].filter((el) => !el.closest(".sproduct"));
+  cards.forEach((el) => el.classList.add("hy-reveal"));
+  hyRevealWatch(cards, "hy-in");
+  const blocks = [...root.querySelectorAll(".sh-head,.hy-filter-bar,.section-title,.bl-head,.bl-offer-sec,.bl-codes,.doc > *,.pd-gallery,.pd-about,.hy-info-card,.contact-card")]
+    .map((el) => el.closest('[class*="col-"]') || el)
+    .filter((el, i, a) => a.indexOf(el) === i && !el.closest(".item") && !a.some((o) => o !== el && o.contains(el)));
+  blocks.forEach((el) => el.classList.add("hy-rs"));
+  hyRevealWatch(blocks, "hy-in");
 }
 var slideIndex = 1;
 var sliderTimer = null;
@@ -4589,7 +4701,7 @@ function buildFilterBar(listEl) {
   var dietaryChips = dietaryKeys.map(function(k) {
     return '<span class="hy-chip" data-diet="' + k + '">' + ALLERGEN_LABELS[k] + "</span>";
   }).join("");
-  bar.innerHTML = '<div class="hy-filter-row"><span class="hy-filter-label">Shop by Goal</span>' + goalChips + '</div><div class="hy-filter-row"><span class="hy-filter-label">Dietary</span>' + dietaryChips + '<div class="hy-inline-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search products, ingredients, symptoms..." id="' + barId + '-search"></div><span class="hy-filter-count" id="' + barId + '-count"></span></div>';
+  bar.innerHTML = '<div class="hy-filter-row"><span class="hy-filter-label">Shop by Goal</span>' + goalChips + '</div><div class="hy-filter-row"><span class="hy-filter-label">Dietary</span>' + dietaryChips + '<div class="hy-inline-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search products, ingredients, symptoms..." id="' + barId + '-search"></div><select class="hy-sort" aria-label="Sort products"><option value="">Sort: Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="az">Name: A to Z</option></select><span class="hy-filter-count" id="' + barId + '-count"></span></div>';
   listEl.parentNode.insertBefore(bar, listEl);
   var state = { goal: "__all", diet: {}, query: "" };
   var searchInput = bar.querySelector("#" + barId + "-search");
@@ -4641,6 +4753,26 @@ function buildFilterBar(listEl) {
   searchInput.addEventListener("input", function() {
     state.query = searchInput.value;
     applyFilters();
+  });
+  var sortSel = bar.querySelector(".hy-sort");
+  var origOrder = items.slice();
+  function itemPrice(it) {
+    var p = it.querySelector(".price");
+    return p ? parseInt(String(p.textContent).replace(/\D/g, ""), 10) || 0 : 0;
+  }
+  function itemName(it) {
+    var h = it.querySelector("h2");
+    return h ? h.textContent.trim().toLowerCase() : "";
+  }
+  sortSel.addEventListener("change", function() {
+    var v = sortSel.value;
+    var arr = origOrder.slice();
+    if (v === "low") arr.sort(function(a, b) { return itemPrice(a) - itemPrice(b); });
+    else if (v === "high") arr.sort(function(a, b) { return itemPrice(b) - itemPrice(a); });
+    else if (v === "az") arr.sort(function(a, b) { return itemName(a) < itemName(b) ? -1 : 1; });
+    arr.forEach(function(it) { listEl.appendChild(it); });
+    var nr = listEl.querySelector(".hy-no-results");
+    if (nr) listEl.appendChild(nr);
   });
   var params = new URLSearchParams(search());
   var qParam = params.get("q");
@@ -5413,16 +5545,7 @@ function mountBlog() {
       cards.forEach((c) => c.classList.add("in-view"));
       return;
     }
-    const observer2 = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          observer2.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    cards.forEach((c) => observer2.observe(c));
-    track(() => observer2.disconnect());
+    hyRevealWatch([...cards], "in-view");
   }
   function renderBlogGrid() {
     if (!grid || !window.hygiesBlogPosts) return;
