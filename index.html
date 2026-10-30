@@ -1183,7 +1183,26 @@ body .blog-filter-pill.active{background:#123a1b;border-color:#123a1b;color:#fff
 body .blog-filter-pill:focus-visible,body .bl-card:focus-visible,body .bl-btn:focus-visible,body .bl-offer:focus-visible{outline:3px solid #79b933;outline-offset:3px}
 body .bl-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:13px;color:#6f7d6c}
 body .bl-tag{background:#e3edd0;color:#123a1b;font-weight:700;font-size:12.5px;padding:4px 11px;border-radius:999px}
-body .bl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 24px;margin-top:28px}
+body .bl-codes{margin-top:6px;margin-bottom:34px}
+.bl-codes[hidden],.bl-code-note[hidden]{display:none}
+.bl-codes-h{font-family:Bricolage,Poppins,sans-serif;font-weight:800;color:#123a1b;letter-spacing:-.03em;font-size:1.7rem;line-height:1.1;margin:0 0 6px}
+.bl-codes-sub{color:#5b6b58;margin:0 0 18px;font-size:14.5px}
+.bl-code-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.bl-code{display:flex;flex-direction:column;gap:11px;background:#f4f6ec;border:1.5px solid #dbe6c6;border-radius:22px;padding:18px 18px 16px;color:#123a1b}
+.bl-code.is-member{background:#123a1b;border-color:#123a1b;color:#e8f0dc}
+.bl-code-pct{font-family:Bricolage,Poppins,sans-serif;font-weight:800;font-size:2.4rem;line-height:1;letter-spacing:-.03em}
+.bl-code.is-member .bl-code-pct{color:#f2d21f}
+.bl-code-badge{align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:#79b933;color:#0d2a14}
+.bl-code-row{display:flex;gap:8px;align-items:stretch}
+.bl-code-tag{flex:1;min-width:0;display:flex;align-items:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;letter-spacing:.06em;border:1.5px dashed currentColor;border-radius:12px;padding:9px 12px;font-size:15px;overflow-wrap:anywhere}
+body .bl-code-copy{border:0;border-radius:12px;padding:0 15px;background:#123a1b;color:#fff;font-weight:600;font-size:13px;cursor:pointer;min-height:40px}
+body .bl-code.is-member .bl-code-copy{background:#79b933;color:#0d2a14}
+.bl-code-copy:focus-visible{outline:3px solid #79b933;outline-offset:2px}
+.bl-code-meta{font-size:13px;color:#5b6b58;line-height:1.5;margin:0}
+.bl-code.is-member .bl-code-meta{color:#c9d7b8}
+.bl-code-note{margin:16px 0 0;font-size:14px;color:#5b6b58}
+.bl-code-note a{color:#123a1b;font-weight:600;text-decoration:underline}
+.bl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 24px;margin-top:28px}
 body .bl-grid-3{grid-template-columns:repeat(3,1fr)}
 body .bl-card{display:block;color:inherit;text-decoration:none;opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 body .bl-card.in-view{opacity:1;transform:none}
@@ -1586,6 +1605,11 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <button class="blog-filter-pill" data-category="Beauty" type="button">Beauty</button>
 <button class="blog-filter-pill" data-category="Oral Care" type="button">Oral Care</button>
 </div>
+</section><section class="bl-wrap bl-codes" id="blogCodes" hidden>
+<h2 class="bl-codes-h">Discount codes</h2>
+<p class="bl-codes-sub">Tap a code to copy it, then paste it at checkout.</p>
+<div class="bl-code-grid" id="blogCodeGrid"></div>
+<p class="bl-code-note" id="blogCodeNote" hidden>Ordered with us before? <a href="#/auth">Sign in</a> to see your returning-customer codes.</p>
 </section><section class="bl-wrap" id="blog-container">
 <div id="blogFeatured"></div>
 <div class="bl-grid" id="blogPostsGrid"></div>
@@ -5408,6 +5432,48 @@ function mountBlog() {
     observeBlogCards();
   }
   renderBlogGrid();
+  async function loadBlogCodes() {
+    const box = document.getElementById("blogCodes");
+    const gridEl = document.getElementById("blogCodeGrid");
+    const note = document.getElementById("blogCodeNote");
+    if (!box || !gridEl || typeof sb === "undefined") return;
+    let list = [];
+    let signedIn = false;
+    try {
+      const sess = await sb.auth.getSession();
+      signedIn = !!(sess && sess.data && sess.data.session);
+      const r = await sb.rpc("list_blog_coupons");
+      if (r.error) throw r.error;
+      list = r.data || [];
+    } catch (e) {
+      return;
+    }
+    if (!document.getElementById("blogCodes")) return;
+    if (!signedIn) note.hidden = false;
+    if (!list.length) return;
+    gridEl.innerHTML = list.map((c) => {
+      const bits = [];
+      bits.push(c.appliesTo && c.appliesTo.length ? "On " + c.appliesTo.map(esc2).join(", ") + " items" : "On your whole order");
+      if (Number(c.minSubtotal) > 0) bits.push("Spend Rs " + Number(c.minSubtotal).toLocaleString() + " or more");
+      if (c.expiresAt) bits.push("Valid until " + new Date(c.expiresAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }));
+      return '<div class="bl-code' + (c.members ? " is-member" : "") + '">' + (c.members ? '<span class="bl-code-badge">For returning customers</span>' : "") + '<div class="bl-code-pct">' + esc2(String(c.percent)) + '% off</div>' + (c.blurb ? '<p class="bl-code-meta">' + esc2(c.blurb) + "</p>" : "") + '<div class="bl-code-row"><span class="bl-code-tag">' + esc2(c.code) + '</span><button class="bl-code-copy" type="button" data-code="' + esc2(c.code) + '">Copy</button></div><p class="bl-code-meta">' + bits.join(" &middot; ") + "</p></div>";
+    }).join("");
+    box.hidden = false;
+  }
+  const codeGrid = document.getElementById("blogCodeGrid");
+  if (codeGrid) {
+    codeGrid.addEventListener("click", (e) => {
+      const b = e.target.closest(".bl-code-copy");
+      if (!b) return;
+      const done = () => {
+        b.textContent = "Copied";
+        setTimeout(() => { b.textContent = "Copy"; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(b.dataset.code).then(done, done);
+      else done();
+    });
+  }
+  loadBlogCodes();
   document.querySelectorAll(".blog-filter-pill").forEach((pill) => {
     pill.addEventListener("click", () => {
       document.querySelectorAll(".blog-filter-pill").forEach((p) => p.classList.remove("active"));
