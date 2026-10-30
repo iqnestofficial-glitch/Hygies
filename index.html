@@ -1214,6 +1214,38 @@ body .mobile-menu-trigger{width:44px;height:44px;justify-content:center;border-r
 body .mobile-menu-trigger:focus-visible{outline:3px solid #79b933;outline-offset:-2px}
 }
 @media (prefers-reduced-motion:reduce){body .mobile-nav-drawer,body .mobile-nav-drawer>a{transition:none}}
+/* product picture: bigger view */
+.pd-frame #MainImg{cursor:zoom-in}
+.pd-frame #MainImg:focus-visible{outline:3px solid #79b933;outline-offset:-3px}
+html.hy-lb-lock{overflow:hidden}
+.hy-lb{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(10,24,12,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease}
+.hy-lb.on{opacity:1}
+.hy-lb-img{max-width:min(92vw,1100px);max-height:86vh;width:auto;height:auto;object-fit:contain;border-radius:14px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.45);transform:scale(.96);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.hy-lb.on .hy-lb-img{transform:none}
+.hy-lb-a,.hy-lb-x{position:absolute;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .2s ease,border-color .2s ease}
+.hy-lb-a:hover,.hy-lb-x:hover{background:rgba(255,255,255,.28);border-color:rgba(255,255,255,.6)}
+.hy-lb-a:focus-visible,.hy-lb-x:focus-visible{outline:3px solid #79b933;outline-offset:2px}
+.hy-lb-a{top:50%;width:56px;height:56px;margin-top:-28px;border-radius:50%}
+.hy-lb-a svg{display:block;width:30px !important;height:30px !important;flex:none}
+.hy-lb-prev{left:22px}.hy-lb-next{right:22px}
+.hy-lb-x{top:18px;right:22px;width:46px;height:46px;border-radius:50%;font-size:30px;line-height:1;padding:0 0 3px}
+.hy-lb-count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.8);font-size:13px;letter-spacing:.04em}
+@media (max-width:640px){.hy-lb-a{width:44px;height:44px;margin-top:-22px}.hy-lb-a{background:rgba(18,58,27,.4)}.hy-lb-prev{left:10px}.hy-lb-next{right:10px}.hy-lb-x{top:12px;right:12px}.hy-lb-img{max-width:100vw;border-radius:0}}
+@media (prefers-reduced-motion:reduce){.hy-lb,.hy-lb-img{transition:none}}
+/* laptop search: bar slides open to the left from the icon */
+@media (min-width:992px){
+.hy-search-trigger{position:relative;z-index:2001;transition:color .2s ease}
+.hy-search-wrap:has(.hy-open) .hy-search-trigger{color:#123a1b}
+.hy-search-panel{top:50%;margin-top:-21px;right:-12px;width:460px;max-width:none;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;transform:none;opacity:1;
+  clip-path:inset(-12px -16px -600px 100%);
+  transition:clip-path .55s cubic-bezier(.2,.8,.2,1),visibility 0s linear .55s}
+.hy-search-panel.hy-open{transform:none;clip-path:inset(-12px -16px -600px -16px);transition:clip-path .55s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.hy-search-panel input{height:42px;padding:0 48px 0 20px;border-radius:999px;background:#fff;border:1px solid #cfe0b0;box-shadow:0 10px 30px rgba(18,58,27,.16);font-size:14px}
+.hy-search-panel input:focus{border-color:#79b933;box-shadow:0 10px 30px rgba(18,58,27,.16),0 0 0 3px rgba(121,185,51,.25)}
+.hy-search-results{margin-top:10px;padding:10px 12px;background:#fff;border:1px solid var(--hy-line);border-radius:16px;box-shadow:0 14px 36px rgba(18,58,27,.14);opacity:0;transform:translateY(-6px);transition:opacity .25s ease,transform .25s ease}
+.hy-search-panel.hy-open .hy-search-results{opacity:1;transform:none;transition-delay:.3s}
+}
+@media (min-width:992px) and (prefers-reduced-motion:reduce){.hy-search-panel,.hy-search-panel.hy-open,.hy-search-results{transition:none !important}}
 /* ===== Shop page ===== */
 .sh-head{max-width:1180px;margin:0 auto;padding:34px 20px 22px;text-align:left}
 .sh-h1{font-family:Bricolage,Poppins,sans-serif;font-weight:800;letter-spacing:-.04em;line-height:.98;color:#123a1b;font-size:clamp(2.4rem,5.2vw,4rem);margin:0 0 12px}
@@ -1658,7 +1690,7 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <!-- ===== PAGE: Shop  (address: #/shop) ===== -->
 <template id="v-shop"><div class="container-fluid px-4">
 <section class="sh-head"><h1 class="sh-h1">Shop Hygies</h1><p class="sh-lede">Herbal teas, organic powders and teeth whitening powder. Pay cash on delivery, and delivery is free over Rs 10,000.</p></section>
-<div class="listProduct" data-filterable="true"><div class="item" data-id="product"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/flu-fever-tea"><img alt="Flu &amp; Fever Tea" class="primary" loading="lazy" src="images/products/flu-fever-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/flu-fever-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Flu &amp; Fever Tea</h2><div class="price">Rs 1150</div></div></div><div class="item" data-id="product2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/disturbed-stomach-tea"><img alt="Disturbed Stomach Tea" class="primary" loading="lazy" src="images/products/stomach-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Disturbed Stomach Tea</h2><div class="price">Rs 1350</div></div></div><div class="item" data-id="product3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-tea"><img alt="Sliming Tea" class="primary" loading="lazy" src="images/products/slimming-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Tea</h2><div class="price">Rs 850</div></div></div><div class="item" data-id="product4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-powder"><img alt="Sliming Powder" class="primary" loading="lazy" src="images/products/slimming-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Powder</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product5"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/detox-powder"><img alt="Detox Powder" class="primary" loading="lazy" src="images/products/detox-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/detox-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Detox Powder</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product6"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/glowing-powder"><img alt="Glowing Powder" class="primary" loading="lazy" src="images/products/glowing-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/glowing-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Glowing Powder</h2><div class="price">Rs 1500</div></div></div><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
+<div class="listProduct" data-filterable="true"><div class="item" data-id="product"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/flu-fever-tea"><img alt="Flu &amp; Fever Tea" class="primary" loading="lazy" src="images/products/flu-fever-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/flu-fever-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Flu &amp; Fever Tea</h2><div class="price">Rs 1150</div></div></div><div class="item" data-id="product2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/disturbed-stomach-tea"><img alt="Disturbed Stomach Tea" class="primary" loading="lazy" src="images/products/stomach-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/stomach-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Disturbed Stomach Tea</h2><div class="price">Rs 1350</div></div></div><div class="item" data-id="product3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-tea"><img alt="Sliming Tea" class="primary" loading="lazy" src="images/products/slimming-tea-pack-angle-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-tea-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Tea</h2><div class="price">Rs 850</div></div></div><div class="item" data-id="product4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/sliming-powder"><img alt="Sliming Powder" class="primary" loading="lazy" src="images/products/slimming-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/slimming-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Sliming Powder</h2><div class="price">Rs 1200</div></div></div><div class="item" data-id="product5"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/detox-powder"><img alt="Detox Powder" class="primary" loading="lazy" src="images/products/detox-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/detox-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Detox Powder</h2><div class="price">Rs 1000</div></div></div><div class="item" data-id="product6"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/glowing-powder"><img alt="Glowing Powder" class="primary" loading="lazy" src="images/products/glowing-powder-pack-green-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/glowing-powder-pack-white-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Glowing Powder</h2><div class="price">Rs 1500</div></div></div><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder Original Flavor" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Original Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
 <!-- ===== PAGE: Herbal Teas  (address: #/teas) ===== -->
@@ -1676,7 +1708,7 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <!-- ===== PAGE: Oral Care  (address: #/oral-care) ===== -->
 <template id="v-oral"><div class="container-fluid px-4">
 <section class="sh-head"><h1 class="sh-h1">Oral Care</h1><p class="sh-lede">Teeth whitening powder in four flavours.</p></section>
-<div class="listProduct" data-filterable="true"><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
+<div class="listProduct" data-filterable="true"><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder Original Flavor" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Original Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
 
 <!-- ===== PAGE: Blog  (address: #/blog) ===== -->
@@ -2750,9 +2782,9 @@ var products_default = [
   {
     key: "productoralcare1",
     slug: "teeth-whitening-powder",
-    name: "Teeth Whitening Powder",
+    name: "Teeth Whitening Powder Original Flavor",
     listPrice: 1400,
-    fullTitle: "Teeth Whitening Powder | 100% Organic | the most Organic in Pakistan",
+    fullTitle: "Teeth Whitening Powder Original Flavor | 100% Organic | the most Organic in Pakistan",
     desc: "The Hygies Teeth Whitening Powder is made with 100% pure organic Materials without any side affects to Whiten your Teeth.",
     blocks: [
       {
@@ -2784,7 +2816,7 @@ var products_default = [
       "productoralcare3",
       "productoralcare4"
     ],
-    pageTitle: "Teeth Whitening Powder | Hygies",
+    pageTitle: "Teeth Whitening Powder - Original Flavor | Hygies",
     pri: "images/products/oralcare-whitening-front-sm.webp",
     sec: "images/products/oralcare-whitening-top-sm.webp",
     gallery: [
@@ -2966,7 +2998,7 @@ var SHORT = {
   product4: "Sliming Powder",
   product5: "Detox Powder",
   product6: "Glowing Powder",
-  productoralcare1: "Teeth Whitening Powder",
+  productoralcare1: "Teeth Whitening Powder (Original)",
   productoralcare2: "Teeth Whitening Powder (Mint)",
   productoralcare3: "Teeth Whitening Powder (Clove)",
   productoralcare4: "Teeth Whitening Powder (Charcoal)"
@@ -4382,7 +4414,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["weight concerns", "sluggish metabolism", "low energy"],
     shortBenefit: "A daily metabolism-boosting blend for weight management.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: false, nutFree: true },
-    ingredients: ["Moringa leaf powder", "Green coffee bean extract", "Fenugreek seed", "Cinnamon bark", "Black pepper"],
+    ingredients: ["Ajwain (Carom seeds)", "Cumin", "Fennel", "Asafoetida (Heeng)", "Fenugreek seeds"],
     dosage: {
       mode: "oral-powder",
       amountPerUse: 1,
@@ -4402,7 +4434,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["toxin buildup", "sluggish digestion", "low energy", "bloating", "skin breakouts"],
     shortBenefit: "A daily greens blend to help the body detox naturally.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Wheatgrass powder", "Spirulina", "Amla (Indian gooseberry)", "Neem leaf", "Turmeric root"],
+    ingredients: ["Ginger powder", "Dried mint", "Dried cucumber", "Moringa powder", "Beetroot", "Other herbs"],
     dosage: {
       mode: "oral-powder",
       amountPerUse: 1,
@@ -4422,7 +4454,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["dull skin", "uneven skin tone", "tired looking skin", "dry skin"],
     shortBenefit: "A natural face mask blend for brighter, glowing skin.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Multani Mitti (Fuller's earth)", "Sandalwood powder", "Rose petal powder", "Turmeric root", "Gram flour"],
+    ingredients: ["Lemon powder", "Orange powder", "Licorice (Mulethi) powder", "Amla (Indian gooseberry) powder", "Beetroot powder", "Other herbs"],
     dosage: {
       mode: "topical",
       amountPerUse: 2,
@@ -4433,7 +4465,7 @@ var HYGIES_PRODUCTS = {
       instructions: "Mix 2 teaspoons with rose water or milk into a smooth paste. Apply as a face mask and leave for 15 minutes, 3 times per week."
     }
   },
-  "Teeth Whitening Powder": {
+  "Teeth Whitening Powder Original Flavor": {
     url: "#/product/teeth-whitening-powder",
     img: "images/products/oralcare-whitening-front-sm.webp",
     price: 1400,
@@ -4442,7 +4474,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["bad breath", "yellow teeth", "stained teeth", "plaque buildup"],
     shortBenefit: "A mineral powder that gently lifts surface stains.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Activated charcoal", "Baking soda (Sodium bicarbonate)", "Bentonite clay", "Neem powder"],
+    ingredients: ["Ajwain (Carom seed) powder", "Clove powder", "Salt", "Black salt", "Baking soda", "Other herbs"],
     dosage: {
       mode: "oral-care",
       amountPerUse: 1,
@@ -4462,7 +4494,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["bad breath", "yellow teeth", "stained teeth", "plaque buildup", "fresh breath"],
     shortBenefit: "Stain-lifting powder with a refreshing mint finish.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Activated charcoal", "Baking soda (Sodium bicarbonate)", "Bentonite clay", "Neem powder", "Peppermint oil powder"],
+    ingredients: ["Ajwain (Carom seed) powder", "Clove powder", "Salt", "Black salt", "Baking soda", "Fresh mint (for flavor)", "Other herbs"],
     dosage: {
       mode: "oral-care",
       amountPerUse: 1,
@@ -4482,7 +4514,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["bad breath", "yellow teeth", "stained teeth", "plaque buildup", "mouth discomfort"],
     shortBenefit: "Stain-lifting powder with warming clove flavor.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Activated charcoal", "Baking soda (Sodium bicarbonate)", "Bentonite clay", "Neem powder", "Clove oil powder"],
+    ingredients: ["Ajwain (Carom seed) powder", "Clove powder", "Salt", "Black salt", "Baking soda", "Clove (for flavor)", "Other herbs"],
     dosage: {
       mode: "oral-care",
       amountPerUse: 1,
@@ -4502,7 +4534,7 @@ var HYGIES_PRODUCTS = {
     symptoms: ["bad breath", "yellow teeth", "stained teeth", "plaque buildup", "tooth stains", "coffee stains", "tea stains"],
     shortBenefit: "Extra-strength charcoal blend for coffee/tea stains.",
     allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
-    ingredients: ["Coconut shell activated charcoal", "Baking soda (Sodium bicarbonate)", "Bentonite clay", "Neem powder"],
+    ingredients: ["Ajwain (Carom seed) powder", "Clove powder", "Salt", "Black salt", "Baking soda", "Charcoal", "Other herbs"],
     dosage: {
       mode: "oral-care",
       amountPerUse: 1,
@@ -5678,7 +5710,64 @@ function mountProduct(ctx) {
     main.src = p.gallery[idx];
     main.alt = p.name;
     tbtn.forEach((t, i) => { t.classList.toggle("on", i === idx); t.setAttribute("aria-current", i === idx ? "true" : "false"); });
+    if (lbOpen) lbRender();
   };
+  // click the picture -> bigger view with see-through arrows
+  let lbOpen = false, lb = null, lbImg = null;
+  const lbRender = () => { lbImg.src = p.gallery[idx]; lbImg.alt = p.name; lb.querySelector(".hy-lb-count").textContent = p.gallery.length > 1 ? (idx + 1) + " / " + p.gallery.length : ""; };
+  const lbKey = (e) => {
+    if (e.key === "Escape") lbClose();
+    else if (e.key === "ArrowLeft") go2(idx - 1);
+    else if (e.key === "ArrowRight") go2(idx + 1);
+  };
+  const lbClose = () => {
+    if (!lbOpen) return;
+    lbOpen = false;
+    lb.classList.remove("on");
+    document.removeEventListener("keydown", lbKey);
+    document.documentElement.classList.remove("hy-lb-lock");
+    const el = lb; setTimeout(() => { if (!lbOpen) el.remove(); }, 260);
+    main.focus({ preventScroll: true });
+  };
+  const lbShow = () => {
+    if (lbOpen) return;
+    lbOpen = true;
+    const many = p.gallery.length > 1;
+    lb = document.createElement("div");
+    lb.className = "hy-lb";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.setAttribute("aria-label", p.name + " pictures");
+    lb.innerHTML = '<button type="button" class="hy-lb-x" aria-label="Close">&times;</button>' +
+      (many ? '<button type="button" class="hy-lb-a hy-lb-prev" aria-label="Previous picture"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4l-8 8 8 8"/></svg></button>' +
+      '<button type="button" class="hy-lb-a hy-lb-next" aria-label="Next picture"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l8 8-8 8"/></svg></button>' : '') +
+      '<img class="hy-lb-img" alt=""><div class="hy-lb-count"></div>';
+    lbImg = lb.querySelector(".hy-lb-img");
+    lb.addEventListener("click", (e) => {
+      if (e.target.closest(".hy-lb-x") || e.target === lb) return lbClose();
+      if (e.target.closest(".hy-lb-prev")) return go2(idx - 1);
+      if (e.target.closest(".hy-lb-next")) return go2(idx + 1);
+    });
+    let sx = null;
+    lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener("touchend", (e) => {
+      if (sx === null || !many) return;
+      const dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 45) go2(idx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+    document.body.appendChild(lb);
+    document.documentElement.classList.add("hy-lb-lock");
+    document.addEventListener("keydown", lbKey);
+    lbRender();
+    requestAnimationFrame(() => lb.classList.add("on"));
+    lb.querySelector(".hy-lb-x").focus({ preventScroll: true });
+  };
+  main.tabIndex = 0;
+  main.setAttribute("role", "button");
+  main.setAttribute("aria-label", "Open bigger view");
+  main.addEventListener("click", lbShow);
+  main.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); lbShow(); } });
+  track(lbClose);
   show();
   const prev = root.querySelector("#productSliderPrev"), next = root.querySelector("#productSliderNext");
   if (p.gallery.length < 2) {
@@ -5694,7 +5783,7 @@ function mountProduct(ctx) {
     if (p.gallery.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     auto = setInterval(() => {
       if (!frame.isConnected) return stopAuto();
-      if (hold || document.hidden) return;
+      if (hold || lbOpen || document.hidden) return;
       idx = (idx + 1) % p.gallery.length;
       show();
     }, 4000);
@@ -5725,6 +5814,7 @@ function mountProduct(ctx) {
   root.querySelector("#pdTrust").innerHTML = trust.map((t) => '<li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[t[0]] + "</svg>" + t[1] + "</li>").join("");
   const facts = [
     ["Type", info ? info.category : ""],
+    ["Ingredients", info && info.ingredients ? info.ingredients.join(", ") : ""],
     ["Sizes", p.blocks.map((b) => b.weight).join(", ")],
     ["Payment", "Cash on delivery, bank transfer, Easypaisa, JazzCash"],
     ["Delivery", "All over Pakistan. Free above Rs 10,000"]
