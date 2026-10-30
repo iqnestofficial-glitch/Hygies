@@ -52,6 +52,19 @@
         #gate { text-align:center; padding:80px 20px; color:var(--muted); }
         #toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:11px 18px; border-radius:8px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s; z-index:50; }
         #toast.show { opacity:1; }
+        @media (max-width:640px) {
+            header { padding:10px 14px; }
+            header h1 { font-size:15px; }
+            main { padding:0 12px 60px; }
+            .tabs { flex-wrap:nowrap; overflow-x:auto; position:sticky; top:0; z-index:20; background:var(--bg); margin:0 -12px 12px; padding:10px 12px; border-bottom:1px solid var(--line); scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+            .tabs::-webkit-scrollbar { display:none; }
+            .tab { flex:none; white-space:nowrap; min-height:40px; }
+            .panel { padding:12px; overflow-x:auto; }
+            .panel.row > input, .panel.row > select { flex:1 1 100%; }
+            .panel.row > .btn { flex:1 1 calc(50% - 5px); }
+            table { min-width:480px; }
+            button.btn { min-height:40px; }
+        }
         .switch { position:relative; width:46px; height:26px; display:inline-block; }
         .switch input { opacity:0; width:0; height:0; }
         .slider { position:absolute; inset:0; background:#ccc; border-radius:26px; cursor:pointer; transition:.2s; }
@@ -910,6 +923,7 @@ $("tabs").addEventListener("click", (e) => {
   const b = e.target.closest(".tab");
   if (!b) return;
   document.querySelectorAll(".tab").forEach((t2) => t2.classList.toggle("active", t2 === b));
+  b.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
   ["orders", "stock", "coupons", "reviews", "prices", "signups"].forEach((n) => $("tab-" + n).classList.toggle("hidden", n !== b.dataset.tab));
   const t = b.dataset.tab;
   if (t === "stock") loadStock();
