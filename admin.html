@@ -120,12 +120,19 @@
                     <input id="cApplies" placeholder="Only for items containing… (e.g. teeth)" style="flex:1; min-width:220px;">
                     <input id="cMin" type="number" min="0" placeholder="Min. spend Rs" style="width:140px;">
                     <input id="cExpiry" type="date" title="Expiry date (optional)">
+                    <select id="cWho" title="Who can use this code">
+                        <option value="0">Everyone</option>
+                        <option value="2">Returning customers (2+ orders)</option>
+                        <option value="3">Loyal customers (3+ orders)</option>
+                    </select>
+                    <input id="cBlurb" maxlength="140" placeholder="Short note shown on the blog (optional)" style="flex:1; min-width:220px;">
+                    <label class="muted" style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="cBlog" checked> Show on blog</label>
                     <button class="btn" type="submit">Save code</button>
                     <button class="btn line" type="button" id="cPreset">Fill 35% oral-care example</button>
                 </form>
                 <p class="muted" style="margin-bottom:0;">Leave "Only for items containing…" empty to discount the whole cart. Several words can be separated by commas.</p>
             </div>
-            <div class="panel"><table><thead><tr><th>Code</th><th>Discount</th><th>Applies to</th><th>Min. spend</th><th>Expires</th><th>Active</th><th></th></tr></thead><tbody id="couponRows"></tbody></table></div>
+            <div class="panel"><table><thead><tr><th>Code</th><th>Discount</th><th>Applies to</th><th>Who can use it</th><th>Min. spend</th><th>Expires</th><th>Active</th><th></th></tr></thead><tbody id="couponRows"></tbody></table></div>
         </section>
 
         <!-- REVIEWS -->
@@ -1091,12 +1098,14 @@ async function loadCoupons() {
       percent: c.percent,
       appliesTo: c.applies_to || [],
       minSubtotal: c.min_subtotal,
+      minOrders: c.min_orders || 0,
+      showOnBlog: c.show_on_blog !== false,
       active: c.active,
       expiresAt: stamp(c.expires_at)
     }));
     $("couponRows").innerHTML = rows.length ? rows.map(
-      (c) => "<tr><td><strong>" + esc(c.code) + "</strong></td><td>" + esc(c.percent) + "%</td><td>" + esc((c.appliesTo || []).join(", ") || "Whole cart") + "</td><td>" + (c.minSubtotal ? money(c.minSubtotal) : "\u2014") + "</td><td>" + (c.expiresAt && c.expiresAt.toDate ? esc(c.expiresAt.toDate().toLocaleDateString()) : "\u2014") + '</td><td><label class="switch"><input type="checkbox" data-coupon-active="' + esc(c.code) + '"' + (c.active !== false ? " checked" : "") + '><span class="slider"></span></label></td><td><button class="btn danger" data-coupon-del="' + esc(c.code) + '">Delete</button></td></tr>'
-    ).join("") : '<tr><td colspan="7" class="muted">No codes yet.</td></tr>';
+      (c) => "<tr><td><strong>" + esc(c.code) + "</strong></td><td>" + esc(c.percent) + "%</td><td>" + esc((c.appliesTo || []).join(", ") || "Whole cart") + "</td><td>" + (c.minOrders ? esc(c.minOrders + "+ orders") : "Everyone") + (c.showOnBlog ? "" : ' <span class="muted">(not on blog)</span>') + "</td><td>" + (c.minSubtotal ? money(c.minSubtotal) : "\u2014") + "</td><td>" + (c.expiresAt && c.expiresAt.toDate ? esc(c.expiresAt.toDate().toLocaleDateString()) : "\u2014") + '</td><td><label class="switch"><input type="checkbox" data-coupon-active="' + esc(c.code) + '"' + (c.active !== false ? " checked" : "") + '><span class="slider"></span></label></td><td><button class="btn danger" data-coupon-del="' + esc(c.code) + '">Delete</button></td></tr>'
+    ).join("") : '<tr><td colspan="8" class="muted">No codes yet.</td></tr>';
   } catch (e) {
     toast("Could not load codes: " + e.message);
   }
@@ -1111,6 +1120,9 @@ $("couponForm").addEventListener("submit", async (e) => {
     percent: Number($("cPercent").value),
     applies_to: applies,
     min_subtotal: Number($("cMin").value) || 0,
+    min_orders: Number($("cWho").value) || 0,
+    show_on_blog: $("cBlog").checked,
+    blurb: $("cBlurb").value.trim().slice(0, 140),
     active: true,
     expires_at: $("cExpiry").value ? (/* @__PURE__ */ new Date($("cExpiry").value + "T23:59:59")).toISOString() : null
   };
