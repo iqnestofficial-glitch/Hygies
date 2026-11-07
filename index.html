@@ -1779,9 +1779,9 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 </div></template>
 
 <!-- ===== PAGE: Oral Care  (address: #/oral-care) ===== -->
-<template id="v-oral"><section class="hgs" aria-label="Hygies Charcoal Teeth Whitening Powder" data-count="157" data-pad="4" data-src-sm="images/products/oral-scroll/sm/{n}.webp" data-src-lg="images/products/oral-scroll/lg/{n}.webp">
+<template id="v-oral"><section class="hgs" aria-label="Hygies Charcoal Teeth Whitening Powder" data-count="157" data-sheets-sm="images/products/oral-scroll/sm-{n}.webp" data-grid-sm="4x2" data-sheets-lg="images/products/oral-scroll/lg-{n}.webp" data-grid-lg="2x2">
 <div class="hgs-stage"><div class="hgs-frame">
-<img class="hgs-poster" src="images/products/oral-scroll/lg/0001.webp" alt="Hygies Charcoal Teeth Whitening Powder tin" fetchpriority="high">
+<img class="hgs-poster" src="images/products/oral-scroll/poster.webp" alt="Hygies Charcoal Teeth Whitening Powder tin" fetchpriority="high">
 <canvas class="hgs-canvas" role="img" aria-label="Animation of the Hygies charcoal tin opening, releasing a puff of powder and closing again"></canvas>
 <div class="hgs-load"></div></div>
 <div class="hgs-beats">
@@ -2431,7 +2431,11 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
     });
     this.count = parseInt(root.dataset.count, 10);
     this.pad = parseInt(root.dataset.pad || '4', 10);
-    this.srcSm = root.dataset.srcSm; this.srcLg = root.dataset.srcLg || root.dataset.srcSm;
+    /* frames are packed into sprite sheets (few files: GitHub's web upload allows 100 files at a time).
+       sheet k holds frames k, k+S, k+2S ... so any loaded sheet gives an even spread of the whole animation */
+    var d = root.dataset; this.sheets = {};
+    this.sheets.sm = { src: d.sheetsSm, cols: parseInt(d.gridSm.split('x')[0], 10), rows: parseInt(d.gridSm.split('x')[1], 10) };
+    this.sheets.lg = d.sheetsLg ? { src: d.sheetsLg, cols: parseInt(d.gridLg.split('x')[0], 10), rows: parseInt(d.gridLg.split('x')[1], 10) } : this.sheets.sm;
     this.lgMin = parseInt(root.dataset.lgMin || '720', 10);
     this.damp = parseFloat(root.dataset.damp || '9');
     this.imgs = new Array(this.count); this.ready = new Uint8Array(this.count); this.nReady = 0;
@@ -2439,9 +2443,9 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
     this.dpr = 1; this.w = 0; this.h = 0; this.set = null; this.token = 0;
     this.init();
   }
-  Seq.prototype.url = function (set, i) {
-    var n = String(i + 1); while (n.length < this.pad) n = '0' + n;
-    return (set === 'lg' ? this.srcLg : this.srcSm).replace('{n}', n);
+  Seq.prototype.sheetUrl = function (set, k) {
+    var n = String(k + 1); while (n.length < 2) n = '0' + n;
+    return this.sheets[set].src.replace('{n}', n);
   };
   Seq.prototype.init = function () {
     var self = this, root = this.root;
@@ -2473,25 +2477,33 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
     if (s !== this.set) { var first = this.set === null; this.set = s; if (!first) this.load(); }
     this.kick();
   };
-  /* load every 16th frame first, then 8th, 4th, 2nd, rest: scrubbing works at once and sharpens as frames arrive */
-  Seq.prototype.order = function () {
-    var seen = {}, out = [], c = this.count, steps = [16, 8, 4, 2, 1];
-    for (var s = 0; s < steps.length; s++) for (var i = 0; i < c; i += steps[s]) if (!seen[i]) { seen[i] = 1; out.push(i); }
-    if (!seen[c - 1]) out.push(c - 1);
+  /* sheets are fetched in bit-reversed order (0, S/2, S/4, ...): scrubbing works after the first few and sharpens as the rest arrive */
+  Seq.prototype.order = function (S) {
+    var out = [], seen = {}, bits = Math.ceil(Math.log(S) / Math.LN2) || 1, n = 1 << bits;
+    for (var i = 0; i < n; i++) { var r = 0; for (var b = 0; b < bits; b++) if (i & (1 << b)) r |= 1 << (bits - 1 - b); if (r < S && !seen[r]) { seen[r] = 1; out.push(r); } }
     return out;
   };
   Seq.prototype.load = function () {
-    var self = this, token = ++this.token, set = this.set, queue = this.order(), active = 0, MAX = 6, done = 0, total = queue.length;
+    var self = this, token = ++this.token, set = this.set, sh = this.sheets[set], per = sh.cols * sh.rows;
+    var S = Math.ceil(this.count / per), queue = this.order(S), active = 0, MAX = 3, done = 0, total = queue.length;
     this.imgs = new Array(this.count); this.ready = new Uint8Array(this.count); this.nReady = 0;
     var fire = function () {
       while (active < MAX && queue.length) {
-        (function (i) {
+        (function (k) {
           active++;
           var im = new Image(); im.decoding = 'async';
           var fin = function (ok) {
             active--; done++;
             if (token === self.token) {
-              if (ok) { self.imgs[i] = im; self.ready[i] = 1; self.nReady++; self.dirty = true; self.kick(); }
+              if (ok) {
+                var fw = im.naturalWidth / sh.cols, fh = im.naturalHeight / sh.rows;
+                for (var slot = 0; slot < per; slot++) {
+                  var i = k + slot * S; if (i >= self.count) break;
+                  self.imgs[i] = { im: im, sx: (slot % sh.cols) * fw, sy: Math.floor(slot / sh.cols) * fh, sw: fw, sh: fh };
+                  self.ready[i] = 1; self.nReady++;
+                }
+                self.dirty = true; self.kick();
+              }
               self.root.style.setProperty('--l', (done / total).toFixed(3));
               if (!self.root.classList.contains('hgs-ready') && self.ready[0]) self.root.classList.add('hgs-ready');
               if (done >= total) self.root.classList.add('hgs-loaded');
@@ -2499,7 +2511,7 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
             }
           };
           im.onload = function () { fin(true); }; im.onerror = function () { fin(false); };
-          im.src = self.url(set, i);
+          im.src = self.sheetUrl(set, k);
         })(queue.shift());
       }
     };
@@ -2525,10 +2537,10 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
   Seq.prototype.nearest = function (i, dir) {
     for (var k = i; k >= 0 && k < this.count; k += dir) if (this.ready[k]) return k; return -1;
   };
-  Seq.prototype.paint = function (im, alpha) {
-    var cw = this.w, ch = this.h, iw = im.naturalWidth, ih = im.naturalHeight; if (!iw) return;
+  Seq.prototype.paint = function (fr, alpha) {
+    var cw = this.w, ch = this.h, iw = fr.sw, ih = fr.sh; if (!iw) return;
     var s = Math.max(cw / iw, ch / ih), dw = iw * s, dh = ih * s;
-    this.ctx.globalAlpha = alpha; this.ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    this.ctx.globalAlpha = alpha; this.ctx.drawImage(fr.im, fr.sx, fr.sy, fr.sw, fr.sh, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   };
   Seq.prototype.draw = function () {
     var f = clamp(this.cur, 0, this.count - 1), i = Math.floor(f), fr = f - i;
