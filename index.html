@@ -1427,6 +1427,79 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 @media (max-width:575px){.hy-ft-in{padding:48px 18px 22px}.hy-ft-grid{padding:36px 0 30px}.hy-ft-contact{grid-column:1 / -1}.hy-ft-base{flex-direction:column;align-items:flex-start}}
 @media (prefers-reduced-motion:reduce){.hy-ft *{transition:none !important}}
 </style>
+<style id="hgs-css">
+/* Hygies scroll sequence: pinned stage + scroll-scrubbed frames. Progressive enhancement:
+   without JS (or with reduced motion) it falls back to the poster image and stacked captions. */
+.hgs{--hgs-length:520vh;--hgs-bg:#0b0c0d;--hgs-ink:#f4f5f3;--hgs-dim:rgba(244,245,243,.68);--hgs-accent:#ffffff;
+  --hgs-font:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  position:relative;background:var(--hgs-bg);color:var(--hgs-ink);font-family:var(--hgs-font);isolation:isolate}
+.hgs.hgs-js{height:var(--hgs-length)}
+.hgs-stage{position:relative;display:grid;place-items:center;overflow:hidden;min-height:100vh;min-height:100svh;
+  background:radial-gradient(120% 90% at 50% 38%,#25282b 0%,#121416 55%,var(--hgs-bg) 100%)}
+.hgs.hgs-js .hgs-stage{position:sticky;top:0;height:100vh;height:100svh}
+/* the frame: full-bleed on phones, a rounded portrait card on wide screens */
+.hgs-frame{position:relative;width:100%;height:100%;background:#0f1113}
+.hgs-canvas,.hgs-poster{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover}
+.hgs-canvas{opacity:0;transition:opacity .5s ease}
+.hgs.hgs-ready .hgs-canvas{opacity:1}
+.hgs.hgs-ready .hgs-poster{opacity:0;transition:opacity .5s ease .1s}
+.hgs-frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.40) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 58%,rgba(0,0,0,.62) 100%)}
+/* captions */
+.hgs-beats{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hgs-beat{position:absolute;left:0;right:0;bottom:0;padding:0 24px calc(32px + env(safe-area-inset-bottom));
+  opacity:calc(var(--a,0));transform:translate3d(0,calc((1 - var(--a,0)) * 14px),0);will-change:opacity,transform;text-align:center}
+.hgs-beat[data-pos="top"]{bottom:auto;top:0;padding:calc(36px + env(safe-area-inset-top)) 24px 0}
+.hgs-beat h3,.hgs-beat h2{margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.05;font-size:clamp(30px,8.4vw,46px);text-shadow:0 2px 24px rgba(0,0,0,.45)}
+.hgs-beat p{margin:10px auto 0;max-width:30ch;font-size:clamp(15px,4.2vw,18px);line-height:1.45;color:var(--hgs-dim);text-shadow:0 1px 14px rgba(0,0,0,.5)}
+.hgs-cta{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:15px 26px;border-radius:999px;
+  background:#fff;color:#101214;font-weight:600;font-size:16px;text-decoration:none;box-shadow:0 8px 30px rgba(0,0,0,.35);
+  transition:transform .2s ease,box-shadow .2s ease}
+.hgs-cta:hover{transform:translateY(-1px);box-shadow:0 12px 34px rgba(0,0,0,.45)}
+.hgs-cta:focus-visible{outline:3px solid #9fd8ff;outline-offset:3px}
+/* progress rail + scroll hint */
+.hgs-rail{position:absolute;z-index:3;right:12px;top:50%;height:96px;width:2px;transform:translateY(-50%);background:rgba(255,255,255,.18);border-radius:2px;overflow:hidden}
+.hgs-rail i{position:absolute;left:0;right:0;top:0;height:100%;background:#fff;transform-origin:top;transform:scaleY(var(--p,0))}
+.hgs-hint{position:absolute;z-index:3;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--hgs-dim);display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .4s ease;pointer-events:none}
+.hgs-hint::after{content:"";width:1px;height:26px;background:linear-gradient(#fff,rgba(255,255,255,0));animation:hgs-drip 1.8s ease-in-out infinite}
+.hgs.hgs-moved .hgs-hint{opacity:0}
+@keyframes hgs-drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hgs-load{position:absolute;z-index:3;left:0;top:0;height:2px;width:100%;background:rgba(255,255,255,.55);transform-origin:left;transform:scaleX(var(--l,0));transition:opacity .4s ease}
+.hgs.hgs-loaded .hgs-load{opacity:0}
+/* wide screens: portrait card, captions sit beside it */
+@media (min-width:900px){
+  .hgs{--hgs-fw:min(calc(94svh * 9 / 16),520px);--hgs-cw:min(340px,24vw)}
+  .hgs-frame{width:var(--hgs-fw);height:94svh;border-radius:28px;overflow:hidden;
+    box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+  .hgs-beats{left:50%;right:auto;width:calc(var(--hgs-fw) + 2 * (var(--hgs-cw) + 64px));max-width:96vw;transform:translateX(-50%)}
+  .hgs-beat{left:auto;right:auto;bottom:auto;top:50%;width:var(--hgs-cw);padding:0;text-align:left;
+    transform:translate3d(0,calc(-50% + (1 - var(--a,0)) * 18px),0)}
+  .hgs-beat[data-side="left"]{left:0}
+  .hgs-beat[data-side="right"]{right:0;text-align:left}
+  .hgs-beat[data-side="left"]{text-align:right}
+  .hgs-beat[data-side="left"] p{margin-left:auto}
+  .hgs-beat[data-pos="top"]{top:50%;padding:0}
+  .hgs-beat h3,.hgs-beat h2{font-size:clamp(34px,3.4vw,52px)}
+  .hgs-beat p{margin-left:0;font-size:18px;max-width:28ch}
+  .hgs-rail{right:auto;left:calc(50% + var(--hgs-fw)/2 + 14px)}
+}
+/* static fallback: no JS, or the visitor prefers reduced motion */
+.hgs:not(.hgs-js) .hgs-canvas,.hgs.hgs-static .hgs-canvas,.hgs:not(.hgs-js) .hgs-rail,.hgs.hgs-static .hgs-rail,
+.hgs:not(.hgs-js) .hgs-hint,.hgs.hgs-static .hgs-hint,.hgs:not(.hgs-js) .hgs-load,.hgs.hgs-static .hgs-load{display:none}
+.hgs:not(.hgs-js) .hgs-beats,.hgs.hgs-static .hgs-beats{position:static;transform:none;width:auto;padding:28px 24px 48px;display:grid;gap:28px}
+.hgs:not(.hgs-js) .hgs-beat,.hgs.hgs-static .hgs-beat{position:static;opacity:1;transform:none;width:auto;padding:0;text-align:left}
+.hgs:not(.hgs-js) .hgs-stage,.hgs.hgs-static .hgs-stage{display:block;position:static;height:auto}
+.hgs:not(.hgs-js) .hgs-frame,.hgs.hgs-static .hgs-frame{height:auto;aspect-ratio:9/16;max-width:520px;margin:0 auto}
+@media (prefers-reduced-motion:reduce){.hgs-hint::after{animation:none}.hgs-canvas,.hgs-poster{transition:none}}
+
+/* Hygies site integration */
+.hgs{--hgs-fh:Bricolage,Poppins,sans-serif}
+.hgs-beat h2,.hgs-beat h3{font-family:var(--hgs-fh);font-weight:800}
+.hgs-cta{background:#79B933;color:#0e2a14}
+.hgs-cta:hover{background:#8bcb44}
+@media (max-width:899px){.hgs-beat{padding-bottom:calc(92px + env(safe-area-inset-bottom))}.hgs-hint{bottom:calc(84px + env(safe-area-inset-bottom))}}
+</style>
 </head>
 <body>
 <noscript><p style="padding:40px;text-align:center;font-family:sans-serif;">Hygies needs JavaScript to show the shop. Please turn it on, or WhatsApp us on 0300 9236520 to order.</p></noscript>
@@ -1706,7 +1779,22 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 </div></template>
 
 <!-- ===== PAGE: Oral Care  (address: #/oral-care) ===== -->
-<template id="v-oral"><div class="container-fluid px-4">
+<template id="v-oral"><section class="hgs" aria-label="Hygies Charcoal Teeth Whitening Powder" data-count="157" data-pad="4" data-src-sm="images/products/oral-scroll/sm/{n}.webp" data-src-lg="images/products/oral-scroll/lg/{n}.webp">
+<div class="hgs-stage"><div class="hgs-frame">
+<img class="hgs-poster" src="images/products/oral-scroll/lg/0001.webp" alt="Hygies Charcoal Teeth Whitening Powder tin" fetchpriority="high">
+<canvas class="hgs-canvas" role="img" aria-label="Animation of the Hygies charcoal tin opening, releasing a puff of powder and closing again"></canvas>
+<div class="hgs-load"></div></div>
+<div class="hgs-beats">
+<div class="hgs-beat" data-from="0.02" data-to="0.13" data-side="left" data-pos="top"><h2>Hygies Charcoal</h2><p>Teeth whitening powder</p></div>
+<div class="hgs-beat" data-from="0.15" data-to="0.26" data-side="right"><h3>Twist to open</h3></div>
+<div class="hgs-beat" data-from="0.28" data-to="0.50" data-side="left"><h3>Black powder. Bright smile.</h3></div>
+<div class="hgs-beat" data-from="0.53" data-to="0.67" data-side="right"><h3>Fine and smooth</h3><p>A soft, even charcoal powder.</p></div>
+<div class="hgs-beat" data-from="0.70" data-to="0.86" data-side="left"><h3>Seal it tight</h3></div>
+<div class="hgs-beat" data-from="0.90" data-to="1.01" data-side="right" data-fade="0.05"><h2>Hygies</h2><p>Natural care for a brighter smile</p><a class="hgs-cta" href="#/product/teeth-whitening-charcoal">Shop Charcoal</a></div>
+</div>
+<div class="hgs-rail" aria-hidden="true"><i></i></div><div class="hgs-hint" aria-hidden="true">Scroll</div>
+</div></section>
+<div class="container-fluid px-4">
 <section class="sh-head"><h1 class="sh-h1">Oral Care</h1><p class="sh-lede">Teeth whitening powder in four flavours.</p></section>
 <div class="listProduct" data-filterable="true"><div class="item" data-id="productoralcare1"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-powder"><img alt="Teeth Whitening Powder Original Flavor" class="primary" loading="lazy" src="images/products/oralcare-whitening-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-whitening-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Original Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare2"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-mint"><img alt="Teeth Whitening Powder Mint Flavor" class="primary" loading="lazy" src="images/products/oralcare-mint-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-mint-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Mint Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare3"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-clove"><img alt="Teeth Whitening Powder Clove Flavor" class="primary" loading="lazy" src="images/products/oralcare-clove-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-clove-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Clove Flavor</h2><div class="price">Rs 1400</div></div></div><div class="item" data-id="productoralcare4"><div class="tilted-card-inner"><div class="img-container"><a href="#/product/teeth-whitening-charcoal"><img alt="Teeth Whitening Powder Charcoal Flavor" class="primary" loading="lazy" src="images/products/oralcare-charcoal-front-sm.webp"/><img alt="" class="secondary" loading="lazy" src="images/products/oralcare-charcoal-top-sm.webp"/></a><div class="floating-action-container"><button class="addcart"><i class="fa-solid fa-plus"></i><span>Add</span></button></div></div><h2>Teeth Whitening Powder Charcoal Flavor</h2><div class="price">Rs 1500</div></div></div></div>
 </div></template>
@@ -2324,6 +2412,149 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <!-- =====================================================================
      THE SHOP'S CODE  (cart, pages, sign-in, checkout, orders ...)
      ===================================================================== -->
+<script id="hgs-js">
+/*! Hygies scroll sequence. Vanilla JS, no dependencies.
+ *  <section class="hgs" data-count="150" data-pad="4" data-src-sm="frames/sm/{n}.webp" data-src-lg="frames/lg/{n}.webp">
+ *  Plays a pre-rendered frame sequence as the visitor scrolls past the pinned stage. */
+(function () {
+  'use strict';
+  var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
+  var smooth = function (x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+
+  function Seq(root) {
+    this.root = root;
+    this.canvas = root.querySelector('.hgs-canvas');
+    this.ctx = this.canvas.getContext('2d', { alpha: false });
+    this.poster = root.querySelector('.hgs-poster');
+    this.beats = [].map.call(root.querySelectorAll('.hgs-beat'), function (el) {
+      return { el: el, from: parseFloat(el.dataset.from), to: parseFloat(el.dataset.to), fade: parseFloat(el.dataset.fade || '0.035') };
+    });
+    this.count = parseInt(root.dataset.count, 10);
+    this.pad = parseInt(root.dataset.pad || '4', 10);
+    this.srcSm = root.dataset.srcSm; this.srcLg = root.dataset.srcLg || root.dataset.srcSm;
+    this.lgMin = parseInt(root.dataset.lgMin || '720', 10);
+    this.damp = parseFloat(root.dataset.damp || '9');
+    this.imgs = new Array(this.count); this.ready = new Uint8Array(this.count); this.nReady = 0;
+    this.cur = 0; this.target = 0; this.raf = 0; this.last = 0; this.dirty = true; this.visible = true;
+    this.dpr = 1; this.w = 0; this.h = 0; this.set = null; this.token = 0;
+    this.init();
+  }
+  Seq.prototype.url = function (set, i) {
+    var n = String(i + 1); while (n.length < this.pad) n = '0' + n;
+    return (set === 'lg' ? this.srcLg : this.srcSm).replace('{n}', n);
+  };
+  Seq.prototype.init = function () {
+    var self = this, root = this.root;
+    root.classList.add('hgs-js');
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { root.classList.add('hgs-static'); root.classList.remove('hgs-js'); return; }
+    this.measure();
+    this.onResize = function () { self.measure(); }; this.onScrollEv = function () { self.onScroll(); };
+    if ('ResizeObserver' in window) { this.ro = new ResizeObserver(this.onResize); this.ro.observe(this.canvas.parentNode); }
+    else window.addEventListener('resize', this.onResize);
+    window.addEventListener('scroll', this.onScrollEv, { passive: true });
+    if ('IntersectionObserver' in window) { this.io = new IntersectionObserver(function (e) { self.visible = e[0].isIntersecting; if (self.visible) self.kick(); }, { rootMargin: '200px 0px' }); this.io.observe(root); }
+    this.onScroll(); this.load(); this.kick();
+  };
+  /* the Hygies site swaps pages in and out of the DOM: stop everything once our section is gone */
+  Seq.prototype.destroy = function () {
+    this.dead = true; this.token++; if (this.raf) cancelAnimationFrame(this.raf); this.raf = 0;
+    window.removeEventListener('scroll', this.onScrollEv); window.removeEventListener('resize', this.onResize);
+    if (this.ro) this.ro.disconnect(); if (this.io) this.io.disconnect(); this.imgs = []; this.root.__hgs = null;
+  };
+  Seq.prototype.chooseSet = function () {
+    var px = this.canvas.parentNode.clientWidth * Math.min(window.devicePixelRatio || 1, 2);
+    return px > this.lgMin ? 'lg' : 'sm';
+  };
+  Seq.prototype.measure = function () {
+    var p = this.canvas.parentNode, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(1, Math.round(p.clientWidth * dpr)), h = Math.max(1, Math.round(p.clientHeight * dpr));
+    if (w !== this.w || h !== this.h) { this.w = this.canvas.width = w; this.h = this.canvas.height = h; this.dirty = true; }
+    var s = this.chooseSet();
+    if (s !== this.set) { var first = this.set === null; this.set = s; if (!first) this.load(); }
+    this.kick();
+  };
+  /* load every 16th frame first, then 8th, 4th, 2nd, rest: scrubbing works at once and sharpens as frames arrive */
+  Seq.prototype.order = function () {
+    var seen = {}, out = [], c = this.count, steps = [16, 8, 4, 2, 1];
+    for (var s = 0; s < steps.length; s++) for (var i = 0; i < c; i += steps[s]) if (!seen[i]) { seen[i] = 1; out.push(i); }
+    if (!seen[c - 1]) out.push(c - 1);
+    return out;
+  };
+  Seq.prototype.load = function () {
+    var self = this, token = ++this.token, set = this.set, queue = this.order(), active = 0, MAX = 6, done = 0, total = queue.length;
+    this.imgs = new Array(this.count); this.ready = new Uint8Array(this.count); this.nReady = 0;
+    var fire = function () {
+      while (active < MAX && queue.length) {
+        (function (i) {
+          active++;
+          var im = new Image(); im.decoding = 'async';
+          var fin = function (ok) {
+            active--; done++;
+            if (token === self.token) {
+              if (ok) { self.imgs[i] = im; self.ready[i] = 1; self.nReady++; self.dirty = true; self.kick(); }
+              self.root.style.setProperty('--l', (done / total).toFixed(3));
+              if (!self.root.classList.contains('hgs-ready') && self.ready[0]) self.root.classList.add('hgs-ready');
+              if (done >= total) self.root.classList.add('hgs-loaded');
+              fire();
+            }
+          };
+          im.onload = function () { fin(true); }; im.onerror = function () { fin(false); };
+          im.src = self.url(set, i);
+        })(queue.shift());
+      }
+    };
+    fire();
+  };
+  Seq.prototype.onScroll = function () {
+    if (this.dead) return; if (!this.root.isConnected) { this.destroy(); return; }
+    var r = this.root.getBoundingClientRect(), span = r.height - window.innerHeight;
+    var p = span > 0 ? clamp(-r.top / span, 0, 1) : 0;
+    this.p = p; this.target = p * (this.count - 1);
+    if (p > 0.004) this.root.classList.add('hgs-moved');
+    this.kick();
+  };
+  Seq.prototype.kick = function () { if (!this.raf && this.visible) { var s = this; this.last = performance.now(); this.raf = requestAnimationFrame(function (t) { s.tick(t); }); } };
+  Seq.prototype.tick = function (t) {
+    if (this.dead) return; if (!this.root.isConnected) { this.destroy(); return; }
+    var dt = Math.min(0.05, (t - this.last) / 1000); this.last = t; this.raf = 0;
+    var d = this.target - this.cur;
+    if (Math.abs(d) > 0.004) { this.cur += d * (1 - Math.exp(-dt * this.damp)); this.dirty = true; } else if (d !== 0) { this.cur = this.target; this.dirty = true; }
+    if (this.dirty) { this.draw(); this.dirty = false; this.captions(); }
+    if (Math.abs(this.target - this.cur) > 0.004 || this.dirty) this.kick();
+  };
+  Seq.prototype.nearest = function (i, dir) {
+    for (var k = i; k >= 0 && k < this.count; k += dir) if (this.ready[k]) return k; return -1;
+  };
+  Seq.prototype.paint = function (im, alpha) {
+    var cw = this.w, ch = this.h, iw = im.naturalWidth, ih = im.naturalHeight; if (!iw) return;
+    var s = Math.max(cw / iw, ch / ih), dw = iw * s, dh = ih * s;
+    this.ctx.globalAlpha = alpha; this.ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+  };
+  Seq.prototype.draw = function () {
+    var f = clamp(this.cur, 0, this.count - 1), i = Math.floor(f), fr = f - i;
+    var a = this.nearest(i, -1), b = this.nearest(Math.min(i + 1, this.count - 1), 1);
+    if (a < 0 && b < 0) return; if (a < 0) a = b; if (b < 0) b = a;
+    this.ctx.globalCompositeOperation = 'source-over';
+    // when both neighbours are loaded, cross-fade between them: smooth motion from a sparse frame set
+    var span = b - a, w = span > 0 ? clamp((f - a) / span, 0, 1) : 0;
+    this.paint(this.imgs[a], 1);
+    if (b !== a && w > 0.001) this.paint(this.imgs[b], smooth(w));
+    this.ctx.globalAlpha = 1;
+  };
+  Seq.prototype.captions = function () {
+    var p = this.p || 0, rail = this.root.querySelector('.hgs-rail');
+    for (var k = 0; k < this.beats.length; k++) {
+      var b = this.beats[k], a = smooth((p - b.from) / b.fade) * (1 - smooth((p - (b.to - b.fade)) / b.fade));
+      b.el.style.setProperty('--a', a.toFixed(3)); b.el.style.visibility = a < 0.01 ? 'hidden' : 'visible'; b.el.setAttribute('aria-hidden', a < 0.5 ? 'true' : 'false');
+    }
+    this.root.style.setProperty('--p', p.toFixed(4));
+  };
+  function boot() { [].forEach.call(document.querySelectorAll('.hgs'), function (r) { if (!r.__hgs) r.__hgs = new Seq(r); }); }
+  window.HygiesScroll = { boot: boot };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+</script>
 <script type="module">
 // app/viewmeta.json
 var viewmeta_default = { home: { title: "Hygies", desc: "Shop Hygies organic herbal teas, wellness powders and natural teeth-whitening powder. Delivered across Pakistan in 3-5 days, free shipping over Rs 10,000.", ld: '{"@context": "https://schema.org", "@type": "Organization", "name": "Hygies", "url": "https://iqnestofficial-glitch.github.io/Hygies/", "logo": "https://iqnestofficial-glitch.github.io/Hygies/images/products/logo-color.png", "email": "iqnestofficial@gmail.com", "telephone": "+923009236520"}', bare: false, marquee: null, groups: ["g0", "g1", "g2"] }, shop: { title: "Shop | All of our Products.", desc: "Browse every Hygies product: herbal teas, organic powders and natural oral care. Cash on delivery available.", ld: "", bare: false, marquee: "Shop | All of our Products.    ", groups: ["g0", "g1"] }, teas: { title: "Herbal Teas | Shop all our Teas", desc: "Flu & fever, digestion and slimming herbal teas made with 100% organic ingredients. Order online in Pakistan.", ld: "", bare: false, marquee: "Herbal Teas | Shop all our Teas.     ", groups: ["g0", "g1"] }, powders: { title: "Organic Powders | Shop all our Powders", desc: "Sliming, detox and glowing organic powders. 100% natural, delivered across Pakistan.", ld: "", bare: false, marquee: "Organic Powders | Shop all our Powders.     ", groups: ["g0", "g1"] }, oral: { title: "Oral Care Shop | Shop all our Oral care Products", desc: "Natural teeth-whitening powder in mint, clove and charcoal flavours. Order online in Pakistan.", ld: "", bare: false, marquee: "Oral Care Shop | Shop all our Oral care Products     ", groups: ["g0", "g1"] }, blog: { title: "Blog | New Arrivals", desc: "Articles on herbal teas, natural wellness and healthy habits from Hygies.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g2", "g3"] }, post: { title: "Hygies - Blog", desc: "Read the latest wellness and herbal-tea article from Hygies.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g2", "g4", "g5"] }, contact: { title: "Hygies - Contact Us", desc: "Get in touch with Hygies by phone 0300 9236520, WhatsApp or email iqnestofficial@gmail.com.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g2", "g5"] }, product: { title: "Flu & Fever Tea | Hygies", desc: "A 100% organic herbal tea blend to help soothe the symptoms of flu and fever. Delivered across Pakistan.", ld: "", bare: false, marquee: null, groups: ["g1", "g6"] }, auth: { title: "Hygies - Sign In / Sign Up", desc: "", ld: "", bare: true, marquee: null, groups: ["g7"] }, checkout: { title: "Hygies - Secure Checkout", desc: "", ld: "", bare: true, marquee: null, groups: ["g8", "g9"] }, orders: { title: "Hygies - Order History", desc: "", ld: "", bare: true, marquee: null, groups: ["g8", "g10", "g11"] }, confirmed: { title: "Hygies - Order Confirmed", desc: "", ld: "", bare: true, marquee: null, groups: ["g8", "g10", "g12"] }, thanks: { title: "Hygies - Thank You", desc: "", ld: "", bare: true, marquee: null, groups: ["g13", "g14"] }, track: { title: "Track Your Order | Hygies", desc: "", ld: "", bare: true, marquee: null, groups: ["g15", "g16", "g17"] }, profile: { title: "Profile & Addresses | Hygies", desc: "", ld: "", bare: true, marquee: null, groups: ["g15", "g17", "g18", "g19"] }, wishlist: { title: "My Wishlist | Hygies", desc: "", ld: "", bare: true, marquee: null, groups: ["g15", "g18", "g20"] }, logout: { title: "Hygies - Logged Out Securely", desc: "", ld: "", bare: true, marquee: null, groups: ["g13", "g21"] }, shipping: { title: "Shipping Policy | Hygies", desc: "Delivery times, shipping fees and free-shipping threshold for Hygies orders across Pakistan.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g22"] }, returns: { title: "Refund Policy | Hygies", desc: "Hygies returns, replacement and refund policy for herbal teas, powders and oral-care products.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g22"] }, privacy: { title: "Privacy Policy | Hygies", desc: "How Hygies collects, uses and protects your personal information.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g22"] }, terms: { title: "Terms of Service | Hygies", desc: "Terms and conditions for using the Hygies website and buying our products.", ld: "", bare: false, marquee: null, groups: ["g0", "g1", "g22"] } };
@@ -6687,6 +6918,7 @@ setHooks({
   },
   after: () => {
     refreshHeaderAuth();
+    if (window.HygiesScroll) window.HygiesScroll.boot();
   }
 });
 async function handleArrival() {
