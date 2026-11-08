@@ -5700,24 +5700,50 @@ function mountProduct(ctx) {
   frame.classList.add("pd-frame");
   main.removeAttribute("style");
   main.classList.remove("img-fluid", "w-100");
+  // 20 s product ad lives in the gallery as slide 2 (teeth-whitening tins only); it stays hidden until its picture file exists
+  const adName = { "teeth-whitening-powder": "original", "teeth-whitening-mint": "mint", "teeth-whitening-clove": "clove", "teeth-whitening-charcoal": "charcoal" }[p.slug];
+  const adBase = "images/products/hygies-" + adName + "-ad-20s";
+  const G = p.gallery.slice();
+  const VI = adName ? 1 : -1;
+  if (adName) G.splice(VI, 0, adBase + "-poster.jpg");
+  let vidOk = false;
+  const isVid = (i) => i === VI;
+  const nextOk = (n, d) => { n = (n + G.length) % G.length; return isVid(n) && !vidOk ? (n + d + G.length) % G.length : n; };
+  let vidEl = null;
+  if (adName) {
+    vidEl = document.createElement("video");
+    vidEl.controls = true; vidEl.playsInline = true; vidEl.preload = "none"; vidEl.poster = adBase + "-poster.jpg";
+    vidEl.setAttribute("aria-label", "Hygies Teeth Whitening Powder ad");
+    vidEl.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111;display:none";
+    main.after(vidEl);   // right after the picture so the arrows stay on top
+  }
   let idx = 0;
   const thumbs = root.querySelector("#pdThumbs");
-  thumbs.innerHTML = p.gallery.map((g, i) => '<button type="button" class="pd-thumb" aria-label="Show image ' + (i + 1) + '"><img src="' + g + '" alt="" loading="lazy" decoding="async"></button>').join("");
+  thumbs.innerHTML = G.map((g, i) => '<button type="button" class="pd-thumb" aria-label="' + (isVid(i) ? "Play the video" : "Show image " + (i + 1)) + '"' + (isVid(i) ? ' style="position:relative;display:none"' : "") + '><img src="' + g + '" alt="" loading="lazy" decoding="async">' + (isVid(i) ? '<span style="position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:rgba(18,58,27,.85);color:#fff;font-size:11px;line-height:26px;text-align:center;padding-left:2px">&#9654;</span>' : "") + "</button>").join("");
   const tbtn = [...thumbs.children];
+  if (adName) { const pi = new Image(); pi.onload = () => { vidOk = true; tbtn[VI].style.display = ""; }; pi.src = adBase + "-poster.jpg"; }
   const show = () => {
-    main.classList.add("swap");
-    main.onload = () => main.classList.remove("swap");
-    main.src = p.gallery[idx];
+    const vid = isVid(idx);
+    if (vidEl) {
+      vidEl.style.display = vid ? "block" : "none";
+      if (vid) { if (!vidEl.getAttribute("src")) vidEl.src = adBase + "-site.mp4"; } else vidEl.pause();
+    }
+    main.style.visibility = vid ? "hidden" : "";
+    if (!vid) {
+      main.classList.add("swap");
+      main.onload = () => main.classList.remove("swap");
+      main.src = G[idx];
+    }
     main.alt = p.name;
     tbtn.forEach((t, i) => { t.classList.toggle("on", i === idx); t.setAttribute("aria-current", i === idx ? "true" : "false"); });
     if (lbOpen) lbRender();
   };
   // click the picture -> bigger view with see-through arrows
   let lbOpen = false, lb = null, lbImg = null;
-  const lbRender = () => { lbImg.src = p.gallery[idx]; lbImg.alt = p.name; lb.querySelector(".hy-lb-count").textContent = p.gallery.length > 1 ? (idx + 1) + " / " + p.gallery.length : ""; };
+  const lbRender = () => { lbImg.src = G[idx]; lbImg.alt = p.name; lb.querySelector(".hy-lb-count").textContent = G.length > 1 ? (idx + 1) + " / " + G.length : ""; };
   const lbKey = (e) => {
     if (e.key === "Escape") lbClose();
-    else if (e.key === "ArrowLeft") go2(idx - 1);
+    else if (e.key === "ArrowLeft") go2(idx - 1, -1);
     else if (e.key === "ArrowRight") go2(idx + 1);
   };
   const lbClose = () => {
@@ -5732,7 +5758,7 @@ function mountProduct(ctx) {
   const lbShow = () => {
     if (lbOpen) return;
     lbOpen = true;
-    const many = p.gallery.length > 1;
+    const many = G.length > 1;
     lb = document.createElement("div");
     lb.className = "hy-lb";
     lb.setAttribute("role", "dialog");
@@ -5745,7 +5771,7 @@ function mountProduct(ctx) {
     lbImg = lb.querySelector(".hy-lb-img");
     lb.addEventListener("click", (e) => {
       if (e.target.closest(".hy-lb-x") || e.target === lb) return lbClose();
-      if (e.target.closest(".hy-lb-prev")) return go2(idx - 1);
+      if (e.target.closest(".hy-lb-prev")) return go2(idx - 1, -1);
       if (e.target.closest(".hy-lb-next")) return go2(idx + 1);
     });
     let sx = null;
@@ -5753,7 +5779,7 @@ function mountProduct(ctx) {
     lb.addEventListener("touchend", (e) => {
       if (sx === null || !many) return;
       const dx = e.changedTouches[0].clientX - sx; sx = null;
-      if (Math.abs(dx) > 45) go2(idx + (dx < 0 ? 1 : -1));
+      if (Math.abs(dx) > 45) go2(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
     }, { passive: true });
     document.body.appendChild(lb);
     document.documentElement.classList.add("hy-lb-lock");
@@ -5770,7 +5796,7 @@ function mountProduct(ctx) {
   track(lbClose);
   show();
   const prev = root.querySelector("#productSliderPrev"), next = root.querySelector("#productSliderNext");
-  if (p.gallery.length < 2) {
+  if (G.length < 2) {
     prev.style.display = "none";
     next.style.display = "none";
     thumbs.style.display = "none";
@@ -5780,11 +5806,11 @@ function mountProduct(ctx) {
   const stopAuto = () => clearInterval(auto);
   const startAuto = () => {
     stopAuto();
-    if (p.gallery.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (G.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     auto = setInterval(() => {
       if (!frame.isConnected) return stopAuto();
-      if (hold || lbOpen || document.hidden) return;
-      idx = (idx + 1) % p.gallery.length;
+      if (hold || lbOpen || document.hidden || (vidEl && isVid(idx))) return;
+      idx = nextOk(idx + 1, 1);
       show();
     }, 4000);
   };
@@ -5792,18 +5818,11 @@ function mountProduct(ctx) {
   gal.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hold = true; });
   gal.addEventListener("pointerleave", () => { hold = false; });
   track(stopAuto);
-  const go2 = (n) => { idx = (n + p.gallery.length) % p.gallery.length; show(); startAuto(); };
+  const go2 = (n, d = 1) => { idx = nextOk(n, d); show(); startAuto(); };
   tbtn.forEach((t, i) => t.addEventListener("click", () => go2(i)));
-  prev.addEventListener("click", () => go2(idx - 1));
+  prev.addEventListener("click", () => go2(idx - 1, -1));
   next.addEventListener("click", () => go2(idx + 1));
   startAuto();
-  const adName = { "teeth-whitening-powder": "original", "teeth-whitening-mint": "mint", "teeth-whitening-clove": "clove", "teeth-whitening-charcoal": "charcoal" }[p.slug];
-  const adOld = document.querySelector(".hy-ad"); if (adOld) adOld.remove();
-  const adAt = document.querySelector(".hygies-product-extras");
-  if (adName && adAt) {   // 20 s product ad; the whole block hides itself if the video file is not uploaded
-    adAt.insertAdjacentHTML("beforebegin", '<section class="container hy-ad" style="text-align:center;margin:36px auto 0"><video controls playsinline preload="metadata" style="width:100%;max-width:520px;aspect-ratio:1/1;border-radius:24px;background:#111;box-shadow:0 24px 44px -34px rgba(18,58,27,.5)" aria-label="Hygies Teeth Whitening Powder ad"><source src="images/products/hygies-' + adName + '-ad-20s-site.mp4#t=0.5" type="video/mp4"></video></section>');
-    const adV = document.querySelector(".hy-ad source"); if (adV) adV.addEventListener("error", () => { const w = document.querySelector(".hy-ad"); if (w) w.remove(); });
-  }
   const info = hygiesResolveProduct(p.fullTitle);
   if (info) {
     root.querySelector("#pdCat").textContent = info.category;
