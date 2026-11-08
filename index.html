@@ -5714,12 +5714,12 @@ function mountProduct(ctx) {
     vidEl = document.createElement("video");
     vidEl.controls = true; vidEl.playsInline = true; vidEl.preload = "none"; vidEl.poster = adBase + "-poster.jpg";
     vidEl.setAttribute("aria-label", "Hygies Teeth Whitening Powder ad");
-    vidEl.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111;display:none";
+    vidEl.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111;display:none";
     main.after(vidEl);   // right after the picture so the arrows stay on top
   }
   let idx = 0;
   const thumbs = root.querySelector("#pdThumbs");
-  thumbs.innerHTML = G.map((g, i) => '<button type="button" class="pd-thumb" aria-label="' + (isVid(i) ? "Play the video" : "Show image " + (i + 1)) + '"' + (isVid(i) ? ' style="position:relative;display:none"' : "") + '><img src="' + g + '" alt="" loading="lazy" decoding="async">' + (isVid(i) ? '<span style="position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:rgba(18,58,27,.85);color:#fff;font-size:11px;line-height:26px;text-align:center;padding-left:2px">&#9654;</span>' : "") + "</button>").join("");
+  thumbs.innerHTML = G.map((g, i) => '<button type="button" class="pd-thumb" aria-label="' + (isVid(i) ? "Play the video" : "Show image " + (i + 1)) + '"' + (isVid(i) ? ' style="display:none"' : "") + '><img src="' + g + '" alt="" loading="lazy" decoding="async">' + "" + "</button>").join("");
   const tbtn = [...thumbs.children];
   if (adName) { const pi = new Image(); pi.onload = () => { vidOk = true; tbtn[VI].style.display = ""; }; pi.src = adBase + "-poster.jpg"; }
   const show = () => {
