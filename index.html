@@ -5797,6 +5797,13 @@ function mountProduct(ctx) {
   prev.addEventListener("click", () => go2(idx - 1));
   next.addEventListener("click", () => go2(idx + 1));
   startAuto();
+  const adName = { "teeth-whitening-powder": "original", "teeth-whitening-mint": "mint", "teeth-whitening-clove": "clove", "teeth-whitening-charcoal": "charcoal" }[p.slug];
+  const adOld = document.querySelector(".hy-ad"); if (adOld) adOld.remove();
+  const adAt = document.querySelector(".hygies-product-extras");
+  if (adName && adAt) {   // 20 s product ad; the whole block hides itself if the video file is not uploaded
+    adAt.insertAdjacentHTML("beforebegin", '<section class="container hy-ad" style="text-align:center;margin:36px auto 0"><video controls playsinline preload="metadata" style="width:100%;max-width:520px;aspect-ratio:1/1;border-radius:24px;background:#111;box-shadow:0 24px 44px -34px rgba(18,58,27,.5)" aria-label="Hygies Teeth Whitening Powder ad"><source src="images/products/hygies-' + adName + '-ad-20s-site.mp4#t=0.5" type="video/mp4"></video></section>');
+    const adV = document.querySelector(".hy-ad source"); if (adV) adV.addEventListener("error", () => { const w = document.querySelector(".hy-ad"); if (w) w.remove(); });
+  }
   const info = hygiesResolveProduct(p.fullTitle);
   if (info) {
     root.querySelector("#pdCat").textContent = info.category;
