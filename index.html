@@ -5709,13 +5709,60 @@ function mountProduct(ctx) {
   let vidOk = false;
   const isVid = (i) => i === VI;
   const nextOk = (n, d) => { n = (n + G.length) % G.length; return isVid(n) && !vidOk ? (n + d + G.length) % G.length : n; };
-  let vidEl = null;
-  if (adName) {
-    vidEl = document.createElement("video");
-    vidEl.controls = true; vidEl.playsInline = true; vidEl.preload = "none"; vidEl.poster = adBase + "-poster.jpg";
-    vidEl.setAttribute("aria-label", "Hygies Teeth Whitening Powder ad");
-    vidEl.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111;display:none";
-    main.after(vidEl);   // right after the picture so the arrows stay on top
+  let vidEl = null, vw = null;
+  if (adName) {   // branded video player: big play button, slim control bar, no browser chrome
+    if (!document.getElementById("hyVpCss")) {
+      const st = document.createElement("style"); st.id = "hyVpCss";
+      st.textContent = ".hy-vp{position:absolute;inset:0;background:#0d1a10;overflow:hidden;border-radius:inherit;color:#fff;font-family:inherit}" +
+        ".hy-vp-v{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}" +
+        ".hy-vp:fullscreen .hy-vp-v{object-fit:contain}" +
+        ".hy-vp-big{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border:0;border-radius:50%;background:rgba(18,58,27,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 9px rgba(255,255,255,.16);transition:transform .2s,opacity .25s,background .2s;z-index:3;padding:0}" +
+        ".hy-vp-big:hover{background:#79b933;transform:scale(1.07)}" +
+        ".hy-vp.playing .hy-vp-big{opacity:0;pointer-events:none}" +
+        ".hy-vp-bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:30px 14px 12px;background:linear-gradient(to top,rgba(8,26,12,.78),rgba(8,26,12,0));transition:opacity .25s;z-index:3}" +
+        ".hy-vp.playing.idle .hy-vp-bar{opacity:0}" +
+        ".hy-vp-b{width:32px;height:32px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;flex:0 0 auto;padding:0}" +
+        ".hy-vp-b:hover{background:rgba(255,255,255,.2)}" +
+        ".hy-vp-t{font-size:12px;line-height:1;font-variant-numeric:tabular-nums;min-width:30px;text-align:center;opacity:.95}" +
+        ".hy-vp-r{flex:1;min-width:0;height:4px;margin:0;-webkit-appearance:none;appearance:none;border-radius:4px;background:linear-gradient(to right,#79b933 var(--p,0%),rgba(255,255,255,.32) var(--p,0%));outline:none;cursor:pointer}" +
+        ".hy-vp-r::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(121,185,51,.6)}" +
+        ".hy-vp-r::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:#fff}" +
+        ".hy-vp button:focus-visible,.hy-vp-r:focus-visible{outline:2px solid #fff;outline-offset:2px}";
+      document.head.appendChild(st);
+    }
+    const ICO = {
+      play: '<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+      pause: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>',
+      sm: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+      vol: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg>',
+      mute: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>',
+      fs: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
+    };
+    vw = document.createElement("div"); vw.className = "hy-vp"; vw.style.display = "none";
+    vw.innerHTML = '<video class="hy-vp-v" playsinline preload="none" poster="' + adBase + '-poster.jpg" aria-label="Hygies Teeth Whitening Powder ad"></video>' +
+      '<button type="button" class="hy-vp-big" aria-label="Play video">' + ICO.play + '</button>' +
+      '<div class="hy-vp-bar"><button type="button" class="hy-vp-b hy-vp-pp" aria-label="Play">' + ICO.sm + '</button>' +
+      '<span class="hy-vp-t hy-vp-c">0:00</span><input class="hy-vp-r" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek"><span class="hy-vp-t hy-vp-d">0:20</span>' +
+      '<button type="button" class="hy-vp-b hy-vp-mu" aria-label="Mute">' + ICO.vol + '</button>' +
+      '<button type="button" class="hy-vp-b hy-vp-fs" aria-label="Full screen">' + ICO.fs + '</button></div>';
+    main.after(vw);   // right after the picture so the gallery arrows stay on top
+    vidEl = vw.querySelector("video");
+    const q = (c) => vw.querySelector(c);
+    const rng = q(".hy-vp-r"), tc = q(".hy-vp-c"), td = q(".hy-vp-d"), pp = q(".hy-vp-pp"), mu = q(".hy-vp-mu"), fsb = q(".hy-vp-fs");
+    const fmt = (x) => { x = Math.max(0, Math.floor(x || 0)); return Math.floor(x / 60) + ":" + String(x % 60).padStart(2, "0"); };
+    const toggle = () => { if (vidEl.paused) vidEl.play(); else vidEl.pause(); };
+    let idleT = 0;
+    const wake = () => { vw.classList.remove("idle"); clearTimeout(idleT); if (!vidEl.paused) idleT = setTimeout(() => vw.classList.add("idle"), 2200); };
+    q(".hy-vp-big").addEventListener("click", toggle); pp.addEventListener("click", toggle); vidEl.addEventListener("click", toggle);
+    vidEl.addEventListener("play", () => { vw.classList.add("playing"); pp.innerHTML = ICO.pause; pp.setAttribute("aria-label", "Pause"); wake(); });
+    const stopped = () => { vw.classList.remove("playing", "idle"); clearTimeout(idleT); pp.innerHTML = ICO.sm; pp.setAttribute("aria-label", "Play"); };
+    vidEl.addEventListener("pause", stopped); vidEl.addEventListener("ended", stopped);
+    vidEl.addEventListener("loadedmetadata", () => { td.textContent = fmt(vidEl.duration); });
+    vidEl.addEventListener("timeupdate", () => { const d = vidEl.duration || 20, v = Math.round(vidEl.currentTime / d * 1000); rng.value = v; rng.style.setProperty("--p", v / 10 + "%"); tc.textContent = fmt(vidEl.currentTime); });
+    rng.addEventListener("input", () => { const d = vidEl.duration || 20; vidEl.currentTime = rng.value / 1000 * d; rng.style.setProperty("--p", rng.value / 10 + "%"); });
+    mu.addEventListener("click", () => { vidEl.muted = !vidEl.muted; mu.innerHTML = vidEl.muted ? ICO.mute : ICO.vol; mu.setAttribute("aria-label", vidEl.muted ? "Unmute" : "Mute"); });
+    fsb.addEventListener("click", () => { if (document.fullscreenElement) document.exitFullscreen(); else if (vw.requestFullscreen) vw.requestFullscreen(); else if (vidEl.webkitEnterFullscreen) vidEl.webkitEnterFullscreen(); });
+    vw.addEventListener("pointermove", wake); vw.addEventListener("keydown", wake);
   }
   let idx = 0;
   const thumbs = root.querySelector("#pdThumbs");
@@ -5725,7 +5772,7 @@ function mountProduct(ctx) {
   const show = () => {
     const vid = isVid(idx);
     if (vidEl) {
-      vidEl.style.display = vid ? "block" : "none";
+      vw.style.display = vid ? "block" : "none";
       if (vid) { if (!vidEl.getAttribute("src")) vidEl.src = adBase + "-site.mp4"; } else vidEl.pause();
     }
     main.style.visibility = vid ? "hidden" : "";
