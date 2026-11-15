@@ -264,6 +264,92 @@ body:has(.hm) footer.hy-ft { margin-top: 0 !important; }
 .hm-faq-a { overflow: hidden; }
 .hm-faq-list summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 8px; }
 .hm-faq-list p { margin: 12px 0 2px; line-height: 1.6; }
+/* ===== header (Nov 15): frosted glass bar + hover menus ===== */
+.hyh { position: fixed; top: 0; left: 0; right: 0; z-index: 1030; box-shadow: none !important; font-family: Poppins, sans-serif; color: #123a1b; }
+.hyh-space { height: 104px; }
+body.hy-bare .hyh-space { display: none; }
+.hyh-ann { height: 32px; overflow: hidden; background: #123a1b; color: #e3edd0; font-size: 13px; font-weight: 500; display: flex; align-items: center; transition: height .6s cubic-bezier(.22, 1, .36, 1), opacity .4s ease; }
+.hyh-ann-track { display: flex; align-items: center; gap: 28px; width: max-content; white-space: nowrap; animation: hyhTick 38s linear infinite; }
+.hyh-ann-track > span { display: inline-flex; align-items: center; gap: 28px; }
+.hyh-ann i { width: 5px; height: 5px; border-radius: 50%; background: #79b933; display: inline-block; }
+@keyframes hyhTick { to { transform: translateX(-50%); } }
+.hyh-bar { position: relative; margin: 0 auto; max-width: 100%; border-radius: 0; background: rgba(244, 246, 236, .7); -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%); border: 1px solid transparent; border-bottom-color: rgba(18, 58, 27, .08);
+  transition: max-width .7s cubic-bezier(.22, 1, .36, 1), margin .7s cubic-bezier(.22, 1, .36, 1), border-radius .7s cubic-bezier(.22, 1, .36, 1), background .45s ease, box-shadow .6s ease, border-color .45s ease; }
+.hyh-in { max-width: 1320px; margin: 0 auto; height: 72px; padding: 0 28px; display: flex; align-items: center; gap: 22px; transition: height .7s cubic-bezier(.22, 1, .36, 1), padding .7s cubic-bezier(.22, 1, .36, 1); }
+/* scrolled: the bar lifts off the top and becomes a floating frosted pill */
+.hyh.scrolled .hyh-ann { height: 0; opacity: 0; }
+.hyh.scrolled .hyh-bar { max-width: min(1240px, calc(100% - 28px)); margin-top: 10px; border-radius: 40px; background: rgba(244, 246, 236, .58); -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%); border-color: rgba(255, 255, 255, .7); box-shadow: 0 22px 44px -26px rgba(18, 58, 27, .5), inset 0 1px 0 rgba(255, 255, 255, .6); }
+.hyh.menu-open:not(.scrolled) .hyh-bar { background: rgba(244, 246, 236, .82); }
+.hyh.scrolled .hyh-in { height: 60px; padding: 0 12px 0 20px; }
+.hyh-logo { display: flex; align-items: center; flex: none; }
+.hyh-logo img { height: 56px; width: auto; display: block; transform-origin: left center; transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
+.hyh.scrolled .hyh-logo img { transform: scale(.82); }
+.hyh-nav { display: flex; align-items: center; gap: 2px; margin: 0 auto; height: 100%; }
+.hyh-item { height: 100%; display: flex; align-items: center; }
+.hyh-link { display: inline-flex; align-items: center; gap: 5px; padding: 9px 14px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #123a1b !important; text-decoration: none !important; position: relative; transition: background .25s ease; }
+.hyh-link:hover, .hyh-item.open > .hyh-link { background: rgba(121, 185, 51, .16); }
+.hyh-link.is-active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 3px; height: 2px; border-radius: 2px; background: #79b933; }
+.hyh-item .hyh-link.is-active::after { right: 30px; }
+.hyh-link:focus-visible { outline: 3px solid #79b933; outline-offset: 1px; }
+.hyh-chev { width: 15px; height: 15px; transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+.hyh-item.open .hyh-chev { transform: rotate(180deg); }
+.hyh-tools { display: flex; align-items: center; gap: 16px; flex: none; }
+.hyh-tools .hy-search-trigger, .hyh-tools .mobile-menu-trigger { color: #123a1b; }
+.hyh-tools .header-user-profile-menu { position: relative; display: inline-flex; align-items: center; padding: 0; }
+.hyh-tools .nav-cart-link { position: relative; color: #123a1b; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; transition: background .25s ease; }
+.hyh-tools .nav-cart-link:hover { background: rgba(121, 185, 51, .16); color: #123a1b; }
+.hyh-tools .cart-count { position: absolute; top: 3px; right: 1px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; background: #79b933; color: #123a1b; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.hyh-tools .mobile-menu-trigger { display: none; }
+/* menu panels: slide down + unfold, products rise in one after another */
+.hyh-mega { position: absolute; left: 0; right: 0; top: 100%; padding: 0 28px 28px; pointer-events: none; visibility: hidden; }
+.hyh-mega-in { max-width: 1240px; margin: 0 auto; background: rgba(250, 251, 245, .97); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1px solid rgba(18, 58, 27, .08); border-top: 0; border-radius: 0 0 28px 28px; box-shadow: 0 40px 60px -40px rgba(18, 58, 27, .5); padding: 28px; display: grid; grid-template-columns: 260px 1fr; gap: 28px;
+  opacity: 0; transform: translateY(-10px); clip-path: inset(0 0 100% 0 round 0 0 28px 28px);
+  transition: opacity .3s ease, transform .5s cubic-bezier(.2, .8, .2, 1), clip-path .55s cubic-bezier(.2, .8, .2, 1); }
+.hyh-item.open .hyh-mega { pointer-events: auto; visibility: visible; }
+.hyh.scrolled .hyh-mega { padding-top: 10px; }
+.hyh.scrolled .hyh-mega-in { border-radius: 28px; border-top: 1px solid rgba(18, 58, 27, .08); clip-path: inset(0 0 100% 0 round 28px); }
+.hyh.scrolled .hyh-item.open .hyh-mega-in { clip-path: inset(0 0 0 0 round 28px); }
+.hyh-item.open .hyh-mega-in { opacity: 1; transform: none; clip-path: inset(0 0 0 0 round 0 0 28px 28px); }
+.hyh.swap .hyh-mega-in { transition: opacity .25s ease, transform .35s cubic-bezier(.2, .8, .2, 1); clip-path: none; }
+.hyh-mega .hyh-rise { opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .55s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 45ms + 90ms); }
+.hyh-item.open .hyh-rise { opacity: 1; transform: none; }
+.hyh-intro h3 { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.03em; font-size: 1.9rem; line-height: 1; margin: 4px 0 10px; }
+.hyh-intro p { margin: 0 0 18px; font-size: .95rem; line-height: 1.5; opacity: .8; }
+.hyh-all { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; background: #123a1b; color: #fff !important; font-weight: 600; font-size: .9rem; text-decoration: none !important; transition: background .25s ease, color .25s ease; }
+.hyh-all:hover { background: #79b933; color: #123a1b !important; }
+.hyh-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-content: start; }
+.hyh-list.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hyh-p { display: flex; align-items: center; gap: 14px; padding: 10px; border-radius: 18px; color: #123a1b !important; text-decoration: none !important; transition: background .25s ease; }
+.hyh-p:hover, .hyh-p:focus-visible { background: #fff; }
+.hyh-p img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; background: #fff; flex: none; transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+.hyh-p:hover img { transform: scale(1.06) rotate(-2deg); }
+.hyh-p b { display: block; font-size: .95rem; font-weight: 600; line-height: 1.25; }
+.hyh-p small { display: block; font-size: .82rem; opacity: .7; margin-top: 2px; }
+.hyh-p em { display: block; font-style: normal; font-weight: 700; font-size: .9rem; margin-top: 4px; }
+.hyh-cat { display: block; border-radius: 22px; overflow: hidden; background: #fff; color: #123a1b !important; text-decoration: none !important; }
+.hyh-cat img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; transition: transform .7s cubic-bezier(.2, .8, .2, 1); }
+.hyh-cat:hover img { transform: scale(1.05); }
+.hyh-cat span { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; font-weight: 600; }
+.hyh-cat em { font-style: normal; font-weight: 700; font-size: .88rem; color: #3d7a14; }
+.hyh-veil { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(18, 58, 27, .18); opacity: 0; pointer-events: none; transition: opacity .4s ease; z-index: -1; }
+.hyh.menu-open .hyh-veil { opacity: 1; pointer-events: auto; }
+html { scroll-padding-top: 90px; }
+@media (min-width: 992px) { body .pd-gallery { top: 86px; } }
+@media (max-width: 1100px) { .hyh-link { padding: 9px 10px; font-size: 14px; } .hyh-in { gap: 12px; } }
+@media (max-width: 991px) {
+  .hyh-nav { display: none; }
+  .hyh-tools { margin-left: auto; gap: 10px; }
+  .hyh-tools .mobile-menu-trigger { display: inline-flex !important; align-items: center; justify-content: center; order: -1; }
+  .hyh-in { height: 64px; padding: 0 14px; }
+  .hyh-logo img { height: 48px; }
+  .hyh-space { height: 92px; }
+  .hyh-ann { height: 28px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hyh-ann-track { animation: none; } .hyh-ann-track .hyh-dup { display: none; }
+  .hyh-mega-in, .hyh-mega .hyh-rise, .hyh-chev, .hyh-in, .hyh-ann, .hyh-logo img, .hyh-veil, .hyh-bar { transition: none; }
+}
+
 .hm-faq-list p a { text-decoration: underline !important; text-underline-offset: 3px; }
 .hm.js .hm-how-card, .hm.js .hm-post { opacity: 0; transform: translateY(60px) rotate(var(--r, -2deg)) scale(.96); transition: opacity .8s ease, transform 1s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i) * 110ms); }
 .hm.js .hm-how-card.in, .hm.js .hm-post.in { opacity: 1; transform: none; }
@@ -1492,21 +1578,20 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <body>
 <noscript><p style="padding:40px;text-align:center;font-family:sans-serif;">Hygies needs JavaScript to show the shop. Please turn it on, or WhatsApp us on 0300 9236520 to order.</p></noscript>
 <!-- ===== Header, mobile menu (stay on screen on every shop page) ===== -->
-<div id="hy-chrome-top"><div class="site-header">
-<!-- Tier 1: Green Top Announcement Bar -->
-<div class="announcement-bar">
-<span id="hyShipBanner">Free Shipping Above 10,000/Rs</span>
-</div>
-<!-- Tier 2: White Brand Row (Logo Detached, Cart Safely Right) -->
-<div class="brand-row">
-<div class="container-fluid">
-<!-- DETACHED LOGO -->
-<a class="header-logo-brand" href="#/">
-<img alt="Logo" class="navbar-logo" src="images/products/logo-color.webp"/>
-</a>
-<!-- Right Side Utilities -->
-<div class="header-utilities">
-<!-- Product Search (Hygies Features) -->
+<div id="hy-chrome-top"><div class="site-header hyh" id="hyHeader">
+<div class="hyh-ann"><div class="hyh-ann-track"><span class="hyh-ship" id="hyShipBanner">Free delivery on orders over Rs 10,000</span><i aria-hidden="true"></i><span>Pay online when you order</span><i aria-hidden="true"></i><span>Delivered in 3 to 5 days across Pakistan</span><i aria-hidden="true"></i><span>100% organic and vegan</span><i aria-hidden="true"></i><span aria-hidden="true" class="hyh-dup"><span class="hyh-ship">Free delivery on orders over Rs 10,000</span><i aria-hidden="true"></i><span>Pay online when you order</span><i aria-hidden="true"></i><span>Delivered in 3 to 5 days across Pakistan</span><i aria-hidden="true"></i><span>100% organic and vegan</span><i aria-hidden="true"></i></span></div></div>
+<div class="hyh-bar"><div class="hyh-in">
+<a class="hyh-logo" href="#/" aria-label="Hygies home"><img alt="Hygies" src="images/products/logo-color.webp" width="160" height="160"/></a>
+<nav class="hyh-nav" aria-label="Main">
+<a class="hyh-link" href="#/">Home</a>
+<div class="hyh-item" data-mega="shop"><a class="hyh-link" href="#/shop" aria-haspopup="true" aria-expanded="false">Shop<svg class="hyh-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="hyh-mega" id="hyhMega-shop"><div class="hyh-mega-in"></div></div></div>
+<div class="hyh-item" data-mega="teas"><a class="hyh-link" href="#/teas" aria-haspopup="true" aria-expanded="false">Herbal teas<svg class="hyh-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="hyh-mega" id="hyhMega-teas"><div class="hyh-mega-in"></div></div></div>
+<div class="hyh-item" data-mega="powders"><a class="hyh-link" href="#/powders" aria-haspopup="true" aria-expanded="false">Organic powders<svg class="hyh-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="hyh-mega" id="hyhMega-powders"><div class="hyh-mega-in"></div></div></div>
+<div class="hyh-item" data-mega="oral"><a class="hyh-link" href="#/oral-care" aria-haspopup="true" aria-expanded="false">Oral care<svg class="hyh-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="hyh-mega" id="hyhMega-oral"><div class="hyh-mega-in"></div></div></div>
+<a class="hyh-link" href="#/blog">Blog</a>
+<a class="hyh-link" href="#/contact">Contact</a>
+</nav>
+<div class="hyh-tools header-utilities-new">
 <div class="hy-search-wrap" id="hygiesSearchWrap">
 <button aria-label="Search products" class="hy-search-trigger" id="hygiesSearchTrigger" type="button">
 <i class="fa-solid fa-magnifying-glass"></i>
@@ -1539,26 +1624,11 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 </svg>
 <span class="cart-count">0</span>
 </a>
+
 </div>
-</div>
-</div>
-<!-- Tier 3: Black Navigation Link Bar -->
-<nav class="navbar navbar-expand-lg custom-black-nav">
-<div class="container-fluid">
-<div class="custom-black-nav navbar-collapse" id="navbarSupportedContent">
-<ul class="navbar-nav mx-auto">
-<li class="nav-item"><a class="nav-link" href="#/">Home</a></li>
-<li class="nav-item"><a class="nav-link" href="#/shop">Shop</a></li>
-<li class="nav-item"><a class="nav-link" href="#/blog">Blog</a></li>
-<li class="nav-item"><a class="nav-link" href="#/oral-care">Oral Care</a></li>
-<li class="nav-item"><a class="nav-link" href="#/teas">Herbal Teas</a></li>
-<li class="nav-item"><a class="nav-link" href="#/powders">Organic Powders</a></li>
-<li class="nav-item"><a class="nav-link" href="#/contact">Contact</a></li>
-</ul>
-</div>
-</div>
-</nav>
-</div><div class="mobile-nav-drawer" id="mobileNavDrawer">
+</div></div>
+<div class="hyh-veil" aria-hidden="true"></div>
+</div><div class="hyh-space" aria-hidden="true"></div><div class="mobile-nav-drawer" id="mobileNavDrawer">
 <div class="drawer-header">
 <span class="mn-title">Menu</span>
 <button aria-label="Close menu" class="drawer-closebtn" id="mobileNavClose" type="button">×</button>
@@ -3468,11 +3538,89 @@ function updateCartUI() {
   totalDisplay.innerText = "Rs " + totalPrice.toLocaleString();
   if (meter) meter.innerHTML = freeShipMeter(totalPrice, false);
 }
+// ===== header (Nov 15): menus filled from the product list, smooth hover menus, shrink on scroll, active page
+function initHyHeader() {
+  const hd = document.getElementById("hyHeader");
+  if (!hd || hd.dataset.ready) return;
+  hd.dataset.ready = "1";
+  const P = (k) => products_default.find((p) => p.key === k);
+  const rs = (n) => "Rs " + Number(n).toLocaleString("en-US");
+  const size = (p) => p.blocks.length > 1 ? p.blocks.map((b) => b.weight.replace(/ sachets?/, "")).join(" or ") + " sachets" : p.blocks[0].weight;
+  const groups = {
+    teas: { title: "Herbal teas", text: "Three organic blends, 50 or 100 sachets.", href: "#/teas", all: "Shop all teas", keys: ["product", "product2", "product3"] },
+    powders: { title: "Organic powders", text: "Detox, Glowing and Slimming, in 150 g pouches.", href: "#/powders", all: "Shop all powders", keys: ["product5", "product6", "product4"] },
+    oral: { title: "Oral care", text: "Teeth whitening powder in four flavours, 25 g tin.", href: "#/oral-care", all: "Shop oral care", keys: ["productoralcare1", "productoralcare2", "productoralcare3", "productoralcare4"] }
+  };
+  const card = (p, i) => '<a class="hyh-p hyh-rise" style="--i:' + i + '" href="#/product/' + p.slug + '"><img src="' + (p.sec || p.pri) + '" alt="" loading="lazy" decoding="async"/><span><b>' + esc2(p.name) + "</b><small>" + esc2(size(p)) + "</small><em>" + rs(p.listPrice) + "</em></span></a>";
+  Object.keys(groups).forEach((g) => {
+    const G = groups[g], box = hd.querySelector("#hyhMega-" + g + " .hyh-mega-in");
+    const ps = G.keys.map(P).filter(Boolean);
+    box.innerHTML = '<div class="hyh-intro hyh-rise" style="--i:0"><h3>' + G.title + "</h3><p>" + G.text + '</p><a class="hyh-all" href="' + G.href + '">' + G.all + "</a></div>" +
+      '<div class="hyh-list' + (ps.length === 3 ? " three" : "") + '">' + ps.map((p, i) => card(p, i + 1)).join("") + "</div>";
+  });
+  const from = (keys) => rs(Math.min.apply(null, keys.map(P).filter(Boolean).map((p) => p.listPrice)));
+  const cats = [
+    ["Herbal teas", "#/teas", "images/products/flu-fever-tea-pack-duo.webp", from(groups.teas.keys)],
+    ["Organic powders", "#/powders", "images/products/glowing-powder-lifestyle-apothecary.webp", from(groups.powders.keys)],
+    ["Oral care", "#/oral-care", "images/products/oralcare-range.webp", from(groups.oral.keys)]
+  ];
+  hd.querySelector("#hyhMega-shop .hyh-mega-in").innerHTML = '<div class="hyh-intro hyh-rise" style="--i:0"><h3>Shop Hygies</h3><p>Every product is 100% organic and vegan. Pay online when you order.</p><a class="hyh-all" href="#/shop">See every product</a></div>' +
+    '<div class="hyh-list three">' + cats.map((c, i) => '<a class="hyh-cat hyh-rise" style="--i:' + (i + 1) + '" href="' + c[1] + '"><img src="' + c[2] + '" alt="" loading="lazy" decoding="async"/><span>' + c[0] + "<em>from " + c[3] + "</em></span></a>").join("") + "</div>";
+
+  // hover intent: open after a short pause, close after a short grace period; moving across items swaps without re-unfolding
+  const items = [...hd.querySelectorAll(".hyh-item")];
+  let openItem = null, tOpen = 0, tClose = 0, muted = null;
+  const set = (it) => {
+    if (it === openItem) return;
+    hd.classList.toggle("swap", !!(openItem && it));
+    if (openItem) { openItem.classList.remove("open"); openItem.firstElementChild.setAttribute("aria-expanded", "false"); }
+    openItem = it;
+    if (it) { it.classList.add("open"); it.firstElementChild.setAttribute("aria-expanded", "true"); }
+    hd.classList.toggle("menu-open", !!it);
+  };
+  const hoverOK = window.matchMedia("(hover: hover) and (pointer: fine)");
+  items.forEach((it) => {
+    it.addEventListener("mouseenter", () => {
+      if (!hoverOK.matches || muted === it) return;
+      clearTimeout(tClose); clearTimeout(tOpen);
+      tOpen = setTimeout(() => set(it), openItem ? 0 : 110);
+    });
+    it.addEventListener("mouseleave", () => {
+      clearTimeout(tOpen); if (muted === it) muted = null;
+      tClose = setTimeout(() => set(null), 180);
+    });
+    it.addEventListener("focusin", () => { clearTimeout(tClose); set(it); });
+    it.addEventListener("focusout", (e) => { if (!it.contains(e.relatedTarget)) tClose = setTimeout(() => { if (openItem === it && !it.contains(document.activeElement)) set(null); }, 60); });
+    // a click inside a panel goes to that page and folds the panel away, even while the mouse is still over it
+    it.querySelector(".hyh-mega").addEventListener("click", (e) => { if (e.target.closest("a")) { muted = it; set(null); } });
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && openItem) { const a = openItem.firstElementChild; set(null); a.focus(); } });
+  hd.querySelector(".hyh-veil").addEventListener("mouseenter", () => set(null));
+
+  // shrink once the page scrolls
+  let raf = 0;
+  const onScroll = () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; hd.classList.toggle("scrolled", scrollY > 40); }); };
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // underline the section you are in (product pages count as their range)
+  const mark = () => {
+    const h = location.hash || "#/";
+    let sec = h === "#/" || h === "" ? "#/" : "#/" + (h.split("/")[1] || "").split("?")[0];
+    if (sec === "#/product") {
+      const slug = (h.split("/")[2] || "").split("?")[0], p = products_default.find((x) => x.slug === slug);
+      if (p) sec = p.key.indexOf("productoralcare") === 0 ? "#/oral-care" : /^product[456]$/.test(p.key) ? "#/powders" : "#/teas";
+    }
+    if (sec === "#/post") sec = "#/blog";
+    hd.querySelectorAll(".hyh-nav > a, .hyh-item > a").forEach((a) => a.classList.toggle("is-active", a.getAttribute("href") === sec));
+    set(null);
+  };
+  window.addEventListener("hashchange", mark); mark();
+}
 function initChrome() {
   loadCart();
   updateCartUI();
-  const banner = document.getElementById("hyShipBanner");
-  if (banner) banner.textContent = "Free Shipping Above " + SITE.freeShippingFrom.toLocaleString("en-US") + "/Rs";
+  document.querySelectorAll(".hyh-ship").forEach((el) => { el.textContent = "Free delivery on orders over Rs " + SITE.freeShippingFrom.toLocaleString("en-US"); });
+  initHyHeader();
   const q = (id) => document.getElementById(id);
   q("mobileNavToggle") && q("mobileNavToggle").addEventListener("click", openMobileNav);
   q("mobileNavClose") && q("mobileNavClose").addEventListener("click", closeMobileNav);
