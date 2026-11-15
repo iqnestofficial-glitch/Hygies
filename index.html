@@ -264,6 +264,241 @@ body:has(.hm) footer.hy-ft { margin-top: 0 !important; }
 .hm-faq-a { overflow: hidden; }
 .hm-faq-list summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 8px; }
 .hm-faq-list p { margin: 12px 0 2px; line-height: 1.6; }
+/* ===== checkout: Confirm order delivery animation (Nov 15) ===== */
+body .place-order-btn.hyt { position: relative; overflow: visible; display: block; width: 100%; height: 64px; padding: 0; border: 0; border-radius: 999px; background: #123a1b !important; color: #fff !important;
+  font-family: Poppins, sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0; text-transform: none; cursor: pointer; box-shadow: 0 18px 30px -18px rgba(18, 58, 27, .7);
+  transition: background .5s ease, box-shadow .4s ease, transform .2s ease; isolation: isolate; }
+body .place-order-btn.hyt:hover { background: #1c4d26 !important; color: #fff !important; box-shadow: 0 22px 34px -18px rgba(18, 58, 27, .8); }
+body .place-order-btn.hyt:active { transform: scale(.985); }
+body .place-order-btn.hyt:focus-visible { outline: 3px solid #79b933; outline-offset: 3px; }
+body .place-order-btn.hyt:disabled { cursor: default; opacity: 1; }
+.hyt .hyt-label, .hyt .hyt-done { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; transition: opacity .35s ease, transform .5s cubic-bezier(.2, .8, .2, 1); }
+.hyt .hyt-label::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .14) 50%, transparent 65%); background-size: 250% 100%; animation: hytShine 3.2s ease-in-out infinite; pointer-events: none; }
+@keyframes hytShine { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+.hyt .hyt-done { opacity: 0; transform: translateY(18px); color: #123a1b; font-weight: 700; }
+.hyt .hyt-tick { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 22; stroke-dashoffset: 22; }
+.hyt .hyt-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.hyt .hyt-scene { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+.hyt .hyt-road { position: absolute; left: 0; right: 0; bottom: 13px; height: 2px; opacity: 0; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .55) 0 14px, transparent 14px 26px); transition: opacity .3s ease; }
+.hyt .hyt-truck { position: absolute; left: -90px; bottom: 15px; width: 66px; height: 32px; transform-origin: 30% 100%; scale: 1.12; }
+.hyt .hyt-cargo { position: absolute; left: 0; bottom: 6px; width: 42px; height: 26px; border-radius: 5px 3px 3px 5px; background: #79b933; display: flex; align-items: center; justify-content: center; color: #123a1b; overflow: hidden; }
+.hyt .hyt-cargo svg { width: 14px; height: 14px; fill: currentColor; }
+.hyt .hyt-door { position: absolute; left: 0; top: 0; bottom: 0; width: 42px; background: linear-gradient(90deg, #6aa52a, #79b933); transform-origin: left center; transform: scaleX(0); border-right: 1px solid rgba(18, 58, 27, .25); }
+.hyt .hyt-cab { position: absolute; left: 43px; bottom: 6px; width: 21px; height: 20px; border-radius: 3px 9px 3px 3px; background: #f4f6ec; }
+.hyt .hyt-win { position: absolute; right: 3px; top: 3px; width: 9px; height: 7px; border-radius: 1px 5px 1px 1px; background: #123a1b; opacity: .8; }
+.hyt .hyt-lamp { position: absolute; right: -1px; bottom: 3px; width: 4px; height: 4px; border-radius: 50%; background: #f2d21f; box-shadow: 0 0 6px 2px rgba(242, 210, 31, .7); }
+.hyt .hyt-lamp::after { content: ""; position: absolute; left: 3px; top: -5px; width: 34px; height: 14px; background: linear-gradient(90deg, rgba(242, 210, 31, .35), transparent); clip-path: polygon(0 35%, 100% 0, 100% 100%, 0 65%); }
+.hyt .hyt-wheel { position: absolute; bottom: 0; width: 12px; height: 12px; border-radius: 50%; background: #0c1f10; border: 2px solid #2b4a31; box-sizing: border-box; }
+.hyt .hyt-wheel::after { content: ""; position: absolute; inset: 2px; border-radius: 50%; border: 1.5px dashed #79b933; }
+.hyt .hyt-wheel.w1 { left: 7px; } .hyt .hyt-wheel.w2 { left: 46px; }
+.hyt .hyt-dust { position: absolute; left: -6px; bottom: 0; }
+.hyt .hyt-dust i { position: absolute; bottom: 0; width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .5); opacity: 0; }
+.hyt .hyt-box { position: absolute; left: calc(50% - 28px); top: -22px; width: 22px; height: 18px; border-radius: 2px; background: #d8b47a; display: flex; align-items: center; justify-content: center; color: #6b4a2f; opacity: 0; }
+.hyt .hyt-box i { position: absolute; left: 9px; top: 0; bottom: 0; width: 3px; background: rgba(255, 255, 255, .45); }
+.hyt .hyt-box svg { width: 10px; height: 10px; fill: currentColor; position: relative; }
+.hyt .hyt-speed { position: absolute; inset: 0; }
+.hyt .hyt-speed i { position: absolute; left: 30%; height: 2px; width: 0; border-radius: 2px; background: rgba(255, 255, 255, .5); opacity: 0; }
+.hyt .hyt-speed i:nth-child(1) { top: 22px; } .hyt .hyt-speed i:nth-child(2) { top: 31px; } .hyt .hyt-speed i:nth-child(3) { top: 40px; }
+.hyt .hyt-leaves { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.hyt .hyt-leaves i { position: absolute; left: -5px; top: -4px; width: 10px; height: 8px; border-radius: 0 100% 0 100%; background: #79b933; opacity: 0; }
+.hyt .hyt-leaves i:nth-child(3n) { background: #f2d21f; } .hyt .hyt-leaves i:nth-child(4n) { background: #3d7a14; }
+
+/* 1. loading: label lifts away, truck drives in, parcel drops in, door shuts, then it idles */
+.hyt.loading .hyt-label { opacity: 0; transform: translateY(-20px); }
+.hyt.loading .hyt-label::after { animation: none; }
+.hyt.loading .hyt-road { opacity: 1; animation: hytRoad .5s linear infinite; }
+.hyt.loading .hyt-truck { animation: hytIn .9s cubic-bezier(.2, .8, .25, 1) .15s forwards, hytIdle .5s ease-in-out 1.6s infinite; }
+.hyt.loading .hyt-wheel { animation: hytSpin .35s linear infinite; }
+.hyt.loading .hyt-dust i { animation: hytDust .8s ease-out .2s 2; }
+.hyt.loading .hyt-dust i:nth-child(2) { animation-delay: .35s; } .hyt.loading .hyt-dust i:nth-child(3) { animation-delay: .5s; }
+.hyt.loading .hyt-box { animation: hytDrop .55s cubic-bezier(.5, 0, .75, 0) .95s forwards; }
+.hyt.loading .hyt-door { animation: hytDoor .35s cubic-bezier(.2, .8, .2, 1) 1.45s forwards; }
+@keyframes hytRoad { to { background-position: -26px 0; } }
+@keyframes hytIn { from { left: -90px; } 80% { left: calc(50% - 22px); } 90% { left: calc(50% - 30px); transform: rotate(-2deg); } to { left: calc(50% - 33px); transform: none; } }
+@keyframes hytIdle { 50% { transform: translateY(-1.5px); } }
+@keyframes hytSpin { to { transform: rotate(360deg); } }
+@keyframes hytDust { 0% { opacity: .7; transform: translate(0, 0) scale(.4); } 100% { opacity: 0; transform: translate(-22px, -10px) scale(1.5); } }
+@keyframes hytDrop { 0% { opacity: 1; transform: translate(0, 0) rotate(-12deg); } 75% { opacity: 1; transform: translate(0, 42px) rotate(4deg) scale(1, .92); } 100% { opacity: 0; transform: translate(0, 44px) rotate(0) scale(.6); } }
+@keyframes hytDoor { to { transform: scaleX(1); } }
+
+/* 2. done: the truck speeds off, the button turns lime, 'Order placed' + tick, leaves burst */
+body .place-order-btn.hyt.done, body .place-order-btn.hyt.done:hover { background: #79b933 !important; color: #123a1b !important; box-shadow: 0 18px 34px -16px rgba(121, 185, 51, .9); }
+.hyt.done .hyt-label { opacity: 0; transform: translateY(-20px); }
+.hyt.done .hyt-road { opacity: 0; }
+.hyt.done .hyt-truck { left: calc(50% - 33px); animation: hytOut .75s cubic-bezier(.6, 0, .9, .5) forwards; }
+.hyt.done .hyt-door { transform: scaleX(1); background: #1c4d26; }
+.hyt.done .hyt-cargo { background: #123a1b; color: #79b933; transition: background .25s ease; }
+.hyt.done .hyt-wheel { animation: hytSpin .18s linear infinite; }
+.hyt.done .hyt-speed i { animation: hytLine .55s ease-out .1s forwards; }
+.hyt.done .hyt-speed i:nth-child(2) { animation-delay: .18s; } .hyt.done .hyt-speed i:nth-child(3) { animation-delay: .26s; }
+.hyt.done .hyt-done { opacity: 1; transform: none; transition-delay: .45s; }
+.hyt.done .hyt-tick { animation: hytTick .45s cubic-bezier(.2, .8, .2, 1) .75s forwards; }
+.hyt.done .hyt-leaves i { animation: hytLeaf 1.1s cubic-bezier(.2, .8, .2, 1) calc(.7s + var(--t)) forwards; }
+@keyframes hytOut { 0% { transform: rotate(0); } 15% { transform: translateX(-6px) rotate(3deg); } 100% { left: calc(100% + 100px); transform: rotate(-1deg); } }
+@keyframes hytLine { 0% { opacity: 0; width: 0; left: 46%; } 40% { opacity: 1; } 100% { opacity: 0; width: 90px; left: 10%; } }
+@keyframes hytTick { to { stroke-dashoffset: 0; } }
+@keyframes hytLeaf { 0% { opacity: 1; transform: rotate(var(--a)) translateX(0) rotate(0) scale(.4); } 70% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateX(var(--d)) rotate(var(--r)) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .hyt .hyt-label::after, .hyt.loading *, .hyt.done * { animation: none !important; }
+  .hyt.done .hyt-tick { stroke-dashoffset: 0; } .hyt.loading .hyt-truck { left: calc(50% - 33px); }
+}
+
+/* ===== sliding cart (Nov 15) ===== */
+body .cart-sidebar.hyc { right: 0 !important; width: 420px; max-width: 100%; height: 100%; height: 100dvh; display: flex; flex-direction: column; z-index: 2500;
+  background: rgba(248, 250, 243, .9); -webkit-backdrop-filter: blur(24px) saturate(170%); backdrop-filter: blur(24px) saturate(170%);
+  border-left: 1px solid rgba(255, 255, 255, .8); border-radius: 28px 0 0 28px; box-shadow: -30px 0 60px -30px rgba(18, 58, 27, .45);
+  font-family: Poppins, sans-serif; color: #123a1b;
+  transform: translateX(105%); visibility: hidden; transition: transform .55s cubic-bezier(.32, .72, 0, 1), visibility 0s linear .55s; }
+body .cart-sidebar.hyc.open { transform: none; visibility: visible; transition: transform .6s cubic-bezier(.2, 1.12, .32, 1), visibility 0s; }
+body .cart-overlay { background: rgba(18, 58, 27, .22); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); transition: opacity .45s ease, visibility .45s; }
+body .hyc-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 22px 16px; border-bottom: 1px solid rgba(18, 58, 27, .08); }
+body .hyc-head h3 { margin: 0; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.03em; font-size: 26px; color: #123a1b; }
+body .hyc-n { font-family: Poppins, sans-serif; font-weight: 500; font-size: 14px; letter-spacing: 0; color: #5a6b5c; margin-left: 4px; }
+body .hyc-x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(18, 58, 27, .06); color: #123a1b; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background .25s ease, transform .4s cubic-bezier(.2, .8, .2, 1); }
+body .hyc-x:hover { background: #79b933; transform: rotate(90deg); }
+body .hyc .hyc-x svg, body .hyc .hyc-del svg, body .hyc-empty-ic svg, body .hyc-cat svg, body .hyc-secure svg { flex: none; min-width: 0; }
+body .hyc .hyc-x svg { width: 20px !important; height: 20px !important; }
+body .hyc .hyc-del svg { width: 19px !important; height: 19px !important; }
+body .hyc svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+body .hyc-items { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 12px 16px; }
+/* item rows */
+body .hyc-row { display: grid; grid-template-columns: 84px 1fr 40px; gap: 14px; align-items: center; padding: 12px; margin-bottom: 10px; border-radius: 22px; background: #fff; box-shadow: 0 14px 28px -24px rgba(18, 58, 27, .5); overflow: hidden; }
+body .hyc-img { display: block; width: 84px; height: 84px; border-radius: 16px; overflow: hidden; background: #f4f6ec; }
+body .hyc-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+body .hyc-row:hover .hyc-img img { transform: scale(1.06); }
+body .hyc-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+body .hyc-name { font-weight: 600; font-size: 15px; line-height: 1.25; color: #123a1b !important; text-decoration: none !important; }
+body .hyc-size { font-size: 13px; color: #5a6b5c; }
+body .hyc-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+body .hyc-step { display: inline-flex; align-items: center; border-radius: 999px; background: #f0f4e6; padding: 3px; }
+body .hyc-step button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: #123a1b; font-size: 18px; font-weight: 600; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background .2s ease; }
+body .hyc-step button:hover { background: #fff; }
+body .hyc-step button:focus-visible, body .hyc-del:focus-visible, body .hyc-x:focus-visible, body .hyc-go:focus-visible { outline: 3px solid #79b933; outline-offset: 2px; }
+body .hyc-q { min-width: 28px; text-align: center; font-weight: 700; font-size: 15px; display: inline-block; }
+body .hyc-q.pop { animation: hycPop .35s cubic-bezier(.2, .8, .2, 1); }
+body .hyc-lt { font-weight: 700; font-size: 15px; white-space: nowrap; }
+body .hyc-each { font-size: 12px; color: #5a6b5c; margin-top: 2px; }
+body .hyc-del { align-self: start; width: 40px; height: 40px; border: 0; border-radius: 50%; background: transparent; color: #5a6b5c; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background .25s ease, color .25s ease; }
+body .hyc-del:hover { background: #fdecea; color: #b42318; }
+body .hyc-del svg { width: 19px; height: 19px; }
+/* rows rise in as the cart opens; a new row grows in; a removed row folds away */
+body .hyc.open .hyc-row { animation: hycRise .55s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 60ms + 140ms); }
+body .hyc .hyc-row.adding { animation: hycGrow .55s cubic-bezier(.2, .8, .2, 1) backwards; }
+body .hyc .hyc-row.settled { animation: none; }
+body .hyc .hyc-row.leaving { animation: hycFold .45s cubic-bezier(.4, 0, .2, 1) forwards; pointer-events: none; }
+@keyframes hycRise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes hycGrow { from { opacity: 0; transform: translateX(30px) scale(.96); } }
+@keyframes hycFold { 0% { opacity: 1; } 40% { opacity: 0; transform: translateX(40px); max-height: 140px; } 100% { opacity: 0; transform: translateX(40px); max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; } }
+@keyframes hycPop { 50% { transform: scale(1.35); } }
+/* footer */
+body .hyc-foot { padding: 16px 20px calc(18px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(18, 58, 27, .08); background: rgba(255, 255, 255, .55); }
+body .hyc .hy-meter { margin: 0 0 12px; border-radius: 16px; background: #eef5e2; border-color: #dcebc3; font-family: Poppins, sans-serif; }
+body .hyc-sum { display: grid; gap: 6px; margin-bottom: 14px; font-size: 14px; }
+body .hyc-sum > div { display: flex; justify-content: space-between; color: #3d4a3f; }
+body .hyc-sum b { font-weight: 600; color: #123a1b; }
+body .hyc-sum .hyc-free { color: #3d7a14; }
+body .hyc-sum .hyc-total { margin-top: 4px; padding-top: 10px; border-top: 1px dashed rgba(18, 58, 27, .18); font-size: 17px; font-weight: 700; color: #123a1b; }
+body .hyc-sum .hyc-total b { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -.02em; color: #123a1b; }
+body .hyc button, body .hyc .hyc-go, body .hyc .hyc-more { text-transform: none; letter-spacing: normal; }
+body .hyc-go { width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 0; border-radius: 999px; background: #123a1b; color: #fff; font-family: Poppins, sans-serif; font-weight: 600; font-size: 16px; cursor: pointer; transition: background .25s ease, color .25s ease, transform .25s ease; }
+body .hyc-go:hover { background: #79b933; color: #123a1b; transform: translateY(-1px); }
+body .hyc-go-sep { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .5; }
+body .hyc-secure { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 10px 0 2px; font-size: 12.5px; color: #5a6b5c; }
+body .hyc-secure svg { width: 15px !important; height: 15px !important; }
+body .hyc-more { display: block; width: auto; margin: 6px auto 0; padding: 8px 14px; border: 0; background: none; color: #123a1b; font-family: Poppins, sans-serif; font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+body .hyc-more:hover { color: #3d7a14; }
+/* empty state */
+body .hyc.is-empty .hyc-foot { display: none; }
+body .hyc-empty { text-align: center; padding: 34px 10px 10px; animation: hycRise .6s cubic-bezier(.2, .8, .2, 1) .1s backwards; }
+body .hyc-empty-ic { width: 84px; height: 84px; margin: 0 auto 16px; border-radius: 50%; background: #e3edd0; display: flex; align-items: center; justify-content: center; }
+body .hyc-empty-ic svg { width: 38px !important; height: 38px !important; }
+body .hyc-empty h4 { margin: 0 0 6px; font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.03em; font-size: 24px; }
+body .hyc-empty p { margin: 0 0 22px; font-size: 14.5px; color: #5a6b5c; }
+body .hyc-cats { display: grid; gap: 10px; text-align: left; }
+body .hyc-cat { display: flex; align-items: center; gap: 14px; padding: 10px; border-radius: 18px; background: #fff; color: #123a1b !important; text-decoration: none !important; font-weight: 600; transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease; }
+body .hyc-cat:hover { transform: translateX(4px); box-shadow: 0 14px 28px -22px rgba(18, 58, 27, .6); }
+body .hyc-cat img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; }
+body .hyc-cat small { display: block; font-weight: 500; font-size: 12.5px; color: #5a6b5c; }
+body .hyc-cat svg { width: 18px !important; height: 18px !important; margin-left: auto; opacity: .5; }
+/* undo message */
+body .hyc-toast { position: absolute; left: 16px; right: 16px; bottom: calc(100% - 100%); top: auto; transform: translateY(20px); opacity: 0; pointer-events: none; }
+body .hyc-toast { bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 18px; border-radius: 18px; background: #123a1b; color: #f4f6ec; font-size: 14px; box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .5); transition: opacity .3s ease, transform .45s cubic-bezier(.2, .8, .2, 1); z-index: 3; }
+body .hyc-toast.on { opacity: 1; transform: none; pointer-events: auto; }
+body .hyc-toast button { border: 0; border-radius: 999px; background: #79b933; color: #123a1b; font-weight: 700; font-size: 13.5px; padding: 9px 16px; cursor: pointer; }
+/* cart icon bounce + the picture that flies in */
+.hyh-tools .nav-cart-link.bump { animation: hycBump .6s cubic-bezier(.2, .8, .2, 1); }
+.hyh-tools .nav-cart-link.bump .cart-count { animation: hycPop .5s cubic-bezier(.2, .8, .2, 1) .1s; }
+@keyframes hycBump { 30% { transform: scale(1.22) rotate(-8deg); } 60% { transform: scale(.94) rotate(4deg); } }
+.hyc-fly { position: fixed; z-index: 3000; border-radius: 16px; object-fit: cover; pointer-events: none; box-shadow: 0 20px 40px -16px rgba(18, 58, 27, .5); }
+/* phones: a full-screen sheet, Checkout always on screen */
+@media (max-width: 560px) {
+  body .cart-sidebar.hyc { width: 100%; border-radius: 0; border-left: 0; }
+  body .hyc-head { padding: 16px 16px 12px; }
+  body .hyc-head h3 { font-size: 22px; }
+  body .hyc-row { grid-template-columns: 72px 1fr 36px; gap: 12px; padding: 10px; }
+  body .hyc-img { width: 72px; height: 72px; }
+  body .hyc-foot { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); box-shadow: 0 -16px 30px -24px rgba(18, 58, 27, .5); }
+  body .hyc .hy-meter { padding: 8px 12px; margin-bottom: 10px; }
+  body .hyc-sum { gap: 4px; margin-bottom: 10px; font-size: 13.5px; }
+  body .hyc-secure { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body .cart-sidebar.hyc, body .cart-sidebar.hyc.open { transition: none; }
+  body .hyc .hyc-row, body .hyc.open .hyc-row, body .hyc-empty, body .hyc-q.pop, .hyh-tools .nav-cart-link.bump, .hyh-tools .nav-cart-link.bump .cart-count { animation: none; }
+}
+
+/* ===== account menu (Nov 15) ===== */
+body .hygies-avatar-btn { border-radius: 50%; transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+body .hygies-avatar-btn:hover { transform: scale(1.06); }
+body .hygies-avatar-btn:focus { outline: none; }
+body .hygies-avatar-btn:focus-visible { outline: 3px solid #79b933; outline-offset: 2px; }
+body .hygies-avatar-circle { background: linear-gradient(135deg, #79b933, #3d7a14); border: 0; box-shadow: none; font-family: Poppins, sans-serif; transition: box-shadow .3s ease; }
+body .hygies-avatar-circle:has(img) { background: none; }   /* their own account picture, shown as it is */
+body .hygies-avatar-btn:hover .hygies-avatar-circle { box-shadow: 0 0 0 3px rgba(121, 185, 51, .45); }
+body .hygies-account-widget { padding-bottom: 14px; margin-bottom: -14px; }
+/* always laid out, so it can animate both ways; open = hover (desktop), :not([hidden]) (touch) or .force-open */
+body .hygies-account-dropdown.hyac { display: block !important; position: absolute; right: -10px; top: calc(100% + 2px); width: 300px; padding: 10px; border-radius: 24px; text-align: left; z-index: 1000;
+  background: rgba(250, 251, 245, .9); -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, .85); box-shadow: 0 30px 60px -30px rgba(18, 58, 27, .5), 0 2px 6px rgba(18, 58, 27, .06);
+  font-family: Poppins, sans-serif; color: #123a1b; animation: none;
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-8px) scale(.96); transform-origin: top right;
+  transition: opacity .25s ease, transform .45s cubic-bezier(.2, .8, .2, 1), visibility 0s linear .45s; }
+body .hygies-account-dropdown.hyac:not([hidden]), body .hygies-account-dropdown.hyac.force-open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition: opacity .25s ease, transform .45s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+@media (hover: hover) and (pointer: fine) {
+  body .hygies-account-widget:hover .hygies-account-dropdown.hyac, body .hygies-account-widget:focus-within .hygies-account-dropdown.hyac { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition: opacity .25s ease, transform .45s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+}
+body .hyac .hyac-head { display: flex; align-items: center; gap: 12px; padding: 10px 10px 14px; margin: 0 0 4px; border-bottom: 1px solid rgba(18, 58, 27, .08); }
+body .hyac .hygies-dropdown-name { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 17px; color: #123a1b; }
+body .hyac .hygies-dropdown-email { font-size: 12.5px; color: #5a6b5c; }
+body .hyac-label { font-size: 11.5px; font-weight: 600; color: #5a6b5c; padding: 10px 12px 4px; letter-spacing: .02em; }
+body .hyac .hyac-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 7px 10px; margin: 0; border: 0; border-radius: 14px; background: transparent; font-family: Poppins, sans-serif; font-size: 14.5px; font-weight: 500; color: #123a1b; text-decoration: none; cursor: pointer; transition: background .25s ease; }
+body .hyac .hyac-row:hover, body .hyac .hyac-row:focus-visible { background: #fff; color: #123a1b; outline: none; }
+body .hyac .hyac-row:focus-visible { box-shadow: 0 0 0 2px #79b933; }
+body .hyac-ic { width: 36px; height: 36px; flex: none; border-radius: 50%; background: #e3edd0; display: inline-flex; align-items: center; justify-content: center; transition: background .25s ease, transform .35s cubic-bezier(.2, .8, .2, 1); }
+body .hyac .hyac-row:hover .hyac-ic { background: #79b933; transform: rotate(-6deg); }
+body .hyac svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body .hyac-tx { flex: 1; text-align: left; }
+body .hyac .hyac-go { width: 16px; height: 16px; opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .35s cubic-bezier(.2, .8, .2, 1); }
+body .hyac .hyac-row:hover .hyac-go { opacity: .6; transform: none; }
+body .hyac .hyac-out { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 10px 2px 2px; padding: 11px; border-radius: 14px; border: 1px solid rgba(18, 58, 27, .12); font-size: 14px; font-weight: 600; color: #123a1b; text-decoration: none; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+body .hyac .hyac-out:hover { background: #fdecea; border-color: #f5c2bd; color: #b42318; }
+/* rows rise in one after another as the panel opens */
+body .hyac .hyac-row, body .hyac .hyac-out, body .hyac .hyac-head { opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .45s cubic-bezier(.2, .8, .2, 1), background .25s ease, color .25s ease, border-color .25s ease; transition-delay: calc(var(--i, 0) * 35ms); }
+body .hygies-account-dropdown.hyac:not([hidden]) :is(.hyac-row, .hyac-out, .hyac-head), body .hygies-account-dropdown.hyac.force-open :is(.hyac-row, .hyac-out, .hyac-head) { opacity: 1; transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  body .hygies-account-widget:hover .hyac :is(.hyac-row, .hyac-out, .hyac-head), body .hygies-account-widget:focus-within .hyac :is(.hyac-row, .hyac-out, .hyac-head) { opacity: 1; transform: none; }
+}
+/* track-my-order view inside the panel */
+body .hyac .hygies-track-panel { padding: 8px 10px 6px; }
+body .hyac .hygies-track-back { color: #3d7a14; font-family: Poppins, sans-serif; }
+body .hyac .hygies-track-label { text-transform: none; letter-spacing: 0; font-weight: 600; color: #5a6b5c; }
+body .hyac .hygies-track-number { font-family: Bricolage, Poppins, sans-serif; color: #123a1b; }
+body .hyac .hygies-track-status { color: #3d7a14; }
+body .hyac .hygies-track-courier-link { background: #123a1b; border-radius: 999px; }
+body .hyac .hygies-track-courier-link:hover { background: #79b933 !important; color: #123a1b !important; }
+@media (max-width: 480px) { body .hygies-account-dropdown.hyac { width: min(300px, calc(100vw - 24px)); right: -60px; } }
+@media (prefers-reduced-motion: reduce) { body .hygies-account-dropdown.hyac, body .hyac :is(.hyac-row, .hyac-out, .hyac-head, .hyac-ic, .hyac-go) { transition: none; } }
+
 /* ===== header (Nov 15): frosted glass bar + hover menus ===== */
 .hyh { position: fixed; top: 0; left: 0; right: 0; z-index: 1030; box-shadow: none !important; font-family: Poppins, sans-serif; color: #123a1b; }
 .hyh-space { height: 104px; }
@@ -1645,25 +1880,24 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <!-- ===== The current page is placed here ===== -->
 <main id="app"></main>
 <!-- ===== Cart, footer ===== -->
-<div id="hy-chrome-bottom"><div class="cart-sidebar" id="cartSidebar">
-<div class="cart-header">
-<h3>Shopping Cart</h3>
-<span class="close-cart-btn" onclick="toggleCart()">×</span>
+<div id="hy-chrome-bottom"><div class="cart-sidebar hyc is-empty" id="cartSidebar" role="dialog" aria-modal="true" aria-labelledby="hycTitle">
+<div class="cart-header hyc-head">
+<h3 id="hycTitle">Your cart <span class="hyc-n" id="hycCount"></span></h3>
+<button class="close-cart-btn hyc-x" type="button" aria-label="Close cart" onclick="toggleCart()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 </div>
-<div class="cart-items-container" id="cartItemsContainer">
-<div class="empty-cart-message">Your cart is currently empty.</div>
-</div>
-<div class="cart-footer">
+<div class="cart-items-container hyc-items" id="cartItemsContainer"></div>
+<div class="cart-footer hyc-foot">
 <div id="freeShipMeter"></div>
-<div class="total-row">
-<span>Total Price:</span>
-<span class="total-value" id="cartTotalDisplay">Rs 0</span>
+<div class="hyc-sum">
+<div><span>Subtotal</span><b id="hycSub">Rs 0</b></div>
+<div><span>Delivery</span><b id="hycShip">Rs 0</b></div>
+<div class="hyc-total"><span>Total</span><b class="total-value" id="cartTotalDisplay">Rs 0</b></div>
 </div>
-<div class="cart-actions">
-<button class="checkout-btn" onclick="window.location.href='#/checkout'">Proceed To Checkout</button>
-<button class="close-drawer-btn" onclick="toggleCart()">Close</button>
+<button class="checkout-btn hyc-go" type="button" onclick="window.location.href='#/checkout'"><span>Checkout</span><span class="hyc-go-sep" aria-hidden="true"></span><span id="hycGoTotal">Rs 0</span></button>
+<p class="hyc-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>Secure online payment when you order</p>
+<button class="close-drawer-btn hyc-more" type="button" onclick="toggleCart()">Continue shopping</button>
 </div>
-</div>
+<div class="hyc-toast" id="hycToast" role="status" aria-live="polite"></div>
 </div><div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div><footer class="hy-ft">
 <div class="hy-ft-in">
 <div class="hy-ft-news" id="hyFtNews"></div>
@@ -2254,7 +2488,7 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <div class="small mt-1" id="couponMessage" style="min-height:18px;"></div>
 </div>
 <!-- 🚀 CONFIRM ORDER BUTTON MOUNTED RIGHT HERE -->
-<button class="place-order-btn mt-4" onclick="executeFinalCheckoutTransaction()" type="button">CONFIRM ORDER</button>
+<button class="place-order-btn hyt mt-4" onclick="executeFinalCheckoutTransaction()" type="button"><span class="hyt-label">Confirm order</span><span class="hyt-done" aria-hidden="true"><svg class="hyt-tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Order placed</span><span class="hyt-status" role="status" aria-live="polite"></span><span class="hyt-scene" aria-hidden="true"><span class="hyt-road"></span><span class="hyt-speed"><i></i><i></i><i></i></span><span class="hyt-box"><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg></span><span class="hyt-truck"><span class="hyt-cargo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg><span class="hyt-door"></span></span><span class="hyt-cab"><span class="hyt-win"></span><span class="hyt-lamp"></span></span><span class="hyt-wheel w1"></span><span class="hyt-wheel w2"></span><span class="hyt-dust"><i></i><i></i><i></i></span></span></span><span class="hyt-leaves" aria-hidden="true"><i style="--a:-160deg;--d:120px;--r:40deg;--t:0ms"></i><i style="--a:-130deg;--d:150px;--r:-60deg;--t:40ms"></i><i style="--a:-100deg;--d:110px;--r:90deg;--t:20ms"></i><i style="--a:-70deg;--d:160px;--r:-30deg;--t:60ms"></i><i style="--a:-40deg;--d:130px;--r:70deg;--t:10ms"></i><i style="--a:-15deg;--d:115px;--r:-80deg;--t:50ms"></i><i style="--a:15deg;--d:140px;--r:60deg;--t:30ms"></i><i style="--a:40deg;--d:120px;--r:-40deg;--t:70ms"></i><i style="--a:70deg;--d:150px;--r:20deg;--t:20ms"></i><i style="--a:100deg;--d:110px;--r:-70deg;--t:50ms"></i><i style="--a:130deg;--d:160px;--r:50deg;--t:0ms"></i><i style="--a:160deg;--d:125px;--r:-20deg;--t:40ms"></i></span></button>
 </div>
 </div>
 </div>
@@ -3471,6 +3705,7 @@ function closeCart() {
   if (o) o.classList.remove("open");
 }
 function toggleCart() {
+  if (!document.getElementById("cartSidebar").classList.contains("open")) cartIntro();
   document.getElementById("cartSidebar").classList.toggle("open");
   document.getElementById("cartOverlay").classList.toggle("open");
 }
@@ -3479,10 +3714,14 @@ function addToCartEngine(id, title, price, img, quantity) {
   const existing = globalCart.find((item) => item.id === id);
   if (existing) existing.quantity += quantity;
   else globalCart.push({ id, title, price, img, quantity });
-  updateCartUI();
   saveCart();
-  document.getElementById("cartSidebar").classList.add("open");
-  document.getElementById("cartOverlay").classList.add("open");
+  const wait = flyToCart();
+  setTimeout(() => {
+    updateCartUI();
+    if (!document.getElementById("cartSidebar").classList.contains("open")) cartIntro();
+    document.getElementById("cartSidebar").classList.add("open");
+    document.getElementById("cartOverlay").classList.add("open");
+  }, wait);
 }
 function removeCartItemEngine(id) {
   globalCart = globalCart.filter((item) => item.id !== id);
@@ -3502,41 +3741,169 @@ function escAttr(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 function updateCartUI() {
+  // the cart panel is updated row by row (not rebuilt), so new rows grow in, removed rows fold away and numbers count
   const container = document.getElementById("cartItemsContainer");
   const countDisplay = document.querySelector(".cart-count");
   const totalDisplay = document.getElementById("cartTotalDisplay");
   const totalCount = globalCart.reduce((t, i) => t + i.quantity, 0);
   if (countDisplay) countDisplay.innerText = totalCount;
   if (!container || !totalDisplay) return;
-  container.innerHTML = "";
-  const meter = document.getElementById("freeShipMeter");
+  const side = document.getElementById("cartSidebar"), meter = document.getElementById("freeShipMeter");
+  const rs = (n) => "Rs " + Math.round(n).toLocaleString("en-US");
+  const cnt = document.getElementById("hycCount");
+  if (cnt) cnt.textContent = totalCount ? "· " + totalCount + (totalCount === 1 ? " item" : " items") : "";
   if (globalCart.length === 0) {
-    container.innerHTML = '<div class="empty-cart-message">Your cart is currently empty.</div>';
+    side && side.classList.add("is-empty");
+    const pics = [["Herbal teas", "#/teas", "images/products/flu-fever-tea-pack-white-sm.webp", "from Rs 1,300"], ["Organic powders", "#/powders", "images/products/detox-powder-pack-white-sm.webp", "from Rs 1,500"], ["Oral care", "#/oral-care", "images/products/oralcare-mint-front-sm.webp", "from Rs 800"]];
+    const go = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+    const html = '<div class="hyc-empty"><div class="hyc-empty-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><h4>Your cart is empty</h4><p>Find something good for today.</p><div class="hyc-cats">' +
+      pics.map((c) => '<a class="hyc-cat" href="' + c[1] + '" onclick="closeCart()"><img src="' + c[2] + '" alt="" loading="lazy"/><span>' + c[0] + "<small>" + c[3] + "</small></span>" + go + "</a>").join("") + "</div></div>";
+    const left = [...container.querySelectorAll(".hyc-row:not(.leaving)")];
+    if (left.length) { left.forEach((r) => { r.classList.remove("settled", "adding"); r.classList.add("leaving"); }); setTimeout(() => { if (!globalCart.length) container.innerHTML = html; }, 380); }
+    else if (!container.querySelector(".hyc-empty")) container.innerHTML = html;
     totalDisplay.innerText = "Rs 0";
     if (meter) meter.innerHTML = "";
     return;
   }
-  let totalPrice = 0;
-  globalCart.forEach((item) => {
-    totalPrice += item.price * item.quantity;
-    const id = escAttr(item.id).replace(/'/g, "\\'");
-    container.insertAdjacentHTML("beforeend", `
-      <div class="cart-item-row" style="display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #f1f0ea;">
-        <img src="${escAttr(item.img)}" alt="" style="width: 60px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #f1f0ea;">
-        <div style="flex: 1; text-align: left;">
-          <div style="font-size: 13px; font-weight: 600; color: #2c3e50;">${escAttr(item.title)}</div>
-          <div style="font-size: 12px; color: #717171; margin-top:2px;">Rs ${Number(item.price)}</div>
-          <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
-            <span style="cursor:pointer; width:18px; height:18px; background:#eee; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; font-size:11px;" onclick="changeQty('${id}', -1)">-</span>
-            <span style="font-size:12px; font-weight:600;">${Number(item.quantity)}</span>
-            <span style="cursor:pointer; width:18px; height:18px; background:#eee; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; font-size:11px;" onclick="changeQty('${id}', 1)">+</span>
-          </div>
-        </div>
-        <button style="background: none; border: none; color: #ff4d4f; font-size: 12px; cursor: pointer; font-weight: 600;" onclick="removeCartItemEngine('${id}')">&times;</button>
-      </div>`);
+  side && side.classList.remove("is-empty");
+  const empty = container.querySelector(".hyc-empty"); if (empty) empty.remove();
+  const old = cartRowMap(container);
+  let subtotal = 0;
+  globalCart.forEach((item, i) => {
+    subtotal += item.price * item.quantity;
+    const info = cartItemInfo(item);
+    let row = old.get(item.id);
+    if (!row) {
+      row = document.createElement("div"); row.className = "hyc-row" + (side && side.classList.contains("open") ? " adding" : ""); row.dataset.id = item.id;
+      row.innerHTML = '<a class="hyc-img" href="' + escAttr(info.href) + '" onclick="closeCart()"><img src="' + escAttr(info.img) + '" alt="" loading="lazy"/></a>' +
+        '<div class="hyc-info"><a class="hyc-name" href="' + escAttr(info.href) + '" onclick="closeCart()">' + escAttr(info.name) + '</a><span class="hyc-size">' + escAttr(info.size) + "</span>" +
+        '<div class="hyc-line"><div class="hyc-step"><button type="button" data-d="-1" aria-label="One less ' + escAttr(info.name) + '">−</button><output class="hyc-q"></output><button type="button" data-d="1" aria-label="One more ' + escAttr(info.name) + '">+</button></div><b class="hyc-lt"></b></div>' +
+        '<span class="hyc-each"></span></div>' +
+        '<button type="button" class="hyc-del" aria-label="Remove ' + escAttr(info.name) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V5h6v2M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg></button>';
+      const before = container.children[i]; container.insertBefore(row, before || null);
+      row.addEventListener("animationend", (e) => { if (e.animationName !== "hycFold" && !row.classList.contains("leaving")) { row.classList.remove("adding"); row.classList.add("settled"); } });
+      if (!side || !side.classList.contains("open")) row.classList.add("settled");
+    } else old.delete(item.id);
+    row.style.setProperty("--i", i);
+    const q = row.querySelector(".hyc-q"), was = Number(q.textContent || 0);
+    q.textContent = item.quantity;
+    if (was && was !== item.quantity) { q.classList.remove("pop"); void q.offsetWidth; q.classList.add("pop"); }
+    countTo(row.querySelector(".hyc-lt"), item.price * item.quantity);
+    row.querySelector(".hyc-each").textContent = item.quantity > 1 ? item.quantity + " × " + rs(item.price) : rs(item.price) + " each";
   });
-  totalDisplay.innerText = "Rs " + totalPrice.toLocaleString();
-  if (meter) meter.innerHTML = freeShipMeter(totalPrice, false);
+  old.forEach((r) => { if (!r.classList.contains("leaving")) { r.classList.remove("settled", "adding"); r.classList.add("leaving"); setTimeout(() => r.remove(), 460); } });
+  const ship = subtotal >= SITE.freeShippingFrom ? 0 : Number(SITE.shippingFee || 0);
+  countTo(document.getElementById("hycSub"), subtotal);
+  const sh = document.getElementById("hycShip");
+  if (sh) { sh.textContent = ship ? rs(ship) : "Free"; sh.classList.toggle("hyc-free", !ship); }
+  countTo(totalDisplay, subtotal + ship);
+  countTo(document.getElementById("hycGoTotal"), subtotal + ship);
+  if (meter) meter.innerHTML = freeShipMeter(subtotal, false);
+}
+function cartRowMap(container) {
+  const m = new Map();
+  container.querySelectorAll(".hyc-row:not(.leaving)").forEach((r) => m.set(r.dataset.id, r));
+  return m;
+}
+function cartItemInfo(item) {
+  const key = String(item.id).split("-")[0], p = products_default.find((x) => x.key === key);
+  const parts = String(item.title || "").split(" - ");
+  const size = parts.length > 1 ? parts.slice(1).join(" - ") : p ? p.blocks[0].weight : "";
+  return { name: p ? p.name : parts[0], size: size, href: p ? "#/product/" + p.slug : "#/shop", img: (p && (p.sec || p.pri)) || item.img || "" };
+}
+function countTo(el, to) {
+  // numbers glide to their new value instead of jumping
+  if (!el) return;
+  const from = Number(el.dataset.v || NaN), fmt = (n) => "Rs " + Math.round(n).toLocaleString("en-US");
+  el.dataset.v = to;
+  if (!isFinite(from) || from === to || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { el.textContent = fmt(to); return; }
+  const t0 = performance.now(), run = (el._run = (el._run || 0) + 1);
+  (function step(t) {
+    if (el._run !== run) return;
+    const k = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = fmt(from + (to - from) * e);
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+}
+let hycUndo = null, hycUndoT = 0;
+function cartRemoveWithUndo(id) {
+  const i = globalCart.findIndex((x) => x.id === id); if (i < 0) return;
+  const item = globalCart[i];
+  globalCart.splice(i, 1); updateCartUI(); saveCart();
+  hycUndo = { item: item, i: i };
+  const t = document.getElementById("hycToast"); if (!t) return;
+  t.innerHTML = "<span>Removed " + escAttr(cartItemInfo(item).name) + '</span><button type="button">Undo</button>';
+  t.querySelector("button").onclick = () => {
+    if (!hycUndo) return;
+    globalCart.splice(Math.min(hycUndo.i, globalCart.length), 0, hycUndo.item); hycUndo = null;
+    updateCartUI(); saveCart(); t.classList.remove("on");
+  };
+  t.classList.add("on"); clearTimeout(hycUndoT); hycUndoT = setTimeout(() => { t.classList.remove("on"); hycUndo = null; }, 5000);
+}
+// Confirm order delivery animation: start on press, finish (or roll back) when the order is saved
+function truckStart(btn) {
+  if (!btn || !btn.classList.contains("hyt")) return null;
+  btn.classList.remove("done"); void btn.offsetWidth; btn.classList.add("loading");
+  const st = btn.querySelector(".hyt-status"); if (st) st.textContent = "Placing your order";
+  return { btn: btn, t0: performance.now() };
+}
+function truckDone(run) {
+  // waits until the truck has loaded (at least ~1.9 s) and then plays the send-off before the next page
+  return new Promise((res) => {
+    if (!run) return res();
+    const quick = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wait = quick ? 0 : Math.max(0, 1900 - (performance.now() - run.t0));
+    setTimeout(() => {
+      run.btn.classList.remove("loading"); run.btn.classList.add("done");
+      const st = run.btn.querySelector(".hyt-status"); if (st) st.textContent = "Order placed";
+      setTimeout(res, quick ? 300 : 1750);
+    }, wait);
+  });
+}
+function truckReset(run) {
+  if (!run) return;
+  run.btn.classList.remove("loading", "done");
+  const st = run.btn.querySelector(".hyt-status"); if (st) st.textContent = "";
+}
+function cartIntro() {
+  // rows rise in one after another each time the cart opens
+  document.querySelectorAll("#cartItemsContainer .hyc-row.settled").forEach((r) => r.classList.remove("settled"));
+}
+function initCartPanel() {
+  const c = document.getElementById("cartItemsContainer"); if (!c || c.dataset.ready) return; c.dataset.ready = "1";
+  c.addEventListener("click", (e) => {
+    const row = e.target.closest(".hyc-row"); if (!row) return;
+    const id = row.dataset.id;
+    if (e.target.closest(".hyc-del")) return cartRemoveWithUndo(id);
+    const b = e.target.closest(".hyc-step button"); if (!b) return;
+    const it = globalCart.find((x) => x.id === id); if (!it) return;
+    if (Number(b.dataset.d) < 0 && it.quantity <= 1) return cartRemoveWithUndo(id);
+    changeQty(id, Number(b.dataset.d));
+  });
+  document.addEventListener("keydown", (e) => { const s = document.getElementById("cartSidebar"); if (e.key === "Escape" && s && s.classList.contains("open")) toggleCart(); });
+  // remember what was tapped last, so a new item can fly from its picture to the cart
+  document.addEventListener("pointerdown", (e) => { window.__hycLast = e.target; }, true);
+}
+function flyToCart() {
+  const icon = document.getElementById("cartIcon"); if (!icon) return 0;
+  const last = window.__hycLast, card = last && last.closest && last.closest(".item, .hm-row, .pd-wrap, section");
+  let src = card && card.querySelector(".img-container img.primary, .main-img-box img, .hm-thumb img");
+  if (!src) src = document.querySelector(".main-img-box img");
+  if (!src || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { icon.classList.remove("bump"); void icon.offsetWidth; icon.classList.add("bump"); return 0; }
+  const a = src.getBoundingClientRect(), b = icon.getBoundingClientRect();
+  if (!a.width || a.bottom < 0 || a.top > innerHeight) { icon.classList.remove("bump"); void icon.offsetWidth; icon.classList.add("bump"); return 0; }
+  const f = document.createElement("img"); f.className = "hyc-fly"; f.src = src.currentSrc || src.src; f.alt = "";
+  const s = Math.min(a.width, a.height, 220);
+  Object.assign(f.style, { left: a.left + (a.width - s) / 2 + "px", top: a.top + (a.height - s) / 2 + "px", width: s + "px", height: s + "px" });
+  document.body.appendChild(f);
+  const dx = b.left + b.width / 2 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+  const an = f.animate([
+    { transform: "translate(0,0) scale(1)", opacity: 1, borderRadius: "16px" },
+    { transform: "translate(" + dx * 0.5 + "px," + (dy * 0.5 - 90) + "px) scale(.55) rotate(-8deg)", opacity: 1, offset: 0.55 },
+    { transform: "translate(" + dx + "px," + dy + "px) scale(.12) rotate(-14deg)", opacity: .3, borderRadius: "50%" }
+  ], { duration: 720, easing: "cubic-bezier(.45, 0, .2, 1)" });
+  an.onfinish = () => { f.remove(); icon.classList.remove("bump"); void icon.offsetWidth; icon.classList.add("bump"); };
+  return 700;
 }
 // ===== header (Nov 15): menus filled from the product list, smooth hover menus, shrink on scroll, active page
 function initHyHeader() {
@@ -3621,6 +3988,7 @@ function initChrome() {
   updateCartUI();
   document.querySelectorAll(".hyh-ship").forEach((el) => { el.textContent = "Free delivery on orders over Rs " + SITE.freeShippingFrom.toLocaleString("en-US"); });
   initHyHeader();
+  initCartPanel();
   const q = (id) => document.getElementById(id);
   q("mobileNavToggle") && q("mobileNavToggle").addEventListener("click", openMobileNav);
   q("mobileNavClose") && q("mobileNavClose").addEventListener("click", closeMobileNav);
@@ -3637,7 +4005,7 @@ function initChrome() {
   window.addEventListener("storage", function(e) {
     if (e.key === "hygies_cart") reloadCart();
   });
-  Object.assign(window, { toggleCart, changeQty, removeCartItemEngine, addToCartEngine, openMobileNav, closeMobileNav });
+  Object.assign(window, { toggleCart, closeCart, changeQty, removeCartItemEngine, addToCartEngine, openMobileNav, closeMobileNav });
 }
 function setupAddToCartListeners(root) {
   root.querySelectorAll(".listProduct .addcart, .item .addcart").forEach((button) => {
@@ -3966,10 +4334,10 @@ function paintStatusBox(statusBox, user) {
   }
   const displayName = esc(user.displayName || user.email);
   const safeEmail = esc(user.email);
-  const adminLink = isAdminEmail(user.email) && user.emailVerified ? '<a class="hygies-dropdown-item" href="admin.html">\u{1F6E0}\uFE0F Admin Dashboard</a>' : "";
+  const adminLink = isAdminEmail(user.email) && user.emailVerified ? '<div class="hyac-label">Store</div><a class="hygies-dropdown-item hyac-row" style="--i:5" href="admin.html"><span class="hyac-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v6c0 4.5 3.2 7.8 7.5 9 4.3-1.2 7.5-4.5 7.5-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="hyac-tx">Admin dashboard</span><svg class="hyac-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>' : "";
   const initial = (user.displayName || user.email || "?").trim().charAt(0).toUpperCase();
-  const avatarInnerHTML = user.photoURL ? '<img src="' + esc(user.photoURL) + '" alt="' + displayName + '">' : initial;
-  statusBox.innerHTML = '<div class="hygies-account-widget"><button type="button" class="hygies-avatar-btn" id="hygiesAvatarBtn" aria-haspopup="true" aria-expanded="false"><span class="hygies-avatar-circle">' + avatarInnerHTML + '</span></button><div class="hygies-account-dropdown" id="hygiesAccountDropdown" hidden><div class="hygies-dropdown-header"><span class="hygies-avatar-circle large">' + avatarInnerHTML + '</span><div class="hygies-dropdown-header-text"><div class="hygies-dropdown-name">' + displayName + '</div><div class="hygies-dropdown-email">' + safeEmail + '</div></div></div><div id="hygiesDropdownMenu"><button type="button" class="hygies-dropdown-item" id="hygiesTrackOrderBtn">\u{1F4E6} Track My Order</button><a class="hygies-dropdown-item" href="#/orders">\u{1F9FE} Order History</a><a class="hygies-dropdown-item" href="#/wishlist">\u2661 My Wishlist</a><a class="hygies-dropdown-item" href="#/profile">\u{1F464} Profile &amp; Addresses</a>' + adminLink + '<hr class="hygies-dropdown-divider"><a class="hygies-dropdown-item hygies-logout-item" href="#" onclick="handleLogoutProcess(event)">Logout</a></div><div id="hygiesTrackOrderPanel" class="hygies-track-panel" hidden></div></div></div>';
+  const avatarInnerHTML = user.photoURL ? '<img src="' + esc(user.photoURL) + '" alt="' + displayName + '" referrerpolicy="no-referrer" onerror="this.parentNode.textContent=(this.alt||\'?\').charAt(0).toUpperCase()">' : initial;
+  statusBox.innerHTML = '<div class="hygies-account-widget"><button type="button" class="hygies-avatar-btn" id="hygiesAvatarBtn" aria-haspopup="true" aria-expanded="false" aria-label="Your account"><span class="hygies-avatar-circle">' + avatarInnerHTML + '</span></button><div class="hygies-account-dropdown hyac" id="hygiesAccountDropdown" hidden><div class="hygies-dropdown-header hyac-head"><span class="hygies-avatar-circle large">' + avatarInnerHTML + '</span><div class="hygies-dropdown-header-text"><div class="hygies-dropdown-name">' + displayName + '</div><div class="hygies-dropdown-email">' + safeEmail + '</div></div></div><div id="hygiesDropdownMenu"><div class="hyac-label">Orders</div><button class="hygies-dropdown-item hyac-row" style="--i:1" type="button" id="hygiesTrackOrderBtn"><span class="hyac-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></svg></span><span class="hyac-tx">Track my order</span><svg class="hyac-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button><a class="hygies-dropdown-item hyac-row" style="--i:2" href="#/orders"><span class="hyac-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><span class="hyac-tx">Order history</span><svg class="hyac-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><div class="hyac-label">Account</div><a class="hygies-dropdown-item hyac-row" style="--i:3" href="#/wishlist"><span class="hyac-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><span class="hyac-tx">My wishlist</span><svg class="hyac-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><a class="hygies-dropdown-item hyac-row" style="--i:4" href="#/profile"><span class="hyac-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="hyac-tx">Profile &amp; addresses</span><svg class="hyac-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>' + adminLink + '<a class="hygies-dropdown-item hygies-logout-item hyac-out" style="--i:6" href="#" onclick="handleLogoutProcess(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 16l-4-4 4-4M6 12h10"/></svg><span>Sign out</span></a></div><div id="hygiesTrackOrderPanel" class="hygies-track-panel" hidden></div></div></div>';
   wireAccountDropdown(user, statusBox);
 }
 function wireAccountDropdown(user, box) {
@@ -6559,7 +6927,8 @@ async function mount2(ctx) {
     };
     placing = true;
     btn.disabled = true;
-    btn.textContent = "Processing your order...";
+    const truck = truckStart(btn);
+    if (!truck) btn.textContent = "Processing your order...";
     try {
       const result = await createOrder({
         items: checkoutCartItems,
@@ -6585,6 +6954,7 @@ async function mount2(ctx) {
         }
       }
       localStorage.removeItem("hygies_cart");
+      await truckDone(truck);
       if (method.type === "online") {
         try {
           const pay = await payCall("start", result.id);
@@ -6599,10 +6969,11 @@ async function mount2(ctx) {
       window.location.href = "#/order-confirmed?order=" + result.id;
     } catch (error) {
       console.error("Order creation failed:", error.message);
+      truckReset(truck);
       alert("Something went wrong placing your order: " + error.message);
       placing = false;
       btn.disabled = false;
-      btn.textContent = "CONFIRM ORDER";
+      if (!truck) btn.textContent = "Confirm order";
     }
   };
 }
