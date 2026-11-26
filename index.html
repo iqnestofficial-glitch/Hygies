@@ -28,7 +28,11 @@
 .pd-bullets li{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#123a1b;background:#f1f6e8;border:1px solid #dbe8c6;border-radius:99px;padding:5px 11px}
 .pd-bullets li::before{content:"";width:6px;height:6px;border-radius:50%;background:#79b933}
 .pd-wa{display:inline-flex;align-items:center;gap:8px;margin:2px 0 6px;font-size:14px;font-weight:600;color:#1f6f3a;text-decoration:none}
-.pd-wa:hover,.pd-wa:focus-visible{text-decoration:underline}
+.pd-wa:hover,.pd-wa:focus-visible{text-decoration:underline;color:#123a1b}
+/* Bootstrap turns every link without its own hover blue (#0056b3) and underlined: use the brand ink instead,
+   and keep icon, image and button-style links free of underlines */
+a{color:#3d7a14}a:hover{color:#123a1b}
+a:has(img,svg,i):hover,a[class*="btn"]:hover,a[class*="logo"]:hover{text-decoration:none}
 .pd-more{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
 .pd-more .hy-info-card{border:none;border-radius:28px;padding:34px;box-shadow:0 24px 44px -34px rgba(18,58,27,.5);background:#fff;color:#2b3a2e}
 .pd-more .hy-info-card-title{font-family:Bricolage,Poppins,sans-serif;letter-spacing:-.02em;font-size:1.45rem;font-weight:800;color:#123a1b;margin:0 0 14px}
@@ -37,7 +41,8 @@
 .pd-faq details{border-top:1px solid #e3ead8;padding:10px 0}.pd-faq details:first-of-type{border-top:0}
 .pd-faq summary{cursor:pointer;font-weight:700;color:#123a1b;list-style:none;display:flex;justify-content:space-between;gap:12px}
 .pd-faq summary::-webkit-details-marker{display:none}
-.pd-faq summary::after{content:"+";font-weight:800;color:#79b933}.pd-faq details[open] summary::after{content:"\2212"}
+.pd-faq summary::after{content:"+";flex:none;font-weight:800;color:#79b933;transition:transform .45s cubic-bezier(.2,.8,.2,1)}.pd-faq details[open] summary::after{transform:rotate(45deg)}.pd-faq details.is-closing summary::after{transform:none}.pd-faq summary{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion: reduce){.pd-faq summary::after{transition:none}}
 .pd-faq p{margin:8px 0 0;line-height:1.55;color:#3d4a3f}
 .pd-sticky{position:fixed;left:0;right:0;bottom:0;z-index:2200;display:none;align-items:center;gap:12px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e3ead8;box-shadow:0 -6px 20px rgba(18,58,27,.10);transform:translateY(110%);transition:transform .25s ease}
 .pd-sticky-t{flex:1;min-width:0}.pd-sticky-n{display:block;font-size:13px;font-weight:700;color:#123a1b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -841,6 +846,13 @@ html { scroll-padding-top: 90px; }
 
 .doc > :nth-child(2){ animation-delay: 0.07s; } .doc > :nth-child(3){ animation-delay: 0.14s; } .doc > :nth-child(4){ animation-delay: 0.21s; } .doc > :nth-child(5){ animation-delay: 0.28s; } .doc > :nth-child(6){ animation-delay: 0.35s; } .doc > :nth-child(7){ animation-delay: 0.42s; } .doc > :nth-child(8){ animation-delay: 0.49s; } .doc > :nth-child(9){ animation-delay: 0.56s; } .doc > :nth-child(10){ animation-delay: 0.63s; } .doc > :nth-child(11){ animation-delay: 0.70s; } .doc > :nth-child(12){ animation-delay: 0.77s; } .doc > :nth-child(13){ animation-delay: 0.84s; } .doc > :nth-child(14){ animation-delay: 0.91s; } .doc > :nth-child(15){ animation-delay: 0.98s; } .doc > :nth-child(16){ animation-delay: 1.05s; } .doc > :nth-child(17){ animation-delay: 1.12s; } .doc > :nth-child(18){ animation-delay: 1.19s; }
 .doc a { transition: color .2s ease; } .doc a:hover { color: #2f6a12; }
+/* policy pages in the site theme */
+body .doc { color: #3c4a36; }
+body .doc h1 { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.03em; font-size: clamp(2.2rem, 5vw, 3rem); line-height: 1.05; color: #123a1b; }
+body .doc h2 { font-family: Bricolage, Poppins, sans-serif; font-weight: 800; letter-spacing: -.01em; font-size: 1.3rem; color: #123a1b; margin: 34px 0 8px; }
+body .doc strong { color: #123a1b; }
+body .doc a { color: #3d7a14; }
+body .doc ul { padding-left: 1.2em; } body .doc li::marker { color: #79b933; }
 .doc li { transition: transform .25s ease; } .doc li:hover { transform: translateX(6px); }
 @media (prefers-reduced-motion: reduce) { .doc > * { animation: none; } .doc li { transition: none; } }
 /* bottom-left row: Urdu toggle + leaf (symptom helper) side by side */
@@ -1658,7 +1670,7 @@ body .sproduct .col-lg-6:last-child{padding:4px 12px 0 28px !important}
 body .sproduct .pd-frame{position:relative;width:100% !important;margin:0 !important;aspect-ratio:5/4;overflow:hidden;border-radius:26px;background:#fff;border:1px solid #e3edd0;box-shadow:0 30px 50px -34px rgba(18,58,27,.45)}
 .pd-frame #MainImg{z-index:1;position:absolute;inset:0;width:100% !important;height:100% !important;object-fit:cover !important;object-position:center;transition:opacity .25s ease}
 .pd-frame #MainImg.swap{opacity:0}
-.pd-thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding:2px 2px 6px}
+.pd-thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}.pd-thumbs::-webkit-scrollbar{display:none}
 .pd-frame .product-slider-arrow{z-index:2}
 .pd-thumb{flex:0 0 72px;height:72px;padding:0 !important;border:1.5px solid #e3edd0 !important;border-radius:14px !important;background:#fff !important;overflow:hidden;cursor:pointer;opacity:.7;transition:opacity .2s ease,border-color .2s ease,transform .2s ease}
 .pd-thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1710,6 +1722,54 @@ body .pd-details{width:100%;max-width:1180px;margin:34px auto 12px;padding:0 12p
 .pd-about .product-description-body{display:block;font-size:1.04rem;line-height:1.8;color:rgba(244,246,236,.86);max-width:58ch;text-align:left}
 .pd-good{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .pd-good:empty{display:none}
+/* ===== checkout steps (Nov 26) ===== */
+.hco-step .hco-sh { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 4px 12px; cursor: default; }
+.hco-step .hco-sh h2 { margin: 0; }
+.hco-step.is-open .hco-sh { margin-bottom: 20px; }
+.hco-line { grid-column: 1 / -1; margin: 0 0 0 44px; font-size: .9rem; color: #3c4a36; overflow-wrap: anywhere; }
+.hco-line:empty { display: none; }
+.hco-edit { display: none; border: 0; background: none; color: #3d7a14; font-weight: 600; font-size: .9rem; padding: 6px 4px; cursor: pointer; }
+.hco-step.is-done:not(.is-open) .hco-edit { display: block; grid-row: 1; grid-column: 3; }
+.hco-step.is-done:not(.is-open) .hco-sh, .hco-step:not(.is-open):not(.is-done) .hco-sh { cursor: pointer; }
+.hco-step.is-done:not(.is-open) .hco-n { background: #79b933; color: #123a1b; }
+.hco-step:not(.is-open):not(.is-done) h2 { color: rgba(18, 58, 27, .45); }
+.hco .form-control, .hco .form-select { box-sizing: border-box; width: 100%; } .hco-coupon-row .form-control { min-width: 0; }
+.hco-sb { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.2, .8, .2, 1); }
+.hco-step.is-open .hco-sb { grid-template-rows: 1fr; }
+.hco-sbi { overflow: hidden; min-height: 0; }
+.hco-step.is-open .hco-sbi { overflow: visible; }
+.hco .hco-card.hco-step { padding-top: 22px; padding-bottom: 22px; transition: box-shadow .3s ease; }
+.hco .hco-card.hco-step.is-open { padding-top: clamp(20px, 3vw, 32px); padding-bottom: clamp(20px, 3vw, 32px); }
+.hco #checkoutShippingForm .hco-step + .hco-step { margin-top: 20px; }
+.hco-main > .hco-step { margin-top: 20px; }
+.hco-next { display: block; width: 100%; margin-top: 20px; padding: 14px 20px; border: 0; border-radius: 999px; background: #123a1b; color: #fff; font-weight: 600; font-family: Poppins, sans-serif; cursor: pointer; transition: background .2s ease, color .2s ease; }
+.hco-next:hover { background: #79b933; color: #123a1b; }
+.hco-next:focus-visible, .hco-edit:focus-visible, .hco-addr:focus-visible, .hco-bar-btn:focus-visible { outline: 3px solid #79b933; outline-offset: 2px; }
+.hco-msg { margin-top: 6px; font-size: .8rem; color: #5c6a55; }
+.hco .form-control.is-bad { border-color: #c2412d; }
+.hco .form-control.is-bad + .hco-msg { color: #c2412d; }
+.hco-known { margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: #f3f8ea; font-size: .88rem; }
+.hco-known button { border: 0; background: none; padding: 0; color: #3d7a14; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.hco-addrs { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.hco-addr { display: grid; gap: 2px; text-align: left; padding: 14px 16px; border: 1.5px solid #dfe7d2; border-radius: 16px; background: #fbfcf8; color: #123a1b; cursor: pointer; transition: border-color .2s ease, background .2s ease; font-family: Poppins, sans-serif; }
+.hco-addr b { font-weight: 600; font-size: .92rem; }
+.hco-addr span { font-size: .8rem; color: #5c6a55; overflow-wrap: anywhere; }
+.hco-addr:hover { border-color: #b9d98f; }
+.hco-addr.on { border-color: #79b933; background: #f3f8ea; box-shadow: 0 0 0 3px rgba(121, 185, 51, .15); }
+.hco-eta { margin: 16px 0 0; padding: 12px 16px; border-radius: 14px; background: #f4f6ec; font-size: .88rem; color: #3c4a36; }
+.hco-bar { display: none; }
+@media (max-width: 960px) {
+  .hco-bar { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 10px 10px 20px; border-radius: 999px;
+    background: rgba(18, 58, 27, .92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #fff; box-shadow: 0 18px 40px -16px rgba(18, 58, 27, .7); transition: transform .35s cubic-bezier(.2, .8, .2, 1), opacity .3s ease; }
+  .hco-bar.is-away { transform: translateY(140%); opacity: 0; pointer-events: none; }
+  .hco-bar-t { display: grid; line-height: 1.15; } .hco-bar-t span { font-size: .75rem; opacity: .75; } .hco-bar-t b { font-family: Bricolage, Poppins, sans-serif; font-size: 1.25rem; font-weight: 800; }
+  .hco-bar-btn { flex: none; padding: 13px 22px; border: 0; border-radius: 999px; background: #79b933; color: #123a1b; font-weight: 700; font-family: Poppins, sans-serif; cursor: pointer; }
+  body .hco-wrap { padding-bottom: 120px; }
+  body[data-view=checkout] #hyFloatRow { bottom: 92px; transition: bottom .35s cubic-bezier(.2, .8, .2, 1); }
+  body[data-view=checkout].hco-bar-off #hyFloatRow { bottom: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .hco-sb, .hco-bar { transition: none; } }
+.pd-diet{margin-top:12px}.pd-good.pd-diet span{text-transform:none}
 .pd-good span{padding:6px 14px;border-radius:99px;border:1px solid rgba(121,185,51,.55);background:rgba(121,185,51,.12);color:#e9f6cf;font-size:13px;text-transform:capitalize}
 .pd-good .pd-good-l{border:none;background:none;padding:6px 4px 6px 0;color:#f2d21f;font-weight:700;text-transform:none}
 .pd-facts{margin:0;align-self:center}
@@ -1717,7 +1777,7 @@ body .pd-details{width:100%;max-width:1180px;margin:34px auto 12px;padding:0 12p
 .pd-facts>div:first-child{border-top:none}
 .pd-facts dt{font-weight:600;color:#f2d21f;font-size:13.5px}
 .pd-facts dd{margin:0;font-size:14.5px;line-height:1.5;color:#f4f6ec}
-.pd-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.pd-pair{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
 .pd-pair .hy-info-card{border:none;border-radius:28px;padding:34px;box-shadow:0 24px 44px -34px rgba(18,58,27,.5);background:#fff}
 .pd-pair .hy-info-card-title{font-family:Bricolage,Poppins,sans-serif;text-transform:none;letter-spacing:-.02em;font-size:1.45rem;font-weight:800;color:#123a1b;margin-bottom:18px}
 .pd-pair .hy-badge-row{margin-bottom:6px}
@@ -2451,7 +2511,6 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <dl class="pd-facts" id="pdFacts"></dl>
 </div>
 <div class="pd-pair">
-<div class="hy-info-card" id="hygiesAllergenCard"></div>
 <div class="hy-info-card" id="hygiesDosageCard"></div>
 </div>
 <div class="pd-more">
@@ -2556,7 +2615,8 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 </div></template>
 
 <!-- ===== PAGE: Checkout  (address: #/checkout) ===== -->
-<template id="v-checkout"><div class="hco"><header class="hco-top"><a class="hco-logo" href="#/"><img alt="Hygies" src="images/products/logo-color.webp" decoding="async"/></a><span class="hco-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure checkout</span><div class="hy-user-status"></div></header><div class="container checkout-container hco-wrap"><div class="hco-head"><a class="hco-back" href="#/shop">Back to the shop</a><h1>Checkout</h1><ol class="hco-steps" aria-label="Checkout steps"><li class="done"><span class="hco-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Cart</li><li class="now" aria-current="step"><span class="hco-dot">2</span>Details & payment</li><li class=""><span class="hco-dot">3</span>Confirmation</li></ol></div><div class="hco-grid"><div class="hco-main"><section class="hco-card"><h2><span class="hco-n">1</span>Delivery details</h2><div class="hco-hint" id="accountHint">Checking out as a guest. <a href="#/auth?next=checkout">Sign in</a> to save your address and see this order in your history, or carry on and we'll email you the details.</div><div class="hco-f" id="savedAddressBox" style="display:none;"><label for="savedAddressSelect">Use a saved address</label><select class="form-select" id="savedAddressSelect"></select></div><form id="checkoutShippingForm"><div class="hco-fields"><div class="hco-f"><label for="checkoutFirstName">First name</label><input class="form-control" id="checkoutFirstName" autocomplete="given-name" placeholder="Ayesha" required="" type="text"/></div><div class="hco-f"><label for="checkoutLastName">Last name</label><input class="form-control" id="checkoutLastName" autocomplete="family-name" placeholder="Khan" required="" type="text"/></div><div class="hco-f hco-wide"><label for="checkoutEmail">Email</label><input class="form-control" id="checkoutEmail" autocomplete="email" placeholder="you@example.com" required="" type="email"/></div><div class="hco-f hco-wide"><label for="checkoutPhone">Phone</label><input class="form-control" id="checkoutPhone" autocomplete="tel" placeholder="0300 1234567" required="" type="tel"/></div><div class="hco-f hco-wide"><label for="checkoutStreetAddress">Street address</label><input class="form-control" id="checkoutStreetAddress" autocomplete="street-address" placeholder="House no, street, area" required="" type="text"/></div><div class="hco-f"><label for="citySelector">City</label><select class="form-select" id="citySelector" required=""><option selected="" value="Karachi">Karachi</option><option value="Lahore">Lahore</option><option value="Islamabad">Islamabad</option></select></div><div class="hco-f"><label>Country</label><input class="form-control" readonly="" type="text" value="Pakistan"/></div><div class="hco-f hco-wide" id="saveAddressRow" style="display:none;"><label class="hco-check"><input checked="" id="saveAddressCheck" type="checkbox"/> Save this address to my account</label></div></div></form></section><section class="hco-card"><h2><span class="hco-n">2</span>Payment</h2><div id="paymentMethodsList"></div><div class="payment-details-form hco-pay" id="manualPaymentBox" style="display:none;"><div class="hco-pay-note" id="manualPaymentNote"></div><table class="hco-pay-table" id="manualPaymentDetails"></table><div class="hco-f"><label for="paymentRefInput">Transaction ID</label><input class="form-control" id="paymentRefInput" maxlength="60" placeholder="The ID in your payment confirmation" type="text"/></div><div class="hco-small">We check every payment before packing your order.</div></div></section></div><aside class="hco-side"><div class="hco-sum"><h2>Your order <span id="hcoCount"></span></h2><div class="items-top-display-container hco-items" id="topItemsDisplayGrid"></div><div id="freeShipNote"></div><div class="hco-coupon"><label for="couponInput">Discount code</label><div class="hco-coupon-row"><input class="form-control" id="couponInput" maxlength="30" placeholder="Enter code" type="text"/><button class="hco-apply" id="couponApplyBtn" type="button">Apply</button></div><div class="hco-small" id="couponMessage"></div></div><div class="hco-rows"><div class="summary-row"><span>Subtotal</span><span id="subtotalValueDisplay">Rs 0</span></div><div class="summary-row" id="discountRow" style="display:none;"><span>Discount <span id="discountCodeLabel"></span></span><span id="discountValueDisplay">- Rs 0</span></div><div class="summary-row"><span>Delivery</span><span id="shippingValueDisplay">FREE</span></div><div class="summary-row summary-total"><span>Total</span><span class="price-val" id="totalValueDisplay">Rs 0</span></div></div><button class="place-order-btn hyt" onclick="executeFinalCheckoutTransaction()" type="button"><span class="hyt-label">Confirm order</span><span class="hyt-done" aria-hidden="true"><svg class="hyt-tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Order placed</span><span class="hyt-status" role="status" aria-live="polite"></span><span class="hyt-scene" aria-hidden="true"><span class="hyt-road"></span><span class="hyt-speed"><i></i><i></i><i></i></span><span class="hyt-box"><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg></span><span class="hyt-truck"><span class="hyt-cargo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg><span class="hyt-door"></span></span><span class="hyt-cab"><span class="hyt-win"></span><span class="hyt-lamp"></span></span><span class="hyt-wheel w1"></span><span class="hyt-wheel w2"></span><span class="hyt-dust"><i></i><i></i><i></i></span></span></span><span class="hyt-leaves" aria-hidden="true"><i style="--a:-160deg;--d:120px;--r:40deg;--t:0ms"></i><i style="--a:-130deg;--d:150px;--r:-60deg;--t:40ms"></i><i style="--a:-100deg;--d:110px;--r:90deg;--t:20ms"></i><i style="--a:-70deg;--d:160px;--r:-30deg;--t:60ms"></i><i style="--a:-40deg;--d:130px;--r:70deg;--t:10ms"></i><i style="--a:-15deg;--d:115px;--r:-80deg;--t:50ms"></i><i style="--a:15deg;--d:140px;--r:60deg;--t:30ms"></i><i style="--a:40deg;--d:120px;--r:-40deg;--t:70ms"></i><i style="--a:70deg;--d:150px;--r:20deg;--t:20ms"></i><i style="--a:100deg;--d:110px;--r:-70deg;--t:50ms"></i><i style="--a:130deg;--d:160px;--r:50deg;--t:0ms"></i><i style="--a:160deg;--d:125px;--r:-20deg;--t:40ms"></i></span></button><ul class="hco-trust"><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Pay securely online</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Delivered in 3 to 5 days</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5C11 5 6 9 6 15c0 1.6.5 3 1.2 4.2M19 5c0 8-4 13-11 13M10 14c2-2 4-3.5 7-5"/></svg>100% organic</li></ul></div></aside></div></div></div></template>
+<template id="v-checkout"><div class="hco"><header class="hco-top"><a class="hco-logo" href="#/"><img alt="Hygies" src="images/products/logo-color.webp" decoding="async"/></a><span class="hco-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure checkout</span><div class="hy-user-status"></div></header><div class="container checkout-container hco-wrap"><div class="hco-head"><a class="hco-back" href="#/shop">Back to the shop</a><h1>Checkout</h1><ol class="hco-steps" aria-label="Checkout steps"><li class="done"><span class="hco-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Cart</li><li class="now" aria-current="step"><span class="hco-dot">2</span>Details & payment</li><li class=""><span class="hco-dot">3</span>Confirmation</li></ol></div><div class="hco-grid"><div class="hco-main"><form id="checkoutShippingForm"><section class="hco-card hco-step" data-step="contact"><header class="hco-sh"><h2><span class="hco-n">1</span>Contact</h2><p class="hco-line" aria-live="polite"></p><button type="button" class="hco-edit" aria-label="Edit contact">Edit</button></header><div class="hco-sb"><div class="hco-sbi"><div class="hco-hint" id="accountHint">Checking out as a guest. <a href="#/auth?next=checkout">Sign in</a> to save your address and see this order in your history, or carry on and we'll email you the details.</div><p class="hco-known" id="hcoKnown" hidden>We filled in your details from last time. <button type="button" id="hcoForget">Not you? Clear them</button></p><div class="hco-fields"><div class="hco-f"><label for="checkoutFirstName">First name</label><input class="form-control" id="checkoutFirstName" autocomplete="given-name" placeholder="Ayesha" required="" type="text"/></div><div class="hco-f"><label for="checkoutLastName">Last name</label><input class="form-control" id="checkoutLastName" autocomplete="family-name" placeholder="Khan" required="" type="text"/></div><div class="hco-f hco-wide"><label for="checkoutEmail">Email</label><input class="form-control" id="checkoutEmail" autocomplete="email" placeholder="you@example.com" required="" type="email"/></div><div class="hco-f hco-wide"><label for="checkoutPhone">Mobile number</label><input class="form-control" id="checkoutPhone" autocomplete="tel" inputmode="tel" placeholder="0300 1234567" required="" type="tel" aria-describedby="hcoPhoneMsg"/><div class="hco-msg" id="hcoPhoneMsg">The courier calls this number if they can't find you.</div></div></div><button type="button" class="hco-next">Continue to delivery</button></div></div></section><section class="hco-card hco-step" data-step="delivery"><header class="hco-sh"><h2><span class="hco-n">2</span>Delivery</h2><p class="hco-line" aria-live="polite"></p><button type="button" class="hco-edit" aria-label="Edit delivery">Edit</button></header><div class="hco-sb"><div class="hco-sbi"><div class="hco-f" id="savedAddressBox" style="display:none;"><label>Your saved addresses</label><div class="hco-addrs" id="hcoAddrs"></div><select class="form-select" id="savedAddressSelect" hidden tabindex="-1" aria-hidden="true"></select></div><div class="hco-fields"><div class="hco-f hco-wide"><label for="checkoutStreetAddress">Street address</label><input class="form-control" id="checkoutStreetAddress" autocomplete="street-address" placeholder="House no, street, area" required="" type="text"/></div><div class="hco-f"><label for="citySelector">City</label><input class="form-control" id="citySelector" list="hcoCities" autocomplete="address-level2" placeholder="Start typing your city" required="" type="text"/><datalist id="hcoCities"><option value="Karachi"></option><option value="Lahore"></option><option value="Islamabad"></option><option value="Rawalpindi"></option><option value="Faisalabad"></option><option value="Multan"></option><option value="Peshawar"></option><option value="Quetta"></option><option value="Hyderabad"></option><option value="Gujranwala"></option><option value="Sialkot"></option><option value="Sargodha"></option><option value="Bahawalpur"></option><option value="Sukkur"></option><option value="Larkana"></option><option value="Sheikhupura"></option><option value="Rahim Yar Khan"></option><option value="Jhang"></option><option value="Dera Ghazi Khan"></option><option value="Gujrat"></option><option value="Sahiwal"></option><option value="Wah Cantt"></option><option value="Mardan"></option><option value="Kasur"></option><option value="Okara"></option><option value="Mingora"></option><option value="Nawabshah"></option><option value="Chiniot"></option><option value="Kamoke"></option><option value="Sadiqabad"></option><option value="Burewala"></option><option value="Jacobabad"></option><option value="Muzaffargarh"></option><option value="Mirpur Khas"></option><option value="Abbottabad"></option><option value="Mansehra"></option><option value="Jhelum"></option><option value="Attock"></option><option value="Chakwal"></option><option value="Khanewal"></option><option value="Hafizabad"></option><option value="Kohat"></option><option value="Mandi Bahauddin"></option><option value="Vehari"></option><option value="Muzaffarabad"></option><option value="Mirpur (AJK)"></option><option value="Gilgit"></option><option value="Skardu"></option><option value="Gwadar"></option><option value="Turbat"></option><option value="Taxila"></option><option value="Murree"></option></datalist></div><div class="hco-f"><label for="hcoCountry">Country</label><input class="form-control" id="hcoCountry" readonly="" type="text" value="Pakistan"/></div><div class="hco-f hco-wide" id="saveAddressRow" style="display:none;"><label class="hco-check"><input checked="" id="saveAddressCheck" type="checkbox"/> Save this address to my account</label></div><div class="hco-f hco-wide" id="hcoRememberRow"><label class="hco-check"><input checked="" id="hcoRemember" type="checkbox"/> Remember my details on this device for next time</label></div></div><p class="hco-eta" id="hcoEta"></p><button type="button" class="hco-next">Continue to payment</button></div></div></section></form><section class="hco-card hco-step" data-step="payment"><header class="hco-sh"><h2><span class="hco-n">3</span>Payment</h2><p class="hco-line" aria-live="polite"></p><button type="button" class="hco-edit" aria-label="Edit payment">Edit</button></header><div class="hco-sb"><div class="hco-sbi"><div id="paymentMethodsList"></div><div class="payment-details-form hco-pay" id="manualPaymentBox" style="display:none;"><div class="hco-pay-note" id="manualPaymentNote"></div><table class="hco-pay-table" id="manualPaymentDetails"></table><div class="hco-f"><label for="paymentRefInput">Transaction ID</label><input class="form-control" id="paymentRefInput" maxlength="60" placeholder="The ID in your payment confirmation" type="text"/></div><div class="hco-small">We check every payment before packing your order.</div></div></div></div></section></div>
+<aside class="hco-side"><div class="hco-sum"><h2>Your order <span id="hcoCount"></span></h2><div class="items-top-display-container hco-items" id="topItemsDisplayGrid"></div><div id="freeShipNote"></div><div class="hco-coupon"><label for="couponInput">Discount code</label><div class="hco-coupon-row"><input class="form-control" id="couponInput" maxlength="30" placeholder="Enter code" type="text"/><button class="hco-apply" id="couponApplyBtn" type="button">Apply</button></div><div class="hco-small" id="couponMessage"></div></div><div class="hco-rows"><div class="summary-row"><span>Subtotal</span><span id="subtotalValueDisplay">Rs 0</span></div><div class="summary-row" id="discountRow" style="display:none;"><span>Discount <span id="discountCodeLabel"></span></span><span id="discountValueDisplay">- Rs 0</span></div><div class="summary-row"><span>Delivery</span><span id="shippingValueDisplay">FREE</span></div><div class="summary-row summary-total"><span>Total</span><span class="price-val" id="totalValueDisplay">Rs 0</span></div></div><button class="place-order-btn hyt" onclick="executeFinalCheckoutTransaction()" type="button"><span class="hyt-label">Confirm order</span><span class="hyt-done" aria-hidden="true"><svg class="hyt-tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Order placed</span><span class="hyt-status" role="status" aria-live="polite"></span><span class="hyt-scene" aria-hidden="true"><span class="hyt-road"></span><span class="hyt-speed"><i></i><i></i><i></i></span><span class="hyt-box"><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg></span><span class="hyt-truck"><span class="hyt-cargo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 9 5 15c0 2 .6 3.6 1.4 5C8 13 12 10 17 8c-4 3-7 6.5-8.6 12.4C9.4 20.8 10.6 21 12 21c6 0 8-7 8-17z"/></svg><span class="hyt-door"></span></span><span class="hyt-cab"><span class="hyt-win"></span><span class="hyt-lamp"></span></span><span class="hyt-wheel w1"></span><span class="hyt-wheel w2"></span><span class="hyt-dust"><i></i><i></i><i></i></span></span></span><span class="hyt-leaves" aria-hidden="true"><i style="--a:-160deg;--d:120px;--r:40deg;--t:0ms"></i><i style="--a:-130deg;--d:150px;--r:-60deg;--t:40ms"></i><i style="--a:-100deg;--d:110px;--r:90deg;--t:20ms"></i><i style="--a:-70deg;--d:160px;--r:-30deg;--t:60ms"></i><i style="--a:-40deg;--d:130px;--r:70deg;--t:10ms"></i><i style="--a:-15deg;--d:115px;--r:-80deg;--t:50ms"></i><i style="--a:15deg;--d:140px;--r:60deg;--t:30ms"></i><i style="--a:40deg;--d:120px;--r:-40deg;--t:70ms"></i><i style="--a:70deg;--d:150px;--r:20deg;--t:20ms"></i><i style="--a:100deg;--d:110px;--r:-70deg;--t:50ms"></i><i style="--a:130deg;--d:160px;--r:50deg;--t:0ms"></i><i style="--a:160deg;--d:125px;--r:-20deg;--t:40ms"></i></span></button><ul class="hco-trust"><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Pay securely online</li><li id="hcoEtaLi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Delivered in 3 to 5 days</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5C11 5 6 9 6 15c0 1.6.5 3 1.2 4.2M19 5c0 8-4 13-11 13M10 14c2-2 4-3.5 7-5"/></svg>100% organic</li></ul></div></aside></div></div><div class="hco-bar" id="hcoBar"><div class="hco-bar-t"><span>Total</span><b id="hcoBarTotal">Rs 0</b></div><button type="button" class="hco-bar-btn" id="hcoBarBtn">Confirm order</button></div></div></template>
 
 <!-- ===== PAGE: Order history  (address: #/orders) ===== -->
 <template id="v-orders"><div class="top-bar"></div><div class="site-header">
@@ -2686,51 +2746,75 @@ body footer.hy-ft .hy-ft-social a:hover{background:#79b933;border-color:#79b933;
 <!-- ===== PAGE: Shipping policy  (address: #/shipping) ===== -->
 <template id="v-shipping"><div class="doc">
 <h1>Shipping Policy</h1>
-<h2>Where we deliver</h2><p>We deliver across Pakistan, with Karachi, Lahore and Islamabad currently supported at checkout.</p>
-<h2>Delivery time</h2><p>Orders are packed within 1–2 business days and normally arrive in <strong>3–5 business days</strong>. Delays can happen during public holidays or bad weather.</p>
-<h2>Shipping fee</h2><p>Shipping is <strong>free on orders of Rs 10,000 or more</strong> (before discounts). Below that, a flat fee of <strong>Rs 250</strong> applies.</p>
-<h2>Tracking</h2><p>Once your order is handed to the courier you will receive an email with the courier name and tracking number. You can also follow your order any time from <a href="#/orders">My Orders</a> or the tracking link in your confirmation email.</p>
+<p><em>Last updated: 26 November 2026</em></p>
+<h2>Where we deliver</h2><p>We deliver <strong>anywhere in Pakistan</strong>. Enter your city at checkout.</p>
+<h2>When your order ships</h2><p>We ship as soon as your payment is confirmed. Orders are packed within 1 to 2 business days.</p>
+<h2>Delivery time</h2><p>Orders normally arrive in <strong>3 to 5 business days</strong>. Public holidays and bad weather can cause delays.</p>
+<h2>Delivery fee</h2><p>Delivery is <strong>free when your order total is Rs 10,000 or more</strong> after any discount. Below that, a flat fee of <strong>Rs 250</strong> applies. You see the exact fee at checkout before you pay.</p>
+<h2>Tracking</h2><p>When your order is handed to the courier, we email you the courier name and tracking number. You can also follow it from <a href="#/orders">Order history</a> or the <a href="#/track">Track order</a> page.</p>
 <h2>Payment</h2><p>Every order is paid online when you order. Cash on delivery is not available, so there is nothing to pay the rider.</p>
-<h2>Problems with delivery</h2><p>If your parcel is late, damaged or missing, contact us on 0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) or <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a> with your order number.</p>
+<h2>Late, damaged or missing parcels</h2><p>Contact us with your order number and we'll sort it out. Damaged or wrong items are covered by our <a href="#/returns">Refund Policy</a>.</p>
+<h2>Contact</h2><p>Hygies, Bath Island Road Street no. 3, Karachi, Pakistan<br>0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
 </div></template>
 
 <!-- ===== PAGE: Returns policy  (address: #/returns) ===== -->
 <template id="v-returns"><div class="doc">
 <h1>Refund Policy</h1>
-<p><em>Last updated: 28 October 2026</em></p>
-<h2>Because these are consumable products</h2><p>For hygiene and safety reasons we cannot accept returns of opened or used teas, powders or oral-care products.</p>
-<h2>When we will replace or refund</h2><ul><li>The product arrived damaged or leaking.</li><li>You received the wrong product.</li><li>The product is past its expiry date.</li></ul>
-<p>Please contact us within <strong>7 days</strong> of delivery with your order number and a clear photo of the product and packaging.</p>
-<h2>How refunds are paid</h2><p>Approved refunds are returned using the same method you paid with, or by bank/mobile-wallet transfer for cash-on-delivery orders, within 5–7 business days of approval.</p>
-<h2>Cancelling an order</h2><p>You can cancel before your order is shipped by contacting us on 0300 9236520 or by email. Once shipped, the order can no longer be cancelled.</p>
-<h2>Contact</h2><p>0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
+<p><em>Last updated: 26 November 2026</em></p>
+<p>If something is wrong with your order, tell us and we'll put it right.</p>
+<h2>When we replace or refund</h2><ul><li>The product arrived damaged, leaking or with a broken seal.</li><li>You received the wrong product, or something is missing.</li><li>The product is past its expiry date.</li></ul>
+<p>Message us within <strong>7 days of delivery</strong> with your order number and clear photos of the product and its packaging. We'll check them and send a replacement or refund you.</p>
+<h2>What we can't take back</h2><p>Our teas, powders and tooth powders are consumable, so for hygiene and safety we can't accept returns of opened or used products.</p>
+<h2>How refunds are paid</h2><p>Approved refunds go back to the account or wallet you paid from, within <strong>5 to 7 business days</strong> of approval.</p>
+<h2>Cancelling an order</h2><p>You can cancel any time before your order is shipped by messaging us on 0300 9236520 or by email, and we'll refund what you paid. Once an order has shipped it can't be cancelled.</p>
+<h2>Contact</h2><p>Hygies, Bath Island Road Street no. 3, Karachi, Pakistan<br>0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
 </div></template>
 
 <!-- ===== PAGE: Privacy policy  (address: #/privacy) ===== -->
 <template id="v-privacy"><div class="doc">
 <h1>Privacy Policy</h1>
-<p><em>Last updated: 28 October 2026</em></p>
-<h2>What we collect</h2><ul><li>Account details: name, email, and profile picture if you sign in with Google.</li><li>Order details: delivery name, phone number, address, items and payment reference.</li><li>Sign-ups: the email or WhatsApp number you give for offers.</li><li>Reviews you choose to post.</li></ul>
-<h2>How we use it</h2><p>To process and deliver orders, send order and shipping emails, answer your questions, and (only if you opted in) send offers. We do not sell your information.</p>
-<h2>Cookies and browser storage</h2><p>We save your shopping cart in your browser so it is still there when you come back. You can clear it any time from your browser settings.</p>
-<h2>Who processes it</h2><p>We use Supabase (sign-in and database) and EmailJS (order emails). Couriers receive your name, phone number and address to deliver your parcel.</p>
-<h2>Your choices</h2><p>You can remove saved addresses in <a href="#/profile">Profile</a>, and ask us to delete your account data or remove you from offers by emailing <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a>.</p>
-<h2>Security</h2><p>Payments are never entered on this site: bank and wallet transfers are made in your own banking app. We take reasonable steps to protect your data, but no online service is perfectly secure.</p>
-<h2>Contact</h2><p>Hygies, Bath Island Road Street no. 3, Karachi, Pakistan<br/>0300 9236520 · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
+<p><em>Last updated: 26 November 2026</em></p>
+<h2>What we collect</h2><ul>
+<li><strong>Your account:</strong> name and email, plus your profile picture if you sign in with Google.</li>
+<li><strong>Your orders:</strong> delivery name, phone number, email, address, the items you bought and your payment transaction ID.</li>
+<li><strong>Saved addresses</strong> you add to your profile.</li>
+<li><strong>Sign-ups:</strong> the email or WhatsApp number you give for offers, or for a back-in-stock alert.</li>
+<li><strong>Reviews</strong> you choose to post.</li></ul>
+<p>We never see or store card numbers, bank logins or wallet PINs. You pay in your own banking or wallet app.</p>
+<h2>How we use it</h2><p>To process and deliver your orders, send order and shipping emails, answer your questions, show your order history, and send offers only if you signed up for them. We don't sell your information, and we don't use advertising or tracking tools.</p>
+<h2>Cookies and browser storage</h2><p>This site doesn't use cookies. It keeps a few small things in your browser's own storage so the site works:</p><ul>
+<li>your shopping cart and wishlist,</li>
+<li>your language choice (English or Urdu),</li>
+<li>keeping you signed in, and returning you to checkout after you sign in,</li>
+<li>your contact and delivery details, only if you tick "Remember my details on this device" at checkout. "Not you? Clear them" at checkout removes them.</li></ul>
+<p>None of this is used for tracking or advertising. You can clear it from your browser settings at any time; your cart will empty and you'll be signed out.</p>
+<h2>Who helps us run the site</h2><ul>
+<li><strong>Supabase</strong> stores accounts and orders, and handles sign-in.</li>
+<li><strong>Google</strong>, only if you choose Sign in with Google.</li>
+<li><strong>EmailJS</strong> sends order and shipping emails.</li>
+<li><strong>Google Fonts and jsDelivr</strong> deliver the site's fonts and styles. Like any website, they receive your device's IP address when a page loads.</li>
+<li><strong>Our courier</strong> receives your name, phone number and address to deliver your parcel.</li></ul>
+<h2>How long we keep it</h2><p>We keep order records for as long as we need them for deliveries, refunds and our accounts. Your account stays until you ask us to delete it.</p>
+<h2>Your choices</h2><p>You can edit or remove saved addresses in <a href="#/profile">Profile &amp; addresses</a>. To delete your account data or stop offers, email <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a>.</p>
+<h2>Security</h2><p>We take reasonable steps to protect your information, but no online service is perfectly secure.</p>
+<h2>Changes</h2><p>If we change this policy we'll update the date at the top of this page.</p>
+<h2>Contact</h2><p>Hygies, Bath Island Road Street no. 3, Karachi, Pakistan<br>0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
 </div></template>
 
 <!-- ===== PAGE: Terms  (address: #/terms) ===== -->
 <template id="v-terms"><div class="doc">
 <h1>Terms of Service</h1>
-<p><em>This is a general template. Have it reviewed before relying on it.</em></p>
-<h2>Using the site</h2><p>By placing an order you confirm the details you give are accurate and that you are at least 18 years old or have a parent or guardian's permission.</p>
-<h2>Products and health information</h2><p>Hygies products are herbal and wellness products. They are <strong>not medicines</strong> and are not intended to diagnose, treat, cure or prevent any disease. Information on this site is general. If you are pregnant, nursing, taking medication or have a medical condition, please speak to a doctor before use.</p>
-<h2>Prices and orders</h2><p>Prices are in Pakistani rupees. We may correct pricing errors or decline an order, in which case you will be refunded in full. An order is confirmed when you receive our confirmation email.</p>
-<h2>Payment</h2><p>We accept online payment only, made when you place your order, using the methods shown at checkout. Cash on delivery is not available. Orders are shipped after we verify the payment.</p>
-<h2>Shipping and returns</h2><p>See our <a href="#/shipping">Shipping</a> and <a href="#/returns">Returns</a> pages.</p>
-<h2>Discount codes</h2><p>Codes may have an expiry date, minimum spend or product restrictions, and may be withdrawn at any time.</p>
-<h2>Changes</h2><p>We may update these terms. Continued use of the site means you accept the updated terms.</p>
-<h2>Contact</h2><p><a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
+<p><em>Last updated: 26 November 2026</em></p>
+<h2>Using the site</h2><p>By placing an order you confirm that the details you give are accurate and that you are at least 18 years old or have a parent or guardian's permission.</p>
+<h2>Products and health information</h2><p>Hygies products are herbal and wellness products. They are not medicines and are not intended to diagnose, treat, cure or prevent any disease. Information on this site is general. If you are pregnant, nursing, taking medication or have a medical condition, speak to a doctor before use.</p>
+<h2>Prices and orders</h2><p>Prices are in Pakistani rupees. We may correct a pricing error or decline an order; if we do, you'll be refunded in full. Your order is confirmed when you receive our confirmation email.</p>
+<h2>Payment</h2><p>We accept online payment only, made when you place your order, using the methods shown at checkout. Cash on delivery is not available. Orders ship after we confirm your payment.</p>
+<h2>Delivery, refunds and cancellations</h2><p>See our <a href="#/shipping">Shipping Policy</a> and <a href="#/returns">Refund Policy</a>.</p>
+<h2>Discount codes</h2><p>Codes may have an expiry date, a minimum spend or product limits, and may be withdrawn at any time. One code per order.</p>
+<h2>Reviews</h2><p>Reviews you post must be honest and about your own experience. We may remove reviews that are abusive, misleading or unrelated to the product.</p>
+<h2>Governing law</h2><p>These terms are governed by the laws of Pakistan.</p>
+<h2>Changes</h2><p>We may update these terms. The date at the top shows the latest version.</p>
+<h2>Contact</h2><p>Hygies, Bath Island Road Street no. 3, Karachi, Pakistan<br>0300 9236520 (call or <a href="https://wa.me/923009236520" rel="noopener" target="_blank">WhatsApp</a>) · <a href="mailto:iqnestofficial@gmail.com">iqnestofficial@gmail.com</a></p>
 </div></template>
 
 <!-- =====================================================================
@@ -3836,6 +3920,29 @@ function updateMeter(el, amount, afterDiscount) {
   const b = el.querySelector(".hy-meter-text b"), bar = el.querySelector(".hy-meter-bar span");
   if (b && left > 0) b.dataset.v = left;
   if (bar) { bar.style.width = "0%"; void bar.offsetWidth; bar.style.width = pct + "%"; }
+}
+// questions (homepage and product page): answers slide open and closed instead of snapping (height + fade, interruptible)
+function faqSlide(e, sel) {
+    const sm = e.target.closest(sel);
+    if (!sm) return;
+    const d = sm.parentElement, a = d.querySelector(".hm-faq-a");
+    if (!a || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    e.preventDefault();
+    const from = d.open ? a.getBoundingClientRect().height : 0;   // a closed answer still reports its old height
+    if (d._anim) { d._anim.cancel(); d._anim = null; }
+    const ease = "cubic-bezier(.2, .8, .2, 1)";
+    if (d.open && !d.classList.contains("is-closing")) {
+      d.classList.add("is-closing");
+      const an = a.animate([{ height: from + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 380, easing: ease });
+      d._anim = an;
+      an.onfinish = () => { d.open = false; d.classList.remove("is-closing"); d._anim = null; };
+    } else {
+      d.classList.remove("is-closing"); d.open = true;
+      const to = a.scrollHeight;
+      const an = a.animate([{ height: from + "px", opacity: from ? 1 : 0 }, { height: to + "px", opacity: 1 }], { duration: 460, easing: ease });
+      d._anim = an;
+      an.onfinish = () => { d._anim = null; };
+    }
 }
 function countTo(el, to) {
   // numbers glide to their new value instead of jumping
@@ -4969,7 +5076,7 @@ var HYGIES_PRODUCTS = {
     lifestyleTags: ["Weight Management", "Energy"],
     symptoms: ["weight concerns", "sluggish metabolism", "low energy", "bloating"],
     shortBenefit: "Supports metabolism as part of a weight-management routine.",
-    allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: false, nutFree: true },
+    allergens: { glutenFree: false, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
     ingredients: ["Ajwain (Carom seeds)", "Cumin", "Fennel", "Fenugreek seeds", "Moringa", "Asafoetida (Heeng)", "Lemongrass", "Other herbs"],
     dosage: {
       mode: "oral-tea",
@@ -4989,7 +5096,7 @@ var HYGIES_PRODUCTS = {
     lifestyleTags: ["Weight Management", "Energy"],
     symptoms: ["weight concerns", "sluggish metabolism", "low energy"],
     shortBenefit: "A daily metabolism-boosting blend for weight management.",
-    allergens: { glutenFree: true, organic: true, vegan: true, dairyFree: true, caffeineFree: false, nutFree: true },
+    allergens: { glutenFree: false, organic: true, vegan: true, dairyFree: true, caffeineFree: true, nutFree: true },
     ingredients: ["Ajwain (Carom seeds)", "Cumin", "Fennel", "Asafoetida (Heeng)", "Fenugreek seeds"],
     dosage: {
       mode: "oral-powder",
@@ -5466,41 +5573,10 @@ function parseWeightToGrams(weightStr) {
 function initProductDetailFeatures(root) {
   root = root || document;
   var titleEl = root.querySelector(".product-main-title");
-  var allergenCard = root.querySelector("#hygiesAllergenCard");
   var dosageCard = root.querySelector("#hygiesDosageCard");
-  if (!titleEl || !allergenCard || !dosageCard) return;
+  if (!titleEl || !dosageCard) return;
   var product = hygiesResolveProduct(titleEl.textContent);
   if (!product) return;
-  var allergenBadges = buildBadgeRow(product.allergens, {
-    keys: ["organic", "glutenFree", "vegan", "dairyFree", "caffeineFree", "nutFree"],
-    large: true
-  });
-  var ingredientItems = (product.ingredients || []).map(function(ing) {
-    return '<li data-ing="' + escapeHtml(ing.toLowerCase()) + '">' + escapeHtml(ing) + "</li>";
-  }).join("");
-  allergenCard.innerHTML = '<div class="hy-info-card-title">What&#39;s inside</div>' + allergenBadges + '<div class="hy-ingredient-search" style="margin-top:14px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="hyIngredientSearch" placeholder="Search ingredients..."></div><ul class="hy-ingredient-list" id="hyIngredientList">' + ingredientItems + "</ul>";
-  var ingSearch = root.querySelector("#hyIngredientSearch");
-  var ingListItems = allergenCard.querySelectorAll("#hyIngredientList li");
-  ingSearch.addEventListener("input", function() {
-    var q = ingSearch.value.trim().toLowerCase();
-    var anyVisible = false;
-    ingListItems.forEach(function(li) {
-      var visible = !q || li.dataset.ing.indexOf(q) !== -1;
-      li.style.display = visible ? "" : "none";
-      if (visible) anyVisible = true;
-    });
-    var emptyMsg = allergenCard.querySelector(".hy-search-empty");
-    if (!anyVisible) {
-      if (!emptyMsg) {
-        emptyMsg = document.createElement("div");
-        emptyMsg.className = "hy-search-empty";
-        emptyMsg.textContent = 'No ingredient matches "' + ingSearch.value + '".';
-        allergenCard.appendChild(emptyMsg);
-      }
-    } else if (emptyMsg) {
-      emptyMsg.remove();
-    }
-  });
   var d = product.dosage;
   var isTopical = d.mode === "topical";
   var periodLabel = isTopical ? "week" : "day";
@@ -6097,29 +6173,8 @@ function mountHome() {
     });
   }, { threshold: [0, 0.15], rootMargin: "0px 0px -6% 0px" });
   hm.querySelectorAll("[data-rv]").forEach((el) => io.observe(el));
-  // questions: answers slide open and closed instead of snapping (height + fade, interruptible)
-  hm.addEventListener("click", (e) => {
-    const sm = e.target.closest(".hm-faq-list summary");
-    if (!sm) return;
-    const d = sm.parentElement, a = d.querySelector(".hm-faq-a");
-    if (!a || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    e.preventDefault();
-    const from = d.open ? a.getBoundingClientRect().height : 0;   // a closed answer still reports its old height
-    if (d._anim) { d._anim.cancel(); d._anim = null; }
-    const ease = "cubic-bezier(.2, .8, .2, 1)";
-    if (d.open && !d.classList.contains("is-closing")) {
-      d.classList.add("is-closing");
-      const an = a.animate([{ height: from + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 380, easing: ease });
-      d._anim = an;
-      an.onfinish = () => { d.open = false; d.classList.remove("is-closing"); d._anim = null; };
-    } else {
-      d.classList.remove("is-closing"); d.open = true;
-      const to = a.scrollHeight;
-      const an = a.animate([{ height: from + "px", opacity: from ? 1 : 0 }, { height: to + "px", opacity: 1 }], { duration: 460, easing: ease });
-      d._anim = an;
-      an.onfinish = () => { d._anim = null; };
-    }
-  });
+  // questions: answers slide open and closed instead of snapping
+  hm.addEventListener("click", (e) => faqSlide(e, ".hm-faq-list summary"));
   // hero packs lift and fade out as you scroll down; --p goes 0 to 1 over the hero
   const stage = hm.querySelector(".hm-stage");
   const hero = stage.closest(".hm-hero");
@@ -6476,6 +6531,10 @@ function mountProduct(ctx) {
     root.querySelector("#pdCat").textContent = info.category;
     const sym = (info.symptoms || []).slice(0, 6);
     root.querySelector("#pdGood").innerHTML = sym.length ? '<span class="pd-good-l">Good for</span>' + sym.map((x) => "<span>" + esc2(x) + "</span>").join("") : "";
+    const al0 = info.allergens || {}, oral0 = p.key.indexOf("productoralcare") === 0;
+    const diet = [["organic", "Organic"], ["vegan", "Vegan"], ["glutenFree", "Gluten-free"], ["dairyFree", "Dairy-free"], ["caffeineFree", "Caffeine-free"], ["nutFree", "Nut-free"]]
+      .filter((t) => al0[t[0]] && !(oral0 && t[0] === "caffeineFree")).map((t) => t[1]);   // caffeine means nothing for a tooth powder
+    if (diet.length) root.querySelector("#pdGood").insertAdjacentHTML("afterend", '<div class="pd-good pd-diet"><span class="pd-good-l">Diet</span>' + diet.map((x) => "<span>" + x + "</span>").join("") + "</div>");
   }
   const ICON = {
     leaf: '<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19c2-4 5-7 9-9"/>',
@@ -6522,7 +6581,8 @@ function mountProduct(ctx) {
     ["When will it arrive?", "In " + (SITE.deliveryEstimate || "a few business days") + ", anywhere in Pakistan. Delivery is free on orders of Rs " + free + " or more; below that it costs Rs " + fee + "."],
     ["Can I return it?", 'Yes, see our <a href="#/returns">Returns page</a> for how returns and refunds work.']
   ];
-  root.querySelector("#pdFaq").innerHTML = '<h3 class="hy-info-card-title">Questions</h3>' + FAQ.map((q) => "<details><summary>" + esc2(q[0]) + "</summary><p>" + (q[0] === "Can I return it?" ? q[1] : esc2(q[1])) + "</p></details>").join("");
+  root.querySelector("#pdFaq").innerHTML = '<h3 class="hy-info-card-title">Questions</h3>' + FAQ.map((q) => "<details><summary>" + esc2(q[0]) + '</summary><div class="hm-faq-a"><p>' + (q[0] === "Can I return it?" ? q[1] : esc2(q[1])) + "</p></div></details>").join("");
+  root.querySelector("#pdFaq").addEventListener("click", (e) => faqSlide(e, ".pd-faq summary"));
   const bar = root.querySelector("#pdSticky");
   root.querySelector("#pdStickyName").textContent = tparts[0];
   root.querySelector("#pdStickyPrice").textContent = "Rs " + first.price.toLocaleString();
@@ -6720,6 +6780,7 @@ async function mount2(ctx) {
     }
     if (hint) hint.style.display = "none";
     if (saveRow) saveRow.style.display = "block";
+    const rem = document.getElementById("hcoRememberRow"); if (rem) rem.style.display = "none";
     loadProfileIntoForm(user);
   });
   async function loadProfileIntoForm(user) {
@@ -6751,11 +6812,29 @@ async function mount2(ctx) {
           document.getElementById("checkoutLastName").value = a.lastName || "";
           document.getElementById("checkoutPhone").value = a.phone || "";
           document.getElementById("checkoutStreetAddress").value = a.street || "";
-          document.getElementById("citySelector").value = a.city || "Karachi";
+          document.getElementById("citySelector").value = a.city || "";
         };
         sel.value = savedAddresses[savedAddresses.length - 1].id;
         sel.onchange();
+        // saved addresses as cards (the hidden select keeps doing the filling)
+        const cards = document.getElementById("hcoAddrs");
+        const paintCards = function() {
+          cards.innerHTML = savedAddresses.map(function(a) {
+            return '<button type="button" class="hco-addr' + (sel.value === a.id ? " on" : "") + '" data-id="' + esc3(a.id) + '" aria-pressed="' + (sel.value === a.id) + '"><b>' + esc3(a.label || a.street) + "</b><span>" + esc3(a.street) + ", " + esc3(a.city) + "</span></button>";
+          }).join("") + '<button type="button" class="hco-addr hco-addr-new' + (sel.value ? "" : " on") + '" data-id="" aria-pressed="' + !sel.value + '"><b>+ New address</b><span>Deliver somewhere else</span></button>';
+        };
+        cards.onclick = function(e) {
+          const b = e.target.closest(".hco-addr"); if (!b) return;
+          sel.value = b.dataset.id;
+          if (!sel.value) { document.getElementById("checkoutStreetAddress").value = ""; document.getElementById("citySelector").value = ""; document.getElementById("checkoutStreetAddress").focus(); }
+          else sel.onchange();
+          paintCards();
+        };
+        paintCards();
+      } else {
+        try { const last = await getLatestOrderForUser(user.uid); if (last && last.shipping) ["checkoutFirstName:firstName", "checkoutLastName:lastName", "checkoutPhone:phone", "checkoutStreetAddress:street", "citySelector:city"].forEach(function(p) { const kv = p.split(":"), el = document.getElementById(kv[0]); if (el && !el.value && last.shipping[kv[1]]) el.value = last.shipping[kv[1]]; }); } catch (e) {}
       }
+      if (window.hcoStartSteps) window.hcoStartSteps();
     } catch (e) {
       console.error("Could not load saved details:", e.message);
     }
@@ -6769,6 +6848,109 @@ async function mount2(ctx) {
     if (checkoutCartItems.length > 0) {
       renderPaymentMethods();
       populateCheckoutSummaryUI();
+  // ---- one step at a time, smarter fields, remembered details, phone bar, delivery dates (Nov 26)
+  const $ = (id) => document.getElementById(id);
+  const steps = () => [...document.querySelectorAll(".hco-step")];
+  const stepFields = (st) => [...st.querySelectorAll("input[required], select[required]")];
+  const stepOk = (st) => stepFields(st).every((x) => x.checkValidity());
+  function stepLine(st) {
+    const k = st.dataset.step;
+    if (k === "contact") return [($("checkoutFirstName").value + " " + $("checkoutLastName").value).trim(), $("checkoutPhone").value, $("checkoutEmail").value].filter(Boolean).join(" · ");
+    if (k === "delivery") return [$("checkoutStreetAddress").value, $("citySelector").value].filter(Boolean).join(", ");
+    const m = PAYMENT_METHODS.find((x) => x.id === selectedPaymentId);
+    return m ? m.label : "";
+  }
+  function openStep(st, scroll) {
+    steps().forEach((x) => {
+      const on = x === st;
+      x.classList.toggle("is-open", on);
+      x.classList.toggle("is-done", !on && x.dataset.step !== "payment" && stepOk(x));
+      x.querySelector(".hco-line").textContent = !on && x.classList.contains("is-done") ? stepLine(x) : "";
+      x.querySelector(".hco-sb").inert = !on;
+    });
+    if (scroll) setTimeout(() => st.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+  }
+  const firstBadStep = () => steps().find((x) => x.dataset.step !== "payment" && !stepOk(x));
+  function showFirstProblem(st) {
+    openStep(st, true);
+    setTimeout(() => { const bad = stepFields(st).find((x) => !x.checkValidity()); if (bad) bad.reportValidity(); }, 420);
+  }
+  function startSteps() { openStep(firstBadStep() || document.querySelector('.hco-step[data-step="payment"]')); }
+  document.querySelector(".hco-main").addEventListener("click", (e) => {
+    const next = e.target.closest(".hco-next"), edit = e.target.closest(".hco-sh");
+    if (next) {
+      const st = next.closest(".hco-step");
+      const bad = stepFields(st).find((x) => !x.checkValidity());
+      if (bad) { bad.reportValidity(); return; }
+      openStep(st.nextElementSibling && st.nextElementSibling.classList.contains("hco-step") ? st.nextElementSibling : document.querySelector('.hco-step[data-step="' + (st.dataset.step === "contact" ? "delivery" : "payment") + '"]'), true);
+    } else if (edit) {
+      const st = edit.closest(".hco-step");
+      if (st.classList.contains("is-open")) return;
+      const order = steps(), before = order.slice(0, order.indexOf(st)).find((x) => x.dataset.step !== "payment" && !stepOk(x));
+      if (before) showFirstProblem(before); else openStep(st, true);
+    }
+  });
+  // Pakistani mobile numbers: 03XX XXXXXXX, also +92 / 0092 / 92 forms
+  const phone = $("checkoutPhone");
+  const phoneDigits = (v) => String(v).replace(/[\s\-()]/g, "");
+  const phoneOk = (v) => /^(\+92|0092|92|0)?3\d{9}$/.test(phoneDigits(v));
+  function checkPhone() { phone.setCustomValidity(!phone.value || phoneOk(phone.value) ? "" : "Enter a mobile number like 0300 1234567"); }
+  phone.addEventListener("input", () => { checkPhone(); phone.classList.remove("is-bad"); });
+  phone.addEventListener("blur", () => {
+    checkPhone();
+    if (phoneOk(phone.value)) { const d = phoneDigits(phone.value).replace(/^(\+92|0092|92)/, "0").replace(/^(?!0)/, "0"); phone.value = d.slice(0, 4) + " " + d.slice(4); }
+    else if (phone.value) phone.classList.add("is-bad");
+    $("hcoPhoneMsg").textContent = phone.value && !phoneOk(phone.value) ? "That doesn't look like a Pakistani mobile number. Try 0300 1234567." : "The courier calls this number if they can't find you.";
+  });
+  $("citySelector").addEventListener("change", () => { const c = $("citySelector"); c.value = c.value.trim().replace(/\s+/g, " "); });
+  // delivery as dates: 3 to 5 business days, Sundays skipped
+  function addWorkDays(n) { const d = new Date(); while (n > 0) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0) n--; } return d; }
+  const fmtDay = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const eta = "Arrives " + fmtDay(addWorkDays(3)) + " – " + fmtDay(addWorkDays(5));
+  $("hcoEta").textContent = "Estimated delivery: " + fmtDay(addWorkDays(3)) + " to " + fmtDay(addWorkDays(5)) + ", once your payment is confirmed.";
+  const etaLi = $("hcoEtaLi"); if (etaLi) etaLi.lastChild.textContent = eta;
+  // remembered details (guests, this device only) and the last order (signed in)
+  const MEMO = "hygies_checkout";
+  const FIELDS = { firstName: "checkoutFirstName", lastName: "checkoutLastName", email: "checkoutEmail", phone: "checkoutPhone", street: "checkoutStreetAddress", city: "citySelector" };
+  function fillEmpty(src) {
+    let any = false;
+    Object.keys(FIELDS).forEach((k) => { const el = $(FIELDS[k]); if (el && !el.value && src && src[k]) { el.value = src[k]; any = true; } });
+    checkPhone(); return any;
+  }
+  try { const memo = JSON.parse(localStorage.getItem(MEMO) || "null"); if (memo && fillEmpty(memo)) $("hcoKnown").hidden = false; } catch (e) {}
+  $("hcoForget").addEventListener("click", () => {
+    try { localStorage.removeItem(MEMO); } catch (e) {}
+    Object.values(FIELDS).forEach((id) => { $(id).value = ""; });
+    $("hcoKnown").hidden = true; openStep(steps()[0]); $("checkoutFirstName").focus();
+  });
+  window.hcoRememberDetails = function(shipping) {
+    try {
+      if (currentUser || !$("hcoRemember").checked) { localStorage.removeItem(MEMO); return; }
+      const keep = {}; Object.keys(FIELDS).forEach((k) => { keep[k] = shipping[k]; });
+      localStorage.setItem(MEMO, JSON.stringify(keep));
+    } catch (e) {}
+  };
+  $("checkoutShippingForm").addEventListener("submit", (e) => {
+    // Enter in a field moves on to the next step instead of reloading the page
+    e.preventDefault();
+    const st = document.activeElement && document.activeElement.closest(".hco-step"), nx = st && st.querySelector(".hco-next");
+    if (nx) nx.click();
+  });
+  window.hcoFirstBadStep = () => { const st = firstBadStep(); if (st) showFirstProblem(st); return !!st; };
+  window.hcoStartSteps = startSteps;
+  // phones: total + Confirm order pinned to the bottom until the real button is on screen
+  const bar = $("hcoBar"), realBtn = document.querySelector(".hco .place-order-btn");
+  if (bar && realBtn && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((en) => { bar.classList.toggle("is-away", en[0].isIntersecting); document.body.classList.toggle("hco-bar-off", en[0].isIntersecting); }, { threshold: .4 });
+    io.observe(realBtn);
+  }
+  $("hcoBarBtn").addEventListener("click", () => {
+    if (firstBadStep()) { window.executeFinalCheckoutTransaction(); return; }
+    realBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => window.executeFinalCheckoutTransaction(), 520);
+  });
+  startSteps();
+
       document.getElementById("couponApplyBtn").addEventListener("click", applyCouponClicked);
       document.getElementById("couponInput").addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
@@ -6865,6 +7047,7 @@ async function mount2(ctx) {
     countTo(document.getElementById("subtotalValueDisplay"), t.subtotal);
     document.getElementById("shippingValueDisplay").innerText = t.shippingFee === 0 ? "FREE" : money2(t.shippingFee);
     countTo(document.getElementById("totalValueDisplay"), t.total);
+    countTo(document.getElementById("hcoBarTotal"), t.total);
     updateMeter(document.getElementById("freeShipNote"), t.subtotal - t.discount, t.discount > 0);
     const row = document.getElementById("discountRow");
     if (t.discount > 0 && appliedCoupon) {
@@ -6935,6 +7118,7 @@ async function mount2(ctx) {
     if (placing) return;
     const btn = document.querySelector(".place-order-btn");
     const form = document.getElementById("checkoutShippingForm");
+    if (window.hcoFirstBadStep && window.hcoFirstBadStep()) return;
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
@@ -6949,6 +7133,8 @@ async function mount2(ctx) {
     const refInput = document.getElementById("paymentRefInput");
     const paymentRef = refInput.value.trim();
     if (method.type === "manual" && paymentRef.length < 4) {
+      const paySt = document.querySelector('.hco-step[data-step="payment"]');
+      if (paySt && !paySt.classList.contains("is-open") && window.hcoStartSteps) window.hcoStartSteps();
       refInput.reportValidity();
       alert("Please enter the transaction reference from your " + method.label + " payment.");
       return;
@@ -6959,7 +7145,7 @@ async function mount2(ctx) {
       email: document.getElementById("checkoutEmail").value.trim(),
       phone: document.getElementById("checkoutPhone").value.trim(),
       street: document.getElementById("checkoutStreetAddress").value.trim(),
-      city: document.getElementById("citySelector").value,
+      city: document.getElementById("citySelector").value.trim(),
       country: "Pakistan"
     };
     placing = true;
@@ -6991,6 +7177,7 @@ async function mount2(ctx) {
         }
       }
       localStorage.removeItem("hygies_cart");
+      if (window.hcoRememberDetails) window.hcoRememberDetails(shipping);
       await truckDone(truck);
       if (method.type === "online") {
         try {
